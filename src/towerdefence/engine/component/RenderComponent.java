@@ -1,4 +1,4 @@
-package towerdefence.base;
+package towerdefence.engine.component;
 
 /**
  *

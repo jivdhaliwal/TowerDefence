@@ -13,10 +13,10 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
-import towerdefence.base.TopDownMovement;
+import towerdefence.engine.component.TopDownMovement;
 
-import towerdefence.base.Entity;
-import towerdefence.base.ImageRenderComponent;
+import towerdefence.engine.entity.Entity;
+import towerdefence.engine.component.ImageRenderComponent;
 
 /**
  *

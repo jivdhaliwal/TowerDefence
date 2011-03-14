@@ -1,5 +1,7 @@
-package towerdefence.base;
+package towerdefence.engine.entity;
 
+import towerdefence.engine.component.RenderComponent;
+import towerdefence.engine.component.Component;
 import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

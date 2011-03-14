@@ -1,7 +1,8 @@
-package towerdefence.base;
+package towerdefence.engine.component;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
+import towerdefence.engine.entity.Entity;
 
 
 /**
