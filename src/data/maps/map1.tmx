@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass-tiles-2-small" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/grass-tiles-2-small.png"/>
+ </tileset>
+ <tileset firstgid="13" name="KaljuSuurem" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/KaljuSuurem.png"/>
+ </tileset>
+ <tileset firstgid="127" name="tree2-final" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/tree2-final.png"/>
+ </tileset>
+ <tileset firstgid="143" name="littleshrooms" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/littleshrooms.png"/>
+ </tileset>
+ <tileset firstgid="144" name="collision" tilewidth="32" tileheight="32">
+  <image source="../tilesets/collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Collision" width="20" height="20">
+  <properties>
+   <property name="blocked" value="true"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC5vAwMAwgcoYGaDzSQG0Mg+fe8kxD12MUvMmoIlRah61wKh5o+aNmjf0zaMmBgCCvwBfQAYAAA==
+  </data>
+ </layer>
+ <layer name="Floor" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NkYGBgHMWjeBSP4lE8iknEALhlz4pABgAA
+  </data>
+ </layer>
+ <layer name="Ramp" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoD4wAWJTKDajgnnuSOZ5jgDzooDYBojtgDiGCuaBQBIQp1DJrFEwCkbBKAABABU6FTlABgAA
+  </data>
+ </layer>
+ <layer name="Tree" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3MyRGAIBAF0Z85O4qgMdM5ODemq961JSkgIiHrfwUVDd3gd+HGwGPwm1h48Rn8PM/zTmwD5oMQ3EAGAAA=
+  </data>
+ </layer>
+</map>
