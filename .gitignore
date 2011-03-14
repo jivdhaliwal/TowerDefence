@@ -6,5 +6,8 @@ build/
 #ignore nbproject dir
 nbproject/
 
+#ignore distribution dir
+dist/
+
 manifest.mf
 build.xml
