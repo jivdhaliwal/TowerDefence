@@ -17,7 +17,7 @@ public class TowerDefence extends StateBasedGame
 
      static boolean showFPS = true;
 
-     static String title = "Tower Defence for COM4240";
+     static String title = "Tower Defence";
 
      static int fpslimit = 60;
 

@@ -57,6 +57,28 @@ public class TopDownMovement extends Component {
             position.x += 0.1f*delta;
         }
 
+        if(input.isKeyDown(Input.KEY_U))
+        {
+            scale += 0.001f*delta;
+        }
+
+        if(input.isKeyDown(Input.KEY_I))
+        {
+            scale -= 0.001f*delta;
+        }
+        
+        if(input.isKeyDown(Input.KEY_J))
+        {
+            rotation += 3;
+        }
+
+        if(input.isKeyDown(Input.KEY_K))
+        {
+            rotation -= 3;
+        }
+
+
+
         entity.setPosition(position);
 
         entity.setRotation(rotation);

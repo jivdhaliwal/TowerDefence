@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.pathfinding.Mover;
 
 /**
  * Entity - A Game object that can interact with other objects and be
@@ -60,6 +61,16 @@ public class Entity {
     public Vector2f getPosition()
     {
         return position;
+    }
+
+    /* Given tilesize and x,y position, return tile position
+     *
+     * @param tilesize Size of tiles in pixels
+     */
+    public Vector2f getTilePosition(int tilesize)
+    {
+        return new Vector2f((int) Math.floor((position.x / tilesize)),
+                (int) Math.floor((position.y / tilesize)));
     }
 
     public float getScale()

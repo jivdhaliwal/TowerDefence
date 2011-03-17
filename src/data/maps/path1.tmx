@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="18" height="18" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass-tiles-2-small" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/grass-tiles-2-small.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="13" name="KaljuSuurem" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/KaljuSuurem.png"/>
+ </tileset>
+ <tileset firstgid="127" name="collision" tilewidth="32" tileheight="32">
+  <image source="../tilesets/collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Collision" width="18" height="18">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC6tnoA6op6I51DSLWuaQg6nhrlFzRs3BJkfN9EgKGO75HAAH0QH4EAUAAA==
+  </data>
+ </layer>
+ <layer name="Floor" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NlYGBgHcWjeBSP4lHMAAA590ywEAUAAA==
+  </data>
+ </layer>
+ <layer name="Path" width="18" height="18">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC6WSgQrAIAhERVbr/794G2wg7jytBsfC7HjWdVn/mtEI6pF877fWV7s+YphsX8TIfB6e0/wrUuDjuQ7CJqbXczayF8045O/hedh59M6ZD+LOfKIsVeZirJV7Rv4s2zs+6GzVZzaHKI8sM4wvu4uojmZQUF8Ry8CM+q0LyDTrVBAFAAA=
+  </data>
+ </layer>
+</map>
