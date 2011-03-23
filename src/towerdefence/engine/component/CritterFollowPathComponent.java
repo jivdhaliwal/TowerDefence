@@ -51,63 +51,41 @@ public class CritterFollowPathComponent extends Component {
         direction =  UP;
 
     }
+    /*
+    public void moveCritter(int direction, int speed) {
+        int distance = 0;
+        if(direction==LEFT) {
+            while(distance<32) {
+                entity.setPosition(new Vector2f(position.x += 0.1f*delta,position.y));
+            }
+        }
+    }
 
-
-
+     * 
+     */
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
 
         Vector2f position = entity.getPosition();
         Vector2f tilePosition = entity.getTilePosition(32);
 
-
-        System.out.println(tilePosition.y);
-
-
         currentStep = path.getStep(currentIndex);
         targetStep = path.getStep(currentIndex+1);
-
 
         targetX = targetStep.getX();
         targetY = targetStep.getY();
 
-        
-
-        // Goal Reached. Stop the critter
-        if(currentIndex == path.getLength()) {
-            direction = STOP;
-        }
-        else if(targetX - currentStep.getX() == 1) {
-            direction = RIGHT;
-        }
-        else if(targetY - currentStep.getY() == -1) {
-            direction = UP;
-        }
-        else if(targetX - currentStep.getX() == -1) {
-            direction = LEFT;
-        }
-        else if(targetY - currentStep.getY() == 1) {
-            direction = DOWN;
-        }
-
-        if(direction == RIGHT) {
-            position.x += 0.1f*delta;
-        }
-        if(direction == UP) {
-            position.y -= 0.1f*delta;
-        }
-        if(direction == LEFT) {
-            position.x -= 0.1f*delta;
-        }
-        if(direction == DOWN) {
-            position.y += 0.1f*delta;
-        }
-
-        if(tilePosition.x==targetStep.getX()) {
+        if(targetX - tilePosition.x == 1) {
+            entity.setPosition(new Vector2f(position.x += 0.1f*delta,position.y));
+        } else if(targetX - tilePosition.x == -1) {
+            entity.setPosition(new Vector2f(position.x -= 0.1f*delta,position.y));
+        } else if(targetY - tilePosition.y == 1) {
+            entity.setPosition(new Vector2f(position.x,position.y += 0.1f*delta));
+        } else if(targetY - tilePosition.y == -1) {
+            entity.setPosition(new Vector2f(position.x,position.y -= 0.1f*delta));
+        } else if(targetX - tilePosition.x == 0 && targetY - tilePosition.y == 0) {
             currentIndex++;
         }
-        // If critter moves to new tile
-        
 
     }
 
