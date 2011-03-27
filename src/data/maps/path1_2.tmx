@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="18" height="18" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass-tiles-2-small" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/grass-tiles-2-small.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="13" name="KaljuSuurem" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/KaljuSuurem.png"/>
+ </tileset>
+ <tileset firstgid="127" name="collision" tilewidth="32" tileheight="32">
+  <image source="../tilesets/collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+    <property name="Type" value="grass"/>
+    <property name="blocked" value="true"/>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Collision" width="18" height="18">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC7WSwQoAIAhD/XN/vZMX0elGBkKWvM3S7c/y5owJS3vEzhpVLcvpcraP3A+jhbQVzoUfhlN5YDnofuJs/kjxM83cNUedx62+UtO9K+sJMZV52bAjHoKlBJQQBQAA
+  </data>
+ </layer>
+ <layer name="Floor" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NlYGBgHcWjeBSP4lHMAAA590ywEAUAAA==
+  </data>
+ </layer>
+ <layer name="Path" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC7WTgQqAIAxEU9D8/y8uIeE4dm6LOjhsZa9TVz++0TDulaSn6mPmKBV6jtecyeOoeuY5YVwuVKOrwYnm4vXwGjOc5SHmZPNkOdYZZzmsKCfac2/yeD33J8frQ6yxdy2p76s56mzUvqp9X/9525jfaTCih8OJsKf77Qv1MxFJEAUAAA==
+  </data>
+ </layer>
+</map>

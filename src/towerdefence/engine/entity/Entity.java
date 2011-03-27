@@ -58,10 +58,15 @@ public class Entity {
         return null;
     }
 
+    /*
+     * Returns the exact pixel position of the sprite (only use for rendering)
+     */
     public Vector2f getPosition()
     {
-        return position;
+        return new Vector2f(position.x, position.y);
     }
+
+
 
     /* Given tilesize and x,y position, return tile position
      *

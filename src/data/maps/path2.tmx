@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="9" height="9" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass-tiles-2-small" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/grass-tiles-2-small.png"/>
+ </tileset>
+ <tileset firstgid="13" name="collision" tilewidth="32" tileheight="32">
+  <image source="../tilesets/collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Collision" width="9" height="9">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+NlYGDghWJCgN5q0DE97SZGDQwDADPbnSZEAQAA
+  </data>
+ </layer>
+ <layer name="Ground" width="9" height="9">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NlYGBgHcUUYQBbWxGjRAEAAA==
+  </data>
+ </layer>
+ <layer name="Path" width="9" height="9">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NjYGBghGJCgN5q0DE97SZGDQizATEAi1kaZEQBAAA=
+  </data>
+ </layer>
+</map>
