@@ -70,11 +70,11 @@ public class GameplayState extends BasicGameState {
         finder = new AStarPathFinder(pathmap, 500, false);
         path = finder.findPath(new UnitMover(3), map.getWidth()-1, map.getHeight()-1, 1, 1);
 
-<<<<<<< HEAD
+
         critterCount = 20;
-=======
+
         critterCount = 1;
->>>>>>> ce0f353f872d62d211b2a720332d1ba4492efd9d
+
 
         critterFactory = new CritterFactory(
                 new Vector2f((float) (32*(map.getWidth()-1)) , (float) (32*(map.getHeight()-1)) ),
