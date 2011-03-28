@@ -84,7 +84,7 @@ public class GameplayState extends BasicGameState {
          * 
          */
 
-        critterCount = 10000;
+        critterCount = 1;
 
         critterFactory = new CritterFactory(
                 new Vector2f((float) (32*(map.getWidth()-1)) , (float) (32*(map.getHeight()-1)) ),

@@ -35,7 +35,7 @@ public class CritterFactory {
         this.initialPos = initialPos;
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,32),
-                getTilePosition(initialPos.y,32), 0, 0);
+                getTilePosition(initialPos.y,32), 1,1);
         testerSprite = new Image("data/sprites/positionTester.png");
     }
 

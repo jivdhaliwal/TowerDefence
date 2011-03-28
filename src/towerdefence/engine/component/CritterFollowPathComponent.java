@@ -28,11 +28,9 @@ public class CritterFollowPathComponent extends Component {
 
     Step currentStep, targetStep;
 
-    int currentIndex;
-
-    int targetX, targetY;
-
-    int direction;
+    int distance;
+    int moveCounter;
+    int speed;
     
     private static final int STOP = 0;
     private static final int UP = 1;
@@ -40,58 +38,75 @@ public class CritterFollowPathComponent extends Component {
     private static final int LEFT = 3;
     private static final int RIGHT = 4;
 
-    Vector2f currentTile;
-    Vector2f previousTile;
-    private int xDirection;
-    private int yDirection;
     private Vector2f position;
     private Vector2f tilePosition;
-    private int previousX;
-    private int previousY;
+    private int targetIndex;
 
     public CritterFollowPathComponent( String id, PathFinder finder, Path path ) {
         this.id = id;
         this.finder = finder;
         this.path = path;
-        
-        currentIndex = 0;
-        
-        currentStep = path.getStep(0);
-        targetStep = path.getStep(1);
 
-        targetX = targetStep.getX();
-        targetY = targetStep.getY();
+        targetIndex = 1;
+        distance = 32;
+        speed = 32;
+              
+    }
 
-        
-        //xDirection = LEFT;
-        //yDirection = UP;
-        
+    /**
+     * Tile mover
+     * 
+     * Move entity from current position to specified tile
+     *
+     * @param currentPos current position of the entity
+     * @param cx current X tile
+     * @param cy current Y tile
+     * @param tx target X tile
+     * @param ty target Y tile
+     * 
+     */
+    public void moveToTile(Vector2f currentPos, Step currentTile, Step targetTile, int delta) {
+
+        int currentX = currentTile.getX();
+        int currentY = currentTile.getY();
+        int targetX = targetTile.getX();
+        int targetY = targetTile.getY();
+
+//        entity.setPosition(new Vector2f((position.x + ((0.1f * delta) * (targetX - currentX))),
+//                    (position.y + ((0.1f * delta) * (targetY - currentY)))));
+        entity.setPosition(new Vector2f((position.x + (targetX - currentX)),
+                    (position.y + (targetY - currentY))));
+
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
-        
-        if(path!=null){
 
-            position = entity.getPosition();
-            tilePosition = entity.getTilePosition(32);
+        position = entity.getPosition();
+        tilePosition = entity.getTilePosition(32);
 
-            currentStep = path.getStep(0);
-            targetStep = path.getStep(1);
+        moveCounter -= delta;
 
-            previousX = currentStep.getX();
-            previousY = currentStep.getY();
-            targetX = targetStep.getX();
-            targetY = targetStep.getY();
+        if (targetIndex < path.getLength()) {
+            currentStep = path.getStep(targetIndex - 1);
+            targetStep = path.getStep(targetIndex);
+            if (moveCounter <= 0) {
+                if (distance > 0) {
+                    moveToTile(position, currentStep, targetStep, delta);
+                    distance--;
+                    moveCounter = speed;
+                } else if (distance <= 0) {
+                    targetIndex++;
+                    distance = 32;
+                    moveCounter = 0;
+                }
+                //Vector2f targetVec = new Vector2f((targetX * 32) - 16, (targetY * 32) - 16);
+                //            path = finder.findPath(new UnitMover(3), (int) entity.getTilePosition(32).x,
+                //                    (int) entity.getTilePosition(32).y, 1, 1);
 
-            //Vector2f targetVec = new Vector2f((targetX * 32) - 16, (targetY * 32) - 16);
-            path = finder.findPath(new UnitMover(3), (int) entity.getTilePosition(32).x,
-                    (int) entity.getTilePosition(32).y, 1, 1);
-
-
-            entity.setPosition(new Vector2f((position.x + ((0.1f * delta) * (targetX - previousX))),
-                    (position.y + ((0.1f * delta) * (targetY - previousY)))));
+            }
         }
+
     }
 
 }
