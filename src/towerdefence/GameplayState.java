@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -32,8 +33,6 @@ public class GameplayState extends BasicGameState {
     int critterCount;
     int generateCounter=0;
 
-    private boolean[][] blocked;
-    private static final int TILESIZE = 32;
 
     // Map used to find critter paths
     private PathMap pathmap;
@@ -44,7 +43,6 @@ public class GameplayState extends BasicGameState {
 
 
     private TiledMap map;
-    private Image testerSprite;
     private Image pathSprite;
 
     CritterFactory critterFactory;
@@ -64,33 +62,19 @@ public class GameplayState extends BasicGameState {
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
-        testerSprite = new Image("data/sprites/tester.png");
+        
         pathSprite = new Image("data/sprites/path.png");
-            map = new TiledMap("data/maps/path1_3.tmx");
+        map = new TiledMap("data/maps/path1_3.tmx");
 
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
         path = finder.findPath(new UnitMover(3), map.getWidth()-1, map.getHeight()-1, 1, 1);
-        
-        /*
-        critter = new Entity("critter");
-        critter.setPosition(new Vector2f((float) ((32*map.getWidth())-16), (float) ((32*map.getHeight())-16)));
-        
-        critter.AddComponent(new ImageRenderComponent("CritterRender", testerSprite));
-        critter.AddComponent(new TopDownMovement("CritterMovement"));
-        critter.AddComponent(nedw CritterFollowPathComponent("CritterPath", finder, path));
 
-        critters.add(critter);
-         * 
-         */
-
-        critterCount = 1;
+        critterCount = 20;
 
         critterFactory = new CritterFactory(
                 new Vector2f((float) (32*(map.getWidth()-1)) , (float) (32*(map.getHeight()-1)) ),
                 finder);
-
-        //critterFactory.generateCritters(5);
 
         critters = critterFactory.getCritters();
         
@@ -98,9 +82,8 @@ public class GameplayState extends BasicGameState {
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         map.render(0,0);
-        //map.render(0,0,1,1,18,18);
-        
-        
+
+        // Render the path for testing
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 if(path != null) {
@@ -116,14 +99,18 @@ public class GameplayState extends BasicGameState {
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        
+
+        Input input = container.getInput();
+
+        if(input.isKeyPressed(Input.KEY_F2)) {
+            game.enterState(TowerDefence.PATHTESTSTATE);
+        }
+
         generateCounter-=delta;
         critters = critterFactory.getCritters();
 
         for(Entity enemy : critters)
             enemy.update(container, game, delta);
-
-        //path = finder.findPath(new UnitMover(3), (int) critter.getTilePosition(32).x, (int) critter.getTilePosition(32).y, 0, 0);
 
         if(generateCounter < 0) {
             if(critterCount>0){
@@ -135,19 +122,5 @@ public class GameplayState extends BasicGameState {
         }
 
     }
-
-
-    /*
-     * Old block checker Might re-implement
-     *
-     * /
-    private boolean isBlocked(float x, float y) {
-        int xTile = (int) Math.floor((x / TILESIZE));
-        int yTile = (int) Math.floor((y / TILESIZE));
-        
-        return blocked[xTile+1][yTile+1];
-    }
-     *
-     */
 
 }

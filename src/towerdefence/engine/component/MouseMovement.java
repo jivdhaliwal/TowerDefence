@@ -7,33 +7,59 @@ package towerdefence.engine.component;
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import javax.swing.event.MouseInputListener;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class MouseMovement extends Component implements MouseMotionListener {
+public class MouseMovement extends Component {
+
 
     public MouseMovement( String id )
     {
         this.id = id;
+
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Input i = gc.getInput();i.addMouseListener(new MouseListener(){
+
+            public void mouseWheelMoved(int change) {
+            }
+
+            public void mouseClicked(int button, int x, int y, int clickCount) {
+            }
+
+            public void mousePressed(int button, int x, int y) {
+            }
+
+            public void mouseReleased(int button, int x, int y) {
+            }
+
+            public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+            }
+
+            public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+            }
+
+            public void setInput(Input input) {
+            }
+
+            public boolean isAcceptingInput() {
+                return true;
+            }
+
+            public void inputEnded() {
+            }
+
+            public void inputStarted() {
+            }
+        });
+        
     }
 
-    public void mouseDragged(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    public void mouseMoved(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
 
 }

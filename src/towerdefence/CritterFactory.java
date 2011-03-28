@@ -31,7 +31,6 @@ public class CritterFactory {
     ArrayList<Entity> critterList = new ArrayList<Entity>();
 
     public CritterFactory(Vector2f initialPos, PathFinder finder) throws SlickException {
-        //this.numCritters = numCritters;
         this.initialPos = initialPos;
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,32),
@@ -51,10 +50,6 @@ public class CritterFactory {
         critter.AddComponent(new CritterFollowPathComponent("CritterPath", finder, path));
 
         critterList.add(critter);
-    }
-
-    public void removeCritter(Entity e) {
-        critterList.remove(e.getId());
     }
 
     public void generateCritters(int numCritters) {
