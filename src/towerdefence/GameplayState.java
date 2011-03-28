@@ -10,17 +10,14 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
-import towerdefence.engine.component.CritterFollowPathComponent;
-import towerdefence.engine.component.TopDownMovement;
 
 import towerdefence.engine.entity.Entity;
-import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.pathfinding.PathMap;
 import towerdefence.engine.pathfinding.UnitMover;
 
@@ -54,6 +51,8 @@ public class GameplayState extends BasicGameState {
     ArrayList<Entity> critters = new ArrayList<Entity>();
     Entity critter=null;
 
+    ParticleSystem ps;
+
     GameplayState(int stateID) {
         this.stateID = stateID;
     }
@@ -72,7 +71,7 @@ public class GameplayState extends BasicGameState {
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
         path = finder.findPath(new UnitMover(3), map.getWidth()-1, map.getHeight()-1, 1, 1);
-
+        
         /*
         critter = new Entity("critter");
         critter.setPosition(new Vector2f((float) ((32*map.getWidth())-16), (float) ((32*map.getHeight())-16)));
@@ -85,10 +84,10 @@ public class GameplayState extends BasicGameState {
          * 
          */
 
-        critterCount = 1;
+        critterCount = 10000;
 
         critterFactory = new CritterFactory(
-                new Vector2f((float) (32*(21))-16 , (float) (32*(21))-16 ),
+                new Vector2f((float) (32*(map.getWidth()-1)) , (float) (32*(map.getHeight()-1)) ),
                 finder);
 
         //critterFactory.generateCritters(5);
@@ -100,6 +99,7 @@ public class GameplayState extends BasicGameState {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         map.render(0,0);
         //map.render(0,0,1,1,18,18);
+        
         
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
@@ -116,7 +116,7 @@ public class GameplayState extends BasicGameState {
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-
+        
         generateCounter-=delta;
         critters = critterFactory.getCritters();
 

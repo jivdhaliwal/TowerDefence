@@ -70,24 +70,28 @@ public class CritterFollowPathComponent extends Component {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
-        position = entity.getPosition();
-        tilePosition = entity.getTilePosition(32);
+        
+        if(path!=null){
 
-        currentStep = path.getStep(0);
-        targetStep = path.getStep(1);
+            position = entity.getPosition();
+            tilePosition = entity.getTilePosition(32);
 
-        previousX = currentStep.getX();
-        previousY = currentStep.getY();
-        targetX = targetStep.getX();
-        targetY = targetStep.getY();
+            currentStep = path.getStep(0);
+            targetStep = path.getStep(1);
 
-        //Vector2f targetVec = new Vector2f((targetX * 32) - 16, (targetY * 32) - 16);
+            previousX = currentStep.getX();
+            previousY = currentStep.getY();
+            targetX = targetStep.getX();
+            targetY = targetStep.getY();
 
-        path = finder.findPath(new UnitMover(3), (int) entity.getTilePosition(32).x,
-                (int) entity.getTilePosition(32).y, 0, 0);
+            //Vector2f targetVec = new Vector2f((targetX * 32) - 16, (targetY * 32) - 16);
+            path = finder.findPath(new UnitMover(3), (int) entity.getTilePosition(32).x,
+                    (int) entity.getTilePosition(32).y, 1, 1);
 
-        entity.setPosition(new Vector2f((position.x+((0.1f * delta)*(targetX - previousX))),
-                (position.y+((0.1f * delta)*(targetY - previousY)))));
+
+            entity.setPosition(new Vector2f((position.x + ((0.1f * delta) * (targetX - previousX))),
+                    (position.y + ((0.1f * delta) * (targetY - previousY)))));
+        }
     }
 
 }
