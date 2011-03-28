@@ -71,18 +71,6 @@ public class GameplayState extends BasicGameState {
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
         path = finder.findPath(new UnitMover(3), map.getWidth()-1, map.getHeight()-1, 1, 1);
-        
-        /*
-        critter = new Entity("critter");
-        critter.setPosition(new Vector2f((float) ((32*map.getWidth())-16), (float) ((32*map.getHeight())-16)));
-        
-        critter.AddComponent(new ImageRenderComponent("CritterRender", testerSprite));
-        critter.AddComponent(new TopDownMovement("CritterMovement"));
-        critter.AddComponent(nedw CritterFollowPathComponent("CritterPath", finder, path));
-
-        critters.add(critter);
-         * 
-         */
 
         critterCount = 1;
 
@@ -90,17 +78,14 @@ public class GameplayState extends BasicGameState {
                 new Vector2f((float) (32*(map.getWidth()-1)) , (float) (32*(map.getHeight()-1)) ),
                 finder);
 
-        //critterFactory.generateCritters(5);
-
         critters = critterFactory.getCritters();
         
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         map.render(0,0);
-        //map.render(0,0,1,1,18,18);
-        
-        
+
+        // Render the path for testing
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 if(path != null) {
@@ -122,8 +107,6 @@ public class GameplayState extends BasicGameState {
 
         for(Entity enemy : critters)
             enemy.update(container, game, delta);
-
-        //path = finder.findPath(new UnitMover(3), (int) critter.getTilePosition(32).x, (int) critter.getTilePosition(32).y, 0, 0);
 
         if(generateCounter < 0) {
             if(critterCount>0){
