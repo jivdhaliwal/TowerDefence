@@ -31,10 +31,10 @@ public class TowerDefence extends StateBasedGame
      {
           super(title);
 
-//          this.addState(new PathTestState(PATHTESTSTATE));
+          this.addState(new PathTestState(PATHTESTSTATE));
           this.addState(new GameplayState(GAMEPLAYSTATE));
           this.enterState(GAMEPLAYSTATE);
-//          this.enterState(PATHTESTSTATE);
+          //this.enterState(PATHTESTSTATE);
      }
 
      public static void main(String[] args) throws SlickException
@@ -51,6 +51,6 @@ public class TowerDefence extends StateBasedGame
     @Override
     public void initStatesList(GameContainer container) throws SlickException {
         this.getState(GAMEPLAYSTATE).init(container, this);
-//        this.getState(PATHTESTSTATE).init(container, this);
+        this.getState(PATHTESTSTATE).init(container, this);
     }
 }
