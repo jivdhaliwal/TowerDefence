@@ -67,7 +67,7 @@ public class GameplayState extends BasicGameState {
         path = finder.findPath(new UnitMover(3), map.getWidth() - 1, map.getHeight() - 1, 1, 1);
 
 
-        critterCount = 1000;
+        critterCount = 20;
 
         critterFactory = new CritterFactory(
                 new Vector2f((float) (32 * (map.getWidth() - 1)), (float) (32 * (map.getHeight() - 1))),
@@ -124,7 +124,7 @@ public class GameplayState extends BasicGameState {
                 critterFactory.addCritter(String.valueOf(critterCount + 100));
                 critterCount--;
             }
-            generateCounter = 0;
+            generateCounter = 500;
         }
 
     }
