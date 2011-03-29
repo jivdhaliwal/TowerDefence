@@ -1,6 +1,8 @@
 package towerdefence;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -12,8 +14,10 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
+import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
+import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import towerdefence.engine.component.MouseMovement;
 
 import towerdefence.engine.entity.Entity;
@@ -44,9 +48,14 @@ public class PathTestState extends BasicGameState {
 
     private TiledMap map;
     private Image pathSprite;
+    private Image tileHighlight;
 
     CritterFactory critterFactory;
     ArrayList<Entity> critters = new ArrayList<Entity>();
+    private int mouseY;
+    private int mouseX;
+
+    
 
 
     PathTestState(int stateID) {
@@ -61,6 +70,7 @@ public class PathTestState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
         pathSprite = new Image("data/sprites/path.png");
+        tileHighlight = new Image("data/sprites/validTileSelect.png");
         map = new TiledMap("data/maps/path1_4.tmx");
 
         pathmap = new PathMap(map);
@@ -98,16 +108,44 @@ public class PathTestState extends BasicGameState {
             public void mouseReleased(int button, int x, int y) {
             }
 
+            /*
+             * 
+             * When you move the mouse the tile your cursor is over is higlighted
+             * Green = Can place tower
+             * Red = Cannot place tower
+             *
+             */
             public void mouseMoved(int oldx, int oldy, int newx, int newy) {
                 
+                if (generateCounter <= 0) {
+                    int currentXTile = (int) Math.floor((newx / 32));
+                    int currentYTile = (int) Math.floor((newy / 32));
+                    mouseX = newx;
+                    mouseY = newy;
+                    generateCounter = 32;
+                    if(pathmap.getTerrain(currentXTile, currentYTile)!=PathMap.GRASS) {
+                        try {
+                            tileHighlight = new Image("data/sprites/validTileSelect.png");
+                        } catch (SlickException ex) {
+                            Logger.getLogger(PathTestState.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        try {
+                            tileHighlight = new Image("data/sprites/invalidTileSelect.png");
+                        } catch (SlickException ex) {
+                            Logger.getLogger(PathTestState.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
             }
 
             public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-                if(generateCounter<=0) {
-                    path = finder.findPath(new UnitMover(3),
-                            (int) Math.floor((newx / 32)), (int) Math.floor((newy / 32)), 1, 1);
-                    generateCounter=10;
-                }
+                int currentXTile = (int) Math.floor((newx / 32));
+                int currentYTile = (int) Math.floor((newy / 32));
+                
+                path = finder.findPath(new UnitMover(3), currentXTile, currentYTile, 1, 1);
+                generateCounter = 10;
+
             }
 
             public void setInput(Input input) {
@@ -142,6 +180,8 @@ public class PathTestState extends BasicGameState {
                 }
             }
         }
+
+        tileHighlight.draw(((int) Math.floor((mouseX / 32)))*32,((int) Math.floor((mouseY / 32)))*32);
 
     }
 

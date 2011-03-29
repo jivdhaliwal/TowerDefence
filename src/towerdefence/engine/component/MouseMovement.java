@@ -14,11 +14,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class MouseMovement extends Component {
 
-
     public MouseMovement( String id )
     {
         this.id = id;
-
     }
 
     @Override

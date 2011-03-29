@@ -29,6 +29,9 @@ public class PathMap implements TileBasedMap {
     // Plane = any flying enemy
     public static final int PLANE = 4;
 
+    // Tower = any tower
+    public static final int TOWER = 5;
+
     // Terrain settings for each tile
     private int[][] terrain;
     // Returns true if tile has been visited during search
@@ -91,6 +94,10 @@ public class PathMap implements TileBasedMap {
         // tanks can only move across grass
         if (unit == CRITTER) {
             return terrain[tx][ty] != GRASS;
+        }
+
+        if (unit == TOWER) {
+            return terrain[tx][ty] == GRASS;
         }
 
         // unknown unit so everything blocks
