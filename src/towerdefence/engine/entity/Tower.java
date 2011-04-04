@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.engine.component.Component;
 
@@ -32,7 +33,7 @@ public class Tower extends Entity {
     public Tower(String id) throws SlickException{
         super(id);
         range = 200;
-        damagePerSec = 10;
+        damagePerSec = 20;
 
         this.rotation=0;
 
@@ -51,10 +52,17 @@ public class Tower extends Entity {
 
 
             if(targetCritter==null) {
+                Critter tempTarget = new Critter("test");
+                tempTarget.setPosition(new Vector2f(0,0));
                 for(Critter enemy : critterList) {
-                    if(this.getPosition().distance(enemy.getPosition()) < range) {
-                        targetCritter=enemy;
-                        break;
+                    float critterDistance = this.getPosition().distance(enemy.getPosition());
+                    float tempDistance = this.getPosition().distance(tempTarget.getPosition());
+
+                    if(critterDistance < range) {
+                        if(critterDistance < tempDistance) {
+                            targetCritter=enemy;
+                            tempTarget=enemy;
+                        }
                     }
                 }
             } else if (targetCritter!=null) {
@@ -70,7 +78,7 @@ public class Tower extends Entity {
     }
 
     private void shootCritter(Critter critter) {
-        critter.takeDamage(damagePerSec/10);
+        critter.takeDamage(damagePerSec/10f);
     }
 
     @Override
@@ -80,7 +88,7 @@ public class Tower extends Entity {
 
         if(shootingCounter<=0) {
             findClosestCritter();
-            shootingCounter=10;
+            shootingCounter=100;
         }
 
         for(Component component : components)

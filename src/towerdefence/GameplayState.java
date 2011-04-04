@@ -53,6 +53,7 @@ public class GameplayState extends BasicGameState {
     ParticleSystem ps;
     private TrueTypeFont trueTypeFont;
     private Tower testTower;
+    private Tower testTower2;
 
 
     GameplayState(int stateID) {
@@ -87,7 +88,12 @@ public class GameplayState extends BasicGameState {
         testTower = new Tower("TestTower");
         testTower.setPosition(new Vector2f(10*32,9*32));
         testTower.AddComponent(new ImageRenderComponent("CritterRender", towerSprite));
+        testTower2 = new Tower("TestTower2");
+        testTower2.setPosition(new Vector2f(7*32,5*32));
+        testTower2.AddComponent(new ImageRenderComponent("CritterRender", towerSprite));
         towerList.add(testTower);
+
+        towerList.add(testTower2);
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
@@ -138,8 +144,8 @@ public class GameplayState extends BasicGameState {
         }
 
         for (Tower tower : towerList) {
-            tower.update(container, game, delta);
             tower.updateCritterList(critterList);
+            tower.update(container, game, delta);
         }
 
         // Remove dead critters
@@ -156,7 +162,7 @@ public class GameplayState extends BasicGameState {
                 critterFactory.addCritter(String.valueOf(critterCount + 100));
                 critterCount--;
             }
-            generateCounter = 50;
+            generateCounter = 500;
         }
 
     }
