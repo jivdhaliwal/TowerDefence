@@ -19,8 +19,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
-import towerdefence.engine.component.ImageRenderComponent;
-import towerdefence.engine.component.TowerComponent;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Tower;
 
