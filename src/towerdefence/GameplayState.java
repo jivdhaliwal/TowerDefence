@@ -19,6 +19,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
+import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Tower;
 
@@ -45,7 +46,7 @@ public class GameplayState extends BasicGameState {
     private Image towerSprite;
 
     CritterFactory critterFactory;
-    ArrayList<Critter> critters = new ArrayList<Critter>();
+    ArrayList<Critter> critters;
     Critter critter = null;
     ParticleSystem ps;
     private TrueTypeFont trueTypeFont;
@@ -73,13 +74,17 @@ public class GameplayState extends BasicGameState {
         path = finder.findPath(new UnitMover(3), map.getWidth() - 1, map.getHeight() - 1, 1, 1);
 
 
-        critterCount = 20;
+        critterCount = 200;
 
         critterFactory = new CritterFactory(
                 new Vector2f((float) (32 * (map.getWidth() - 1)), (float) (32 * (map.getHeight() - 1))),
                 finder);
 
         critters = critterFactory.getCritters();
+
+        testTower = new Tower("TestTower");
+        testTower.setPosition(new Vector2f(10*32,9*32));
+        testTower.AddComponent(new ImageRenderComponent("CritterRender", towerSprite));
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
@@ -104,6 +109,7 @@ public class GameplayState extends BasicGameState {
             enemy.render(container, game, g);
         }
 
+        testTower.render(container, game, g);
 
         trueTypeFont.drawString((map.getWidth() * 32) - 200, 50, "# of Critters : " + String.valueOf(critters.size()), Color.white);
 
@@ -118,12 +124,21 @@ public class GameplayState extends BasicGameState {
         }
 
         generateCounter -= delta;
-        critters = critterFactory.getCritters();
+//        critters = critterFactory.getCritters();
 
         for (Critter enemy : critters) {
             enemy.update(container, game, delta);
+            
         }
 
+        for(int i=0;i<critters.size();i++) {
+            if(critters.get(i).isDead()) {
+                critters.remove(i);
+            }
+        }
+
+        testTower.update(container, game, delta);
+        testTower.updateCritterList(critters);
 
         if (generateCounter < 0) {
             if (critterCount > 0) {
