@@ -7,7 +7,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.pathfinding.Mover;
 
 /**
  * Entity - A Game object that can interact with other objects and be
@@ -15,7 +14,7 @@ import org.newdawn.slick.util.pathfinding.Mover;
  *
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
-public class Entity {
+public abstract class Entity {
 
     String id;
 

@@ -19,8 +19,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
+import towerdefence.engine.component.ImageRenderComponent;
+import towerdefence.engine.component.TowerComponent;
+import towerdefence.engine.entity.Critter;
+import towerdefence.engine.entity.Tower;
 
-import towerdefence.engine.entity.Entity;
 import towerdefence.engine.pathfinding.PathMap;
 import towerdefence.engine.pathfinding.UnitMover;
 
@@ -41,11 +44,15 @@ public class GameplayState extends BasicGameState {
     private Path path;
     private TiledMap map;
     private Image pathSprite;
+    private Image towerSprite;
+
     CritterFactory critterFactory;
-    ArrayList<Entity> critters = new ArrayList<Entity>();
-    Entity critter = null;
+    ArrayList<Critter> critters = new ArrayList<Critter>();
+    Critter critter = null;
     ParticleSystem ps;
     private TrueTypeFont trueTypeFont;
+    private Tower testTower;
+
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -60,6 +67,7 @@ public class GameplayState extends BasicGameState {
 
 
         pathSprite = new Image("data/sprites/path.png");
+        towerSprite = new Image("data/sprites/towers/firetower.png");
         map = new TiledMap("data/maps/path1_3.tmx");
 
         pathmap = new PathMap(map);
@@ -78,7 +86,6 @@ public class GameplayState extends BasicGameState {
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
 
-
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
@@ -95,9 +102,10 @@ public class GameplayState extends BasicGameState {
             }
         }
 
-        for (Entity enemy : critters) {
+        for (Critter enemy : critters) {
             enemy.render(container, game, g);
         }
+
 
         trueTypeFont.drawString((map.getWidth() * 32) - 200, 50, "# of Critters : " + String.valueOf(critters.size()), Color.white);
 
@@ -114,9 +122,10 @@ public class GameplayState extends BasicGameState {
         generateCounter -= delta;
         critters = critterFactory.getCritters();
 
-        for (Entity enemy : critters) {
+        for (Critter enemy : critters) {
             enemy.update(container, game, delta);
         }
+
 
         if (generateCounter < 0) {
             if (critterCount > 0) {

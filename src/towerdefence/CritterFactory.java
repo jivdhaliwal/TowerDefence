@@ -9,7 +9,7 @@ import org.newdawn.slick.util.pathfinding.PathFinder;
 import towerdefence.engine.component.CritterFollowPathComponent;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.component.TopDownMovement;
-import towerdefence.engine.entity.Entity;
+import towerdefence.engine.entity.Critter;
 import towerdefence.engine.pathfinding.UnitMover;
 
 /**
@@ -28,7 +28,7 @@ public class CritterFactory {
     PathFinder finder;
     Path path;
 
-    ArrayList<Entity> critterList = new ArrayList<Entity>();
+    ArrayList<Critter> critterList = new ArrayList<Critter>();
 
     public CritterFactory(Vector2f initialPos, PathFinder finder) throws SlickException {
         this.initialPos = initialPos;
@@ -42,7 +42,7 @@ public class CritterFactory {
      * Add's critter to ArrayList of critters
      */
     public void addCritter(String id) {
-        Entity critter = new Entity(id);
+        Critter critter = new Critter(id);
         critter.setPosition(initialPos);
 
         critter.AddComponent(new ImageRenderComponent("CritterRender", testerSprite));
@@ -58,7 +58,7 @@ public class CritterFactory {
         }
     }
 
-    public ArrayList<Entity> getCritters() {
+    public ArrayList<Critter> getCritters() {
         return critterList;
     }
 

@@ -19,8 +19,8 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import towerdefence.engine.component.MouseMovement;
+import towerdefence.engine.entity.Critter;
 
-import towerdefence.engine.entity.Entity;
 import towerdefence.engine.pathfinding.PathMap;
 import towerdefence.engine.pathfinding.UnitMover;
 
@@ -51,7 +51,7 @@ public class PathTestState extends BasicGameState {
     private Image tileHighlight;
 
     CritterFactory critterFactory;
-    ArrayList<Entity> critters = new ArrayList<Entity>();
+    ArrayList<Critter> critters = new ArrayList<Critter>();
     private int mouseY;
     private int mouseX;
 
@@ -77,7 +77,7 @@ public class PathTestState extends BasicGameState {
         finder = new AStarPathFinder(pathmap, 500, false);
         path = finder.findPath(new UnitMover(3), map.getWidth()-1, map.getHeight()-1, 1, 1);
 
-        Entity critter = new Entity("test");
+        Critter critter = new Critter("test");
         critter.setPosition(new Vector2f(100f,100f));
         critter.AddComponent(new MouseMovement("CritterMouse"));
 
@@ -161,7 +161,7 @@ public class PathTestState extends BasicGameState {
             public void inputStarted() {
             }
         });
-        for(Entity enemy : critters)
+        for(Critter enemy : critters)
             enemy.update(container, game, delta);
 
     }
