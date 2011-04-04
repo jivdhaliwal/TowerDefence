@@ -46,7 +46,9 @@ public class GameplayState extends BasicGameState {
     private Image towerSprite;
 
     CritterFactory critterFactory;
-    ArrayList<Critter> critters;
+    ArrayList<Critter> critterList;
+    ArrayList<Tower> towerList = new ArrayList<Tower>();
+
     Critter critter = null;
     ParticleSystem ps;
     private TrueTypeFont trueTypeFont;
@@ -80,11 +82,12 @@ public class GameplayState extends BasicGameState {
                 new Vector2f((float) (32 * (map.getWidth() - 1)), (float) (32 * (map.getHeight() - 1))),
                 finder);
 
-        critters = critterFactory.getCritters();
+        critterList = critterFactory.getCritters();
 
         testTower = new Tower("TestTower");
         testTower.setPosition(new Vector2f(10*32,9*32));
         testTower.AddComponent(new ImageRenderComponent("CritterRender", towerSprite));
+        towerList.add(testTower);
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
@@ -105,13 +108,16 @@ public class GameplayState extends BasicGameState {
             }
         }
 
-        for (Critter enemy : critters) {
+        for (Critter enemy : critterList) {
             enemy.render(container, game, g);
         }
 
-        testTower.render(container, game, g);
+        for (Tower tower : towerList) {
+            tower.render(container, game, g);
+        }
 
-        trueTypeFont.drawString((map.getWidth() * 32) - 200, 50, "# of Critters : " + String.valueOf(critters.size()), Color.white);
+
+        trueTypeFont.drawString((map.getWidth() * 32) - 200, 50, "# of Critters : " + String.valueOf(critterList.size()), Color.white);
 
     }
 
@@ -124,29 +130,33 @@ public class GameplayState extends BasicGameState {
         }
 
         generateCounter -= delta;
-//        critters = critterFactory.getCritters();
+//        critterList = critterFactory.getCritters();
 
-        for (Critter enemy : critters) {
+        for (Critter enemy : critterList) {
             enemy.update(container, game, delta);
             
         }
 
-        for(int i=0;i<critters.size();i++) {
-            if(critters.get(i).isDead()) {
-                critters.remove(i);
+        for (Tower tower : towerList) {
+            tower.update(container, game, delta);
+            tower.updateCritterList(critterList);
+        }
+
+        // Remove dead critters
+        for (int i = 0; i < critterList.size(); i++) {
+            if (critterList.get(i).isDead()) {
+                critterList.remove(i);
             }
         }
 
-        testTower.update(container, game, delta);
-        testTower.updateCritterList(critters);
-
+        // Critter wave generator
         if (generateCounter < 0) {
             if (critterCount > 0) {
 
                 critterFactory.addCritter(String.valueOf(critterCount + 100));
                 critterCount--;
             }
-            generateCounter = 500;
+            generateCounter = 50;
         }
 
     }

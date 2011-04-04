@@ -2,6 +2,9 @@ package towerdefence.engine.entity;
 
 import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.engine.component.Component;
 
@@ -17,17 +20,23 @@ public class Tower extends Entity {
     ArrayList<Critter> critterList = null;
     Critter targetCritter = null;
 
+    Image laser;
+
     float range;
-    float baseDamage;
+    float damagePerSec;
 
     int shootingCounter;
 
     boolean isShooting;
 
-    public Tower(String id){
+    public Tower(String id) throws SlickException{
         super(id);
         range = 200;
-        baseDamage = 10;
+        damagePerSec = 10;
+
+        this.rotation=0;
+
+        laser = new Image("data/sprites/laser/blue.png");
     }
 
     /*
@@ -61,7 +70,7 @@ public class Tower extends Entity {
     }
 
     private void shootCritter(Critter critter) {
-        critter.takeDamage(baseDamage*1.5f);
+        critter.takeDamage(damagePerSec/10);
     }
 
     @Override
@@ -71,13 +80,36 @@ public class Tower extends Entity {
 
         if(shootingCounter<=0) {
             findClosestCritter();
-            shootingCounter=100;
+            shootingCounter=10;
         }
 
         for(Component component : components)
         {
             component.update(gc,sb,delta);
         }
+    }
+
+    @Override
+    public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
+    {
+
+        // Laser shooting
+        // Check tower has a target
+        if (targetCritter != null) {
+            gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
+                    (float) (targetCritter.getPosition().sub(this.getPosition())).getTheta()-90);
+            // Draw lazer and extend it using the distance from the tower to the
+            // target critter
+            laser.draw(this.getPosition().x, this.getPosition().y, 32,
+                    this.getPosition().distance(targetCritter.getPosition()));
+            gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
+                    (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
+        }
+
+        if(renderComponent != null)
+            renderComponent.render(gc, sb, gr);
+
+
     }
     
 
