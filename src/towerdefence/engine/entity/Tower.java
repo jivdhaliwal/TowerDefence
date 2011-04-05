@@ -21,23 +21,36 @@ public class Tower extends Entity {
     ArrayList<Critter> critterList = null;
     Critter targetCritter = null;
 
-    Image laser;
+    private final Image yellowLaser;
+    private final Image blueLaser;
+    private final Image greenLaser;
+    private final Image purpleLaser;
+    private final Image redLaser;
+    private Image laser;
 
     float range;
     float damagePerSec;
 
-    int shootingCounter;
+    private int shootingCounter;
+    private int colourCounter=0;
+    private int laserCounter=0;
 
     boolean isShooting;
+
 
     public Tower(String id) throws SlickException{
         super(id);
         range = 200;
-        damagePerSec = 20;
+        damagePerSec = 30;
 
         this.rotation=0;
 
-        laser = new Image("data/sprites/laser/blue.png");
+        yellowLaser = new Image("data/sprites/laser/yellow.png");
+        blueLaser = new Image("data/sprites/laser/blue.png");
+        greenLaser = new Image("data/sprites/laser/green.png");
+        purpleLaser = new Image("data/sprites/laser/purple.png");
+        redLaser = new Image("data/sprites/laser/red.png");
+        laser = redLaser;
     }
 
     /*
@@ -85,6 +98,7 @@ public class Tower extends Entity {
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
         shootingCounter-=delta;
+        laserCounter-=delta;
 
         if(shootingCounter<=0) {
             findClosestCritter();
@@ -95,6 +109,28 @@ public class Tower extends Entity {
         {
             component.update(gc,sb,delta);
         }
+        
+        colourCounter++;
+
+        if(laserCounter<=0) {
+            if(colourCounter%5==0){
+                laser = yellowLaser;
+                laserCounter=200;
+            } else if(colourCounter%5==1) {
+                laser = greenLaser;
+                laserCounter=200;
+            } else if(colourCounter%5==2) {
+                laser = blueLaser;
+                laserCounter=200;
+            } else if(colourCounter%5==3) {
+                laser = purpleLaser;
+                laserCounter=200;
+            } else {
+                laser = redLaser;
+                laserCounter=200;
+            }
+        }
+
     }
 
     @Override

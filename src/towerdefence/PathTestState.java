@@ -50,7 +50,7 @@ public class PathTestState extends BasicGameState {
     private Image pathSprite;
     private Image tileHighlight;
 
-    CritterFactory critterFactory;
+    CritterManager critterFactory;
     ArrayList<Critter> critters = new ArrayList<Critter>();
     private int mouseY;
     private int mouseX;
