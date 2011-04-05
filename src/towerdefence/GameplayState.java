@@ -137,7 +137,7 @@ public class GameplayState extends BasicGameState {
         towerFactory.updateCritterList(critterWave.getCritters());
         towerFactory.update(container, game, delta);
 
-        Input i = container.getInput();i.addMouseListener(new MouseListener(){
+        input.addMouseListener(new MouseListener(){
 
             public void mouseWheelMoved(int change) {
             }
