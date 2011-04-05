@@ -58,6 +58,10 @@ public class TowerManager {
         towerList.remove(tower);
     }
 
+    public ArrayList<Tower> getTowers() {
+        return towerList;
+    }
+
     /*
      * Update the critterList that towers use for finding closest critter
      * Currently called during each update, using a counter to delay it

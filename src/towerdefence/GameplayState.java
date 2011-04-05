@@ -117,6 +117,8 @@ public class GameplayState extends BasicGameState {
         towerFactory.render(container, game, g);
         
         trueTypeFont.drawString((map.getWidth() * 32) - 200, 50, "# of Critters : " + String.valueOf(critterWave.getCritters().size()), Color.white);
+        trueTypeFont.drawString((map.getWidth() * 32) - 200, 100, "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+
 
     }
 
