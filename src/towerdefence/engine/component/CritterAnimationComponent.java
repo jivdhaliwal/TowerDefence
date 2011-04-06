@@ -38,18 +38,18 @@ public class CritterAnimationComponent extends RenderComponent {
         critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
         critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0),
         critterSheet.getSprite(6, 0), critterSheet.getSprite(7, 0)};
-    Image[] movementUp = {critterSheet.getSprite(0, 2), critterSheet.getSprite(1, 2),
+    Image[] movementUp = {critterSheet.getSprite(0, 1), critterSheet.getSprite(1, 1),
+        critterSheet.getSprite(2, 1), critterSheet.getSprite(3, 1),
+        critterSheet.getSprite(4, 1), critterSheet.getSprite(5, 1),
+        critterSheet.getSprite(6, 1), critterSheet.getSprite(7, 1)};
+    Image[] movementRight = {critterSheet.getSprite(0, 2), critterSheet.getSprite(1, 2),
         critterSheet.getSprite(2, 2), critterSheet.getSprite(3, 2),
         critterSheet.getSprite(4, 2), critterSheet.getSprite(5, 2),
         critterSheet.getSprite(6, 2), critterSheet.getSprite(7, 2)};
-    Image[] movementRight = {critterSheet.getSprite(0, 4), critterSheet.getSprite(1, 4),
-        critterSheet.getSprite(2, 4), critterSheet.getSprite(3, 4),
-        critterSheet.getSprite(4, 4), critterSheet.getSprite(5, 4),
-        critterSheet.getSprite(6, 4), critterSheet.getSprite(7, 4)};
-    Image[] movementDown = {critterSheet.getSprite(0, 6), critterSheet.getSprite(1, 6),
-        critterSheet.getSprite(2, 6), critterSheet.getSprite(3, 6),
-        critterSheet.getSprite(4, 6), critterSheet.getSprite(5, 6),
-        critterSheet.getSprite(6, 6), critterSheet.getSprite(7, 6)};
+    Image[] movementDown = {critterSheet.getSprite(0, 3), critterSheet.getSprite(1, 3),
+        critterSheet.getSprite(2, 3), critterSheet.getSprite(3, 3),
+        critterSheet.getSprite(4, 3), critterSheet.getSprite(5, 3),
+        critterSheet.getSprite(6, 3), critterSheet.getSprite(7, 3)};
     
 
     private Animation sprite, up,down,left,right;
