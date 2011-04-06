@@ -24,6 +24,11 @@ public class CritterFollowPathComponent extends Component {
     Step currentStep, targetStep;
     private int targetIndex;
 
+    public static final int UP = 0;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int RIGHT = 3;
+
     float distance;
     int moveCounter;
     float critterSpeed;
@@ -66,6 +71,16 @@ public class CritterFollowPathComponent extends Component {
         entity.setPosition(new Vector2f((position.x + (targetX - currentX)*(critterSpeed*delta)),
                     (position.y + (targetY - currentY)*(critterSpeed*delta))));
 
+        if((targetY - currentY)==1) {
+            entity.setDirection(DOWN);
+        } else if((targetY - currentY)==-1) {
+            entity.setDirection(UP);
+        } else if((targetX - currentX)==1) {
+            entity.setDirection(RIGHT);
+        } else if((targetX - currentX)==-1) {
+            entity.setDirection(LEFT);
+        }
+
     }
 
     @Override
@@ -85,7 +100,6 @@ public class CritterFollowPathComponent extends Component {
                 distance = 32f;
             }
         }
-
     }
 
 }

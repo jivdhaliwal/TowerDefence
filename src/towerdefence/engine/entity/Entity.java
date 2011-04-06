@@ -22,6 +22,12 @@ public abstract class Entity {
     float scale;
     float rotation;
 
+    public static final int UP = 0;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int RIGHT = 3;
+    int direction;
+
     RenderComponent renderComponent = null;
 
     ArrayList<Component> components = null;
@@ -87,6 +93,10 @@ public abstract class Entity {
         return rotation;
     }
 
+    public int getDirection(){
+        return direction;
+    }
+
     public String getId()
     {
         return id;
@@ -105,6 +115,10 @@ public abstract class Entity {
     public void setScale(float scale)
     {
         this.scale = scale;
+    }
+
+    public void setDirection(int direction){
+        this.direction = direction;
     }
 
     public void update(GameContainer gc, StateBasedGame sb, int delta)

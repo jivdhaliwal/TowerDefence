@@ -30,7 +30,7 @@ public class Critter extends Entity {
     public void takeDamage(float damage) {
         health-=damage;
     }
-
+    
     public boolean isDead() {
         return isDead;
     }

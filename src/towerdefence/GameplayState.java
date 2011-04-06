@@ -86,7 +86,7 @@ public class GameplayState extends BasicGameState {
         critterCount = 20000;
         critterWave = new CritterManager(
                 new Vector2f((float) (32 * (map.getWidth() - 1)), (float) (32 * (map.getHeight() - 1))),
-                finder,critterCount);
+                finder,critterCount,CritterManager.NORMAL );
 
         critterList = critterWave.getCritters();
 
