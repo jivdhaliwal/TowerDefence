@@ -40,7 +40,7 @@ public class Tower extends Entity {
 
     public Tower(String id) throws SlickException{
         super(id);
-        range = 200;
+        range = 128;
         damagePerSec = 30;
 
         this.rotation=0;
@@ -50,7 +50,7 @@ public class Tower extends Entity {
         greenLaser = new Image("data/sprites/laser/green.png");
         purpleLaser = new Image("data/sprites/laser/purple.png");
         redLaser = new Image("data/sprites/laser/red.png");
-        laser = redLaser;
+        laser = greenLaser;
     }
 
     /*
@@ -77,6 +77,7 @@ public class Tower extends Entity {
                             tempTarget=enemy;
                         }
                     }
+                colourCounter++;
                 }
             } else if (targetCritter!=null) {
                 if(this.getPosition().distance(targetCritter.getPosition()) >= range) {
@@ -110,8 +111,8 @@ public class Tower extends Entity {
             component.update(gc,sb,delta);
         }
         
-        colourCounter++;
-
+        
+        /*
         if(laserCounter<=0) {
             if(colourCounter%5==0){
                 laser = yellowLaser;
@@ -130,6 +131,8 @@ public class Tower extends Entity {
                 laserCounter=200;
             }
         }
+         * 
+         */
 
     }
 
@@ -137,21 +140,24 @@ public class Tower extends Entity {
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {
 
+        if(renderComponent != null) {
+            renderComponent.render(gc, sb, gr);
+        }
         // Laser shooting
         // Check tower has a target
         if (targetCritter != null) {
+
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) (targetCritter.getPosition().sub(this.getPosition())).getTheta()-90);
             // Draw lazer and extend it using the distance from the tower to the
             // target critter
-            laser.draw(this.getPosition().x, this.getPosition().y, 32,
+            laser.draw(this.getPosition().x, this.getPosition().y+16, 32,
                     this.getPosition().distance(targetCritter.getPosition()));
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
 
-        if(renderComponent != null)
-            renderComponent.render(gc, sb, gr);
+        
 
 
     }

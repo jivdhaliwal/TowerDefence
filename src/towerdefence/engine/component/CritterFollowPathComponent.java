@@ -99,6 +99,8 @@ public class CritterFollowPathComponent extends Component {
                 targetIndex++;
                 distance = 32f;
             }
+        } else if((path==null || targetIndex >= path.getLength())) {
+            entity.killEntity();
         }
     }
 

@@ -58,7 +58,7 @@
    <property name="Type" value="grass"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgoA2oH+FmImNamD9q5qiZo2aOHDPJwbRwx1AxExkDAPyO1/jkBgAA
+   H4sIAAAAAAAAC2NgoA2oH4Rm1mMxgxIz69EwIXFKzERXQyog5BZ6xBc54YHPTErCmZ5mIptLCSBFP7H2EWsmKeEykGYim0uMOmoDWplJDqaFO4aKmcgYADANSxDkBgAA
   </data>
  </layer>
  <layer name="Floor" width="21" height="21">

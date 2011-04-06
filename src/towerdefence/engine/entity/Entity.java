@@ -21,6 +21,9 @@ public abstract class Entity {
     Vector2f position;
     float scale;
     float rotation;
+    float health;
+
+    boolean isDead;
 
     public static final int UP = 0;
     public static final int DOWN = 1;
@@ -95,6 +98,18 @@ public abstract class Entity {
 
     public int getDirection(){
         return direction;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void killEntity() {
+        isDead=true;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 
     public String getId()

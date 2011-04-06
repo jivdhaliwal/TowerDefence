@@ -13,26 +13,14 @@ import towerdefence.engine.component.Component;
  */
 public class Critter extends Entity {
 
-    boolean isDead;
-
-    float health;
-
     public Critter(String id) {
         super(id);
         isDead = false;
         health = 100;
     }
 
-    public float getHealth() {
-        return health;
-    }
-
     public void takeDamage(float damage) {
         health-=damage;
-    }
-    
-    public boolean isDead() {
-        return isDead;
     }
 
     @Override

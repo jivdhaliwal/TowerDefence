@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.awt.Font;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.GameContainer;
@@ -16,6 +17,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
@@ -48,7 +50,9 @@ public class GameplayState extends BasicGameState {
     private TiledMap map;
     private Image pathSprite;
     private Image towerSprite;
+    private Animation wanderingNPCAnim;
 
+    ArrayList<CritterManager> critterWaveList = new ArrayList<CritterManager>();
     CritterManager critterWave;
     ArrayList<Critter> critterList;
     ArrayList<Tower> towerList = new ArrayList<Tower>();
@@ -74,8 +78,15 @@ public class GameplayState extends BasicGameState {
 
 
         pathSprite = new Image("data/sprites/path.png");
-        map = new TiledMap("data/maps/path1_3.tmx");
-
+        map = new TiledMap("data/maps/path1_5.tmx");
+        
+        Image normalSheet = new Image("data/sprites/wandering_trader2.png");
+        SpriteSheet critterSheet = new SpriteSheet(normalSheet, 32, 64);
+        Image[] wanderingNPC = {critterSheet.getSprite(0, 0),critterSheet.getSprite(1, 0),
+            critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
+            critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0)};
+        wanderingNPCAnim = new Animation(wanderingNPC, 230,true);
+        
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
         path = finder.findPath(new UnitMover(3), map.getWidth() - 1, map.getHeight() - 1, 1, 1);
@@ -90,12 +101,16 @@ public class GameplayState extends BasicGameState {
 
         critterList = critterWave.getCritters();
 
+        critterWaveList.add(critterWave);
+
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
 
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        int tempCritterCount = 0;
+
         map.render(0, 0);
 
         // Render the path for testing
@@ -112,29 +127,39 @@ public class GameplayState extends BasicGameState {
          * 
          */
 
-        critterWave.render(container, game, g);
-
+        for(CritterManager wave : critterWaveList) {
+            wave.render(container, game, g);
+            tempCritterCount+=wave.getCritters().size();
+        }
         towerFactory.render(container, game, g);
         
-        trueTypeFont.drawString((map.getWidth() * 32) - 200, 50, "# of Critters : " + String.valueOf(critterWave.getCritters().size()), Color.white);
-        trueTypeFont.drawString((map.getWidth() * 32) - 200, 100, "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+        trueTypeFont.drawString((map.getWidth() * 32) - 400, 50, "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
+        trueTypeFont.drawString((map.getWidth() * 32) - 400, 100, "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
 
+        wanderingNPCAnim.draw(32f,0f);
 
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+
+        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
 
         Input input = container.getInput();
 
         if (input.isKeyPressed(Input.KEY_F2)) {
             game.enterState(TowerDefence.PATHTESTSTATE);
         }
+        
 
         mouseCounter -= delta;
 
-        critterWave.update(container, game, delta);
-
-        towerFactory.updateCritterList(critterWave.getCritters());
+        for(CritterManager wave : critterWaveList) {
+            wave.update(container, game, delta);
+            // Adds critters from each wave to the temp critter list
+            tempCritterList.addAll(wave.getCritters());
+        }
+        
+        towerFactory.updateCritterList(tempCritterList);
         towerFactory.update(container, game, delta);
 
         input.addMouseListener(new MouseListener(){
@@ -145,15 +170,31 @@ public class GameplayState extends BasicGameState {
             public void mouseClicked(int button, int x, int y, int clickCount) {
                 if (mouseCounter <= 0) {
                     int currentXTile = (int) Math.floor((x / 32));
-                    int currentYTile = (int) Math.floor((y / 32));
-                    try {
-                        towerFactory.addTower(String.valueOf(x), new Vector2f(currentXTile * 32, currentYTile * 32));
-                        mouseCounter=50;
-                    } catch (SlickException ex) {
-                        Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+                            int currentYTile = (int) Math.floor((y / 32));
+                    if(button==0) {
+                        if(pathmap.getTerrain(currentXTile, currentYTile)!=PathMap.GRASS) {
+                                try {
+                                    towerFactory.addTower(String.valueOf(x), new Vector2f(currentXTile * 32, currentYTile * 32));
+                                    mouseCounter=50;
+                                } catch (SlickException ex) {
+                                    Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                        }
+                        }
+                    else if(button==1) {
+                        if(pathmap.getTerrain(currentXTile, currentYTile)==PathMap.GRASS) {
+                            try {
+                                CritterManager newWave = new CritterManager(
+                                        new Vector2f(currentXTile * 32, currentYTile * 32),
+                                        finder, critterCount, CritterManager.NORMAL);
+                                critterWaveList.add(newWave);
+                                mouseCounter=50;
+                            } catch (SlickException ex) {
+                                Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            }
                     }
                 }
-
             }
 
             public void mousePressed(int button, int x, int y) {

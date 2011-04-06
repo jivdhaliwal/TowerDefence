@@ -122,7 +122,7 @@ public class CritterManager {
                 addCritter(String.valueOf(critterCount + 100),true);
                 critterCount--;
             }
-            generateCounter = 500;
+            generateCounter = 1000;
         }
 
     }

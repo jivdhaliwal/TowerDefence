@@ -32,7 +32,7 @@ public class TowerManager {
 
     public TowerManager() throws SlickException {
 
-        towerSprite = new Image("data/sprites/towers/firetower.png");
+        towerSprite = new Image("data/sprites/towers/greentower.png");
 
     }
 
