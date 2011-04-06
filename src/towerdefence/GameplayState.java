@@ -143,9 +143,9 @@ public class GameplayState extends BasicGameState {
         }
         towerFactory.render(container, game, g);
         
-        trueTypeFont.drawString((map.getWidth() * GameplayState.TILESIZE) - 400, 50,
+        trueTypeFont.drawString(50,110,
                 "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
-        trueTypeFont.drawString((map.getWidth() * GameplayState.TILESIZE) - 400, 100,
+        trueTypeFont.drawString(50,160,
                 "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
 
         wanderingNPCAnim.draw(50f, 32f);
