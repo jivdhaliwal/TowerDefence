@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import org.newdawn.slick.util.pathfinding.PathFinder;
+import towerdefence.GameplayState;
 
 /**
  *
@@ -42,7 +43,7 @@ public class CritterFollowPathComponent extends Component {
         this.path = path;
 
         targetIndex = 1;
-        distance = 32;
+        distance = GameplayState.TILESIZE;
 
         //Set speed of critters. Anything higher than 0.2f is unstable at 60fps.
         critterSpeed = 0.08f;
@@ -95,9 +96,10 @@ public class CritterFollowPathComponent extends Component {
                 moveToTile(position, currentStep, targetStep, delta);
                 distance-=delta*critterSpeed;
             } else if (distance <= 0) {
-                entity.setPosition(new Vector2f(targetStep.getX()*32,targetStep.getY()*32));
+                entity.setPosition(new Vector2f(targetStep.getX()*GameplayState.TILESIZE,
+                        targetStep.getY()*GameplayState.TILESIZE));
                 targetIndex++;
-                distance = 32f;
+                distance = (float)GameplayState.TILESIZE;
             }
         } else if((path==null || targetIndex >= path.getLength())) {
             entity.killEntity();

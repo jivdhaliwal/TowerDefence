@@ -118,8 +118,8 @@ public class PathTestState extends BasicGameState {
             public void mouseMoved(int oldx, int oldy, int newx, int newy) {
                 
                 if (generateCounter <= 0) {
-                    int currentXTile = (int) Math.floor((newx / 32));
-                    int currentYTile = (int) Math.floor((newy / 32));
+                    int currentXTile = (int) Math.floor((newx / GameplayState.TILESIZE));
+                    int currentYTile = (int) Math.floor((newy / GameplayState.TILESIZE));
                     mouseX = newx;
                     mouseY = newy;
                     generateCounter = 32;
@@ -140,8 +140,8 @@ public class PathTestState extends BasicGameState {
             }
 
             public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-                int currentXTile = (int) Math.floor((newx / 32));
-                int currentYTile = (int) Math.floor((newy / 32));
+                int currentXTile = (int) Math.floor((newx / GameplayState.TILESIZE));
+                int currentYTile = (int) Math.floor((newy / GameplayState.TILESIZE));
                 
                 path = finder.findPath(new UnitMover(3), currentXTile, currentYTile, 1, 1);
                 generateCounter = 10;
@@ -175,13 +175,14 @@ public class PathTestState extends BasicGameState {
             for (int y = 0; y < map.getHeight(); y++) {
                 if(path != null) {
                     if(path.contains(x,y)) {
-                        pathSprite.draw(x*32,y*32);
+                        pathSprite.draw(x*GameplayState.TILESIZE,y*GameplayState.TILESIZE);
                     }
                 }
             }
         }
 
-        tileHighlight.draw(((int) Math.floor((mouseX / 32)))*32,((int) Math.floor((mouseY / 32)))*32);
+        tileHighlight.draw(((int) Math.floor((mouseX / GameplayState.TILESIZE)))*GameplayState.TILESIZE,
+                ((int) Math.floor((mouseY / GameplayState.TILESIZE)))*GameplayState.TILESIZE);
 
     }
 

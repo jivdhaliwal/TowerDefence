@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import towerdefence.GameplayState;
 
 /**
  * Entity - A Game object that can interact with other objects and be
@@ -80,10 +81,10 @@ public abstract class Entity {
      *
      * @param tilesize Size of tiles in pixels
      */
-    public Vector2f getTilePosition(int tilesize)
+    public Vector2f getTilePosition()
     {
-        return new Vector2f((int) Math.floor((position.x / tilesize)),
-                (int) Math.floor((position.y / tilesize)));
+        return new Vector2f((int) Math.floor((position.x / GameplayState.TILESIZE)),
+                (int) Math.floor((position.y / GameplayState.TILESIZE)));
     }
 
     public float getScale()

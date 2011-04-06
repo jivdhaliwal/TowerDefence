@@ -32,6 +32,9 @@ public class PathMap implements TileBasedMap {
     // Tower = any tower
     public static final int TOWER = 5;
 
+    // NoPlace = Terrain that no one can touch (towers or critters)
+    public static final int NOPLACE = 6;
+
     // Terrain settings for each tile
     private int[][] terrain;
     // Returns true if tile has been visited during search
@@ -59,6 +62,8 @@ public class PathMap implements TileBasedMap {
                 String value = map.getTileProperty(tileID, "Type", "false");
                 if ("grass".equals(value)) {
                     terrain[x][y] = GRASS;
+                } else if ("noPlace".equals(value)) {
+                    terrain[x][y] = NOPLACE;
                 }
             }
         }
@@ -95,11 +100,6 @@ public class PathMap implements TileBasedMap {
         if (unit == CRITTER) {
             return terrain[tx][ty] != GRASS;
         }
-
-        if (unit == TOWER) {
-            return terrain[tx][ty] == GRASS;
-        }
-
         // unknown unit so everything blocks
         return true;
 

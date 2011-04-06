@@ -47,8 +47,8 @@ public class CritterManager {
     public CritterManager(Vector2f initialPos, PathFinder finder, int critterCount, int critterType) throws SlickException {
         this.initialPos = initialPos;
         this.finder = finder;
-        this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,32),
-                getTilePosition(initialPos.y,32), 1,1);
+        this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,GameplayState.TILESIZE),
+                getTilePosition(initialPos.y,GameplayState.TILESIZE), 0, 2);
         this.critterCount = critterCount;
         this.critterType = critterType;
 
