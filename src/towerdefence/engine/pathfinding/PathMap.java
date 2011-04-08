@@ -5,9 +5,11 @@
 
 package towerdefence.engine.pathfinding;
 
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
+import towerdefence.engine.entity.Tower;
 
 /**
  *
@@ -29,7 +31,7 @@ public class PathMap implements TileBasedMap {
     // Plane = any flying enemy
     public static final int PLANE = 4;
 
-    // Tower = any tower
+    // Tower = Terrain that contains a tower
     public static final int TOWER = 5;
 
     // NoPlace = Terrain that no one can touch (towers or critters)
@@ -67,6 +69,16 @@ public class PathMap implements TileBasedMap {
                 }
             }
         }
+    }
+
+    /*
+     * Set position to NOPLACE type. No tower or critter can use this tile.
+     * Prevents placing towers on top of each other
+     */
+    public void setTowerTerrain(Vector2f position) {
+
+        terrain[(int)position.x][(int)position.y] = NOPLACE;
+
     }
 
     /*

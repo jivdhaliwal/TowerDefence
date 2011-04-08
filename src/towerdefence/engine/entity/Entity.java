@@ -7,6 +7,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.pathfinding.Path;
+import org.newdawn.slick.util.pathfinding.PathFinder;
 import towerdefence.GameplayState;
 
 /**
@@ -36,6 +38,10 @@ public abstract class Entity {
 
     ArrayList<Component> components = null;
 
+    Path path=null;
+
+    PathFinder finder=null;
+
     public Entity(String id)
     {
         this.id = id;
@@ -56,6 +62,10 @@ public abstract class Entity {
         components.add(component);
     }
 
+    public void RemoveComponent(Component component) {
+        components.remove(component);
+    }
+
     public Component getComponent(String id)
     {
         for(Component comp : components)
@@ -74,7 +84,6 @@ public abstract class Entity {
     {
         return new Vector2f(position.x, position.y);
     }
-
 
 
     /* Given tilesize and x,y position, return tile position
@@ -103,6 +112,14 @@ public abstract class Entity {
 
     public float getHealth() {
         return health;
+    }
+
+    public Path getPath() {
+        return path;
+    }
+
+    public PathFinder getFinder() {
+        return finder;
     }
 
     public void killEntity() {
@@ -135,6 +152,14 @@ public abstract class Entity {
 
     public void setDirection(int direction){
         this.direction = direction;
+    }
+
+    public void setPath(Path path) {
+        this.path = path;
+    }
+
+    public void setFinder(PathFinder finder) {
+        this.finder = finder;
     }
 
     public void update(GameContainer gc, StateBasedGame sb, int delta)

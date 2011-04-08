@@ -46,7 +46,6 @@ public class GameplayState extends BasicGameState {
     // Path finder used to search the pathmap
     private PathFinder finder;
     // Gives the last path found for the current unit
-    private Path path;
     private TiledMap map;
     private Image pathSprite;
     private Image towerSprite;
@@ -81,7 +80,7 @@ public class GameplayState extends BasicGameState {
 
         pathSprite = new Image("data/sprites/path.png");
 //        map = new TiledMap("data/maps/path1_5.tmx");
-        map = new TiledMap("data/maps/watermaps/map1.tmx");
+        map = new TiledMap("data/maps/watermaps/map2.tmx");
         TILESIZE=map.getTileWidth();
 
         Image normalSheet = new Image("data/sprites/wandering_trader2.png");
@@ -94,12 +93,12 @@ public class GameplayState extends BasicGameState {
 
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
-        path = finder.findPath(new UnitMover(3), 18, 21, 0, 2);
 
         towerFactory = new TowerManager();
-
-
-        critterCount = 20000;
+        
+        
+        critterCount = 10;
+        /*
         critterWave = new CritterManager(
                 new Vector2f((float) (GameplayState.TILESIZE * 18),
                 (float)(GameplayState.TILESIZE * 21)),
@@ -108,6 +107,9 @@ public class GameplayState extends BasicGameState {
         critterList = critterWave.getCritters();
 
         critterWaveList.add(critterWave);
+         * 
+         */
+        
 
         waterAnimation = new renderWater(map.getWidth(),map.getHeight());
 
@@ -186,12 +188,16 @@ public class GameplayState extends BasicGameState {
                     int currentXTile = (int) Math.floor((x / GameplayState.TILESIZE));
                     int currentYTile = (int) Math.floor((y / GameplayState.TILESIZE));
                     if (button == 0) {
-                        if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS &&
+                        if (
+//                                pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS &&
                                 pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
                             try {
-                                towerFactory.addTower(String.valueOf(x), 
+                                towerFactory.addTower(String.valueOf(x),
                                         new Vector2f(currentXTile * GameplayState.TILESIZE,
-                                            currentYTile * GameplayState.TILESIZE));
+                                        currentYTile * GameplayState.TILESIZE));
+
+                                pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
+                                
                                 mouseCounter = 50;
                             } catch (SlickException ex) {
                                 Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,6 +210,7 @@ public class GameplayState extends BasicGameState {
                                         new Vector2f(currentXTile * GameplayState.TILESIZE,
                                             currentYTile * GameplayState.TILESIZE),
                                         finder, critterCount, CritterManager.NORMAL);
+
                                 critterWaveList.add(newWave);
                                 mouseCounter = 100;
                             } catch (SlickException ex) {
@@ -241,4 +248,5 @@ public class GameplayState extends BasicGameState {
         });
 
     }
+
 }

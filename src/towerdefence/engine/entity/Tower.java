@@ -41,7 +41,7 @@ public class Tower extends Entity {
     public Tower(String id) throws SlickException{
         super(id);
         range = 128;
-        damagePerSec = 30;
+        damagePerSec = 25;
 
         this.rotation=0;
 

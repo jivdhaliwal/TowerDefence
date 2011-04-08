@@ -48,14 +48,11 @@ public class CritterManager {
         this.initialPos = initialPos;
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,GameplayState.TILESIZE),
-                getTilePosition(initialPos.y,GameplayState.TILESIZE), 0, 2);
+                getTilePosition(initialPos.y,GameplayState.TILESIZE), 10, 0);
         this.critterCount = critterCount;
         this.critterType = critterType;
 
         testerSprite = new Image("data/sprites/positionTester.png");
-
-
-        
     }
 
     /*
@@ -67,8 +64,7 @@ public class CritterManager {
 
         critter.AddComponent(new ImageRenderComponent("CritterRender", testerSprite));
         critter.AddComponent(new TopDownMovement("CritterMovement"));
-        critter.AddComponent(new CritterFollowPathComponent("CritterPath", finder, path));
-
+        critter.AddComponent(new CritterFollowPathComponent("CritterPath",path));
         critterList.add(critter);
     }
 
@@ -80,8 +76,7 @@ public class CritterManager {
         critter.setPosition(initialPos);
 
         critter.AddComponent(new CritterAnimationComponent(id, critterType));
-        critter.AddComponent(new CritterFollowPathComponent("CritterPath", finder, path));
-
+        critter.AddComponent(new CritterFollowPathComponent("CritterPath",path));
         critterList.add(critter);
     }
 
@@ -90,6 +85,17 @@ public class CritterManager {
             addCritter(String.valueOf(i));
         }
     }
+
+//    This is used for updating paths in an open map (no specific path defined)
+//    public void updateCritterPaths(PathFinder finder) {
+//        this.finder = finder;
+//        // Set the new path for critters at the entrance
+//        this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,GameplayState.TILESIZE),
+//                getTilePosition(initialPos.y,GameplayState.TILESIZE), 10, 0);
+//        for(Critter critter : getCritters()) {
+//            critter.setFinder(finder);
+//        }
+//    }
 
     public ArrayList<Critter> getCritters() {
         return critterList;

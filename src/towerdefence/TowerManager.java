@@ -36,12 +36,13 @@ public class TowerManager {
 
     }
 
-
     public void addTower(String id, Vector2f position, Image towerType) throws SlickException {
         Tower tower = new Tower(id);
         tower.setPosition(position);
         tower.AddComponent(new ImageRenderComponent("CritterRender", towerType));
-        towerList.add(tower);
+        if (!containsCritter(tower)) {
+            towerList.add(tower);
+        }
     }
 
     /*
@@ -51,7 +52,9 @@ public class TowerManager {
         Tower tower = new Tower(id);
         tower.setPosition(position);
         tower.AddComponent(new ImageRenderComponent("CritterRender", towerSprite));
-        towerList.add(tower);
+        if (!containsCritter(tower)) {
+            towerList.add(tower);
+        }
     }
 
     public void deleteTower(Tower tower) {
@@ -69,6 +72,20 @@ public class TowerManager {
      */
     public void updateCritterList(ArrayList<Critter> critterList) {
         this.critterList = critterList;
+    }
+
+    /*
+     * Returns true if the current position contains a critter
+     * Used to stop user from placing towers on critters
+     * Doesn't seem to work atm
+     */
+    public boolean containsCritter(Tower tower) {
+        for(Critter critter: critterList) {
+            if(critter.getTilePosition() == tower.getTilePosition() ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
