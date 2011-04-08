@@ -48,7 +48,7 @@ public class CritterManager {
         this.initialPos = initialPos;
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,GameplayState.TILESIZE),
-                getTilePosition(initialPos.y,GameplayState.TILESIZE), 10, 0);
+                getTilePosition(initialPos.y,GameplayState.TILESIZE), 3, 0);
         this.critterCount = critterCount;
         this.critterType = critterType;
 
