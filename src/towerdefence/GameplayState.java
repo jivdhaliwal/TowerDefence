@@ -205,7 +205,7 @@ public class GameplayState extends BasicGameState {
                                             currentYTile * GameplayState.TILESIZE),
                                         finder, critterCount, CritterManager.NORMAL);
                                 critterWaveList.add(newWave);
-                                mouseCounter = 50;
+                                mouseCounter = 100;
                             } catch (SlickException ex) {
                                 Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
                             }
