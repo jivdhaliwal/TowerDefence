@@ -44,11 +44,22 @@ public class CritterManager {
     private int generateCounter;
     private final int critterType;
 
-    public CritterManager(Vector2f initialPos, PathFinder finder, int critterCount, int critterType) throws SlickException {
+    public CritterManager(Vector2f initialPos,int targetX, int targetY,
+            PathFinder finder, int critterCount, int critterType) throws SlickException {
         this.initialPos = initialPos;
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), getTilePosition(initialPos.x,GameplayState.TILESIZE),
-                getTilePosition(initialPos.y,GameplayState.TILESIZE), 3, 0);
+                getTilePosition(initialPos.y,GameplayState.TILESIZE), targetX, targetY);
+        this.critterCount = critterCount;
+        this.critterType = critterType;
+
+        testerSprite = new Image("data/sprites/positionTester.png");
+    }
+
+    public CritterManager(int startX, int startY, int goalX, int goalY,
+            PathFinder finder, int critterCount, int critterType) throws SlickException {
+        this.finder = finder;
+        this.path = finder.findPath(new UnitMover(3),startX,startY,goalX,goalY);
         this.critterCount = critterCount;
         this.critterType = critterType;
 

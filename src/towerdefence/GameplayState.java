@@ -65,7 +65,10 @@ public class GameplayState extends BasicGameState {
     private renderWater waterAnimation;
 
     public static int TILESIZE;
-
+    private int startX;
+    private int startY;
+    private int targetX;
+    private int targetY;
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -78,9 +81,16 @@ public class GameplayState extends BasicGameState {
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
-        pathSprite = new Image("data/sprites/path.png");
+//        pathSprite = new Image("data/sprites/path.png");
 //        map = new TiledMap("data/maps/path1_5.tmx");
-        map = new TiledMap("data/maps/watermaps/map2.tmx");
+        map = new TiledMap("data/maps/watermaps/snake.tmx");
+
+        startX = Integer.parseInt(map.getMapProperty("startX", null));
+        startY = Integer.parseInt(map.getMapProperty("startY", null));
+        targetX = Integer.parseInt(map.getMapProperty("targetX", null));
+        targetY = Integer.parseInt(map.getMapProperty("targetY", null));
+
+
         TILESIZE=map.getTileWidth();
 
         Image normalSheet = new Image("data/sprites/wandering_trader2.png");
@@ -145,12 +155,12 @@ public class GameplayState extends BasicGameState {
         }
         towerFactory.render(container, game, g);
         
-        trueTypeFont.drawString(50,110,
+        trueTypeFont.drawString(50, 110,
                 "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
-        trueTypeFont.drawString(50,160,
+        trueTypeFont.drawString(50, 160,
                 "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
 
-        wanderingNPCAnim.draw(50f, 32f);
+//        wanderingNPCAnim.draw(50f, 32f);
 
         
 
@@ -188,17 +198,16 @@ public class GameplayState extends BasicGameState {
                     int currentXTile = (int) Math.floor((x / GameplayState.TILESIZE));
                     int currentYTile = (int) Math.floor((y / GameplayState.TILESIZE));
                     if (button == 0) {
-                        if (
-//                                pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS &&
+                        if ( pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS &&
                                 pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
                             try {
                                 towerFactory.addTower(String.valueOf(x),
                                         new Vector2f(currentXTile * GameplayState.TILESIZE,
                                         currentYTile * GameplayState.TILESIZE));
-
+                                
                                 pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
                                 
-                                mouseCounter = 50;
+                                mouseCounter = 100;
                             } catch (SlickException ex) {
                                 Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -209,7 +218,7 @@ public class GameplayState extends BasicGameState {
                                 CritterManager newWave = new CritterManager(
                                         new Vector2f(currentXTile * GameplayState.TILESIZE,
                                             currentYTile * GameplayState.TILESIZE),
-                                        finder, critterCount, CritterManager.NORMAL);
+                                            targetX,targetY,finder, critterCount, CritterManager.NORMAL);
 
                                 critterWaveList.add(newWave);
                                 mouseCounter = 100;

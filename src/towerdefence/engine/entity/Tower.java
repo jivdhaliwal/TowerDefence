@@ -61,25 +61,34 @@ public class Tower extends Entity {
     }
 
     private void findClosestCritter() {
+
+        // If critters on the map
         if(critterList!=null) {
 
-
+            // If no critters is locked on
             if(targetCritter==null) {
                 Critter tempTarget = new Critter("test");
-                tempTarget.setPosition(new Vector2f(0,0));
+                // Set initial position very far away from the map
+                tempTarget.setPosition(new Vector2f(-1000f,-1000f));
                 for(Critter enemy : critterList) {
                     float critterDistance = this.getPosition().distance(enemy.getPosition());
                     float tempDistance = this.getPosition().distance(tempTarget.getPosition());
 
+                    // First check the critter is in range of the tower
+                    // Then check if it is closer than the tempCritter
+                    // Do this for all critters to eventually find the closest one
                     if(critterDistance < range) {
                         if(critterDistance < tempDistance) {
                             targetCritter=enemy;
                             tempTarget=enemy;
                         }
                     }
-                colourCounter++;
+                    // Remnants of the multicolour lazers
+                    // colourCounter++;
                 }
             } else if (targetCritter!=null) {
+                // If the critter is out of range or dead, find a new target
+                // Else shoot the
                 if(this.getPosition().distance(targetCritter.getPosition()) >= range) {
                     targetCritter = null;
                 } else if(targetCritter.isDead()) {
