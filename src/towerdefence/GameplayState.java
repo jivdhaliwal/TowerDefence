@@ -84,6 +84,7 @@ public class GameplayState extends BasicGameState {
 //        pathSprite = new Image("data/sprites/path.png");
 //        map = new TiledMap("data/maps/path1_5.tmx");
         map = new TiledMap("data/maps/watermaps/map1.tmx");
+//        map = new TiledMap("data/maps/roadmaps/snake.tmx");
 
         startX = Integer.parseInt(map.getMapProperty("startX", null));
         startY = Integer.parseInt(map.getMapProperty("startY", null));
