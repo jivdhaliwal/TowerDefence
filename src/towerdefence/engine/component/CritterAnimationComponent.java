@@ -31,7 +31,7 @@ public class CritterAnimationComponent extends RenderComponent {
 
     private final int critterType;
 
-    Image normalSheet = new Image("data/sprites/critters/antIce.png");
+    Image normalSheet = new Image("data/sprites/critters/antNormal.png");
 
     SpriteSheet critterSheet = new SpriteSheet(normalSheet, 64, 64);
     
