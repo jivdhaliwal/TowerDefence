@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="21" height="21" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="grass-tiles-2-small" tilewidth="32" tileheight="32">
-  <image source="../tilesets/oganature/grass-tiles-2-small.png"/>
+  <image source="oganature/grass-tiles-2-small.png" width="192" height="64"/>
   <tile id="0">
    <properties>
     <property name="Type" value="grass"/>
@@ -38,11 +38,8 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="13" name="KaljuSuurem" tilewidth="32" tileheight="32">
-  <image source="../tilesets/oganature/KaljuSuurem.png"/>
- </tileset>
- <tileset firstgid="127" name="collision" tilewidth="32" tileheight="32">
-  <image source="../tilesets/collision.png"/>
+ <tileset firstgid="13" name="collision" tilewidth="32" tileheight="32">
+  <image source="collision.png" width="64" height="32"/>
   <tile id="0">
    <properties>
     <property name="Type" value="grass"/>
@@ -55,7 +52,7 @@
    <property name="Type" value="grass"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC52SUQ7AMAhCuXmvvp99NAbx2SZmi1YK6JF0/tD1XyPVUihg6PpquJv6Es+K6XoSvqt1eYpJ+l/8oB50+PU4Pq6euDk/3f2Nhs2spl6nNWmeMKd9ce8p1Mi8yX4kjQTT6SBe3afbRerjZh+2+MT/qoXMuMtv5jnhp7c6bJcn/CnfLebLztP4APDpf7/kBgAA
+   H4sIAAAAAAAAC52SUQ7AMAhCuUDvf9397KMxiM82MVu0UkCPpPOHrv8aqZZCAUPXV8Pd1Jd4VkzXk/BdrctTTNL/4gf1oMOvx/Fx9cTN+enubzRsZjX1Oq1J84Q57Yt7T6FG5k32I2kkmE4H8eo+3S5SHzf7sMUn/lctZMZdfjPPCT+91WG7POFP+W4xX3aexgflgtiw5AYAAA==
   </data>
  </layer>
  <layer name="Floor" width="21" height="21">

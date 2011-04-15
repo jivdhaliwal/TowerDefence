@@ -83,7 +83,7 @@ public class GameplayState extends BasicGameState {
 
 //        pathSprite = new Image("data/sprites/path.png");
 //        map = new TiledMap("data/maps/path1_5.tmx");
-        map = new TiledMap("data/maps/watermaps/snake.tmx");
+        map = new TiledMap("data/maps/watermaps/map1.tmx");
 
         startX = Integer.parseInt(map.getMapProperty("startX", null));
         startY = Integer.parseInt(map.getMapProperty("startY", null));
@@ -129,7 +129,7 @@ public class GameplayState extends BasicGameState {
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setClip(32, 32, 640 , 640);
+        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()-2) , TILESIZE*(map.getHeight()-2));
         int tempCritterCount = 0;
         waterAnimation.render(container, game, g);
         map.render(0, 0,1);
