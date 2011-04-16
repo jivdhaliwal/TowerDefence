@@ -1,19 +1,7 @@
 <Level>
-	<Tilemap path="maps/snake.tmx" />
+	<Tilemap path="data/levels/maps/snake.tmx" />
 	<Waves>
-		<WaveCount>2</WaveCount>
-		<Wave>
-			<Waveid>0</Waveid>
-			<EnemyType>0</EnemyType>
-			<EnemyCount>10</EnemyCount>
-			<TimeToWait>10000</TimeToWait>
-		</Wave>
-		
-		<Wave>
-			<Waveid>1</Waveid>
-			<EnemyType>0</EnemyType>
-			<EnemyCount>20</EnemyCount>
-			<TimeToWait>5000</TimeToWait>
-		</Wave>
+		<Wave type="0" count="10" waitingTime="10000" />
+		<Wave type="0" count="20" waitingTime="5000" />
 	</Waves>
 </Level>
