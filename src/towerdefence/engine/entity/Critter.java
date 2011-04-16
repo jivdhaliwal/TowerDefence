@@ -16,8 +16,8 @@ public class Critter extends Entity {
 
     // Critter types
     public final static int NORMAL = 0;
-    public final static int LEVEL1 = 1;
-    public final static int LEVEL2 = 2;
+    public final static int FIRE = 1;
+    public final static int ICE = 2;
     public final static int BOSS = 3;
     private int type;
 

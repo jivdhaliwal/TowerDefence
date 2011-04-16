@@ -152,7 +152,7 @@ public class GameplayState extends BasicGameState {
                 "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
         if(startWaves && waveCounter>0) {
             trueTypeFont.drawString(50, 530,
-                "Next wave in : " + String.valueOf(waveCounter/1000) + " seconds", Color.white);
+                "Next wave in : " + String.valueOf(waveCounter/1000.0) + " seconds", Color.white);
         }
 
         if(!startWaves) {
