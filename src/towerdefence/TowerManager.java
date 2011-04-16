@@ -36,15 +36,6 @@ public class TowerManager {
 
     }
 
-    public void addTower(String id, Vector2f position, Image towerType) throws SlickException {
-        Tower tower = new Tower(id);
-        tower.setPosition(position);
-        tower.AddComponent(new ImageRenderComponent("CritterRender", towerType));
-        if (!containsCritter(tower)) {
-            towerList.add(tower);
-        }
-    }
-
     /*
      * Default Tower when no type is defined
      */

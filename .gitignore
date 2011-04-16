@@ -14,3 +14,5 @@ build.xml
 
 #ignore the spritesheet PSDs
 src/data/sprites/critters/Full Sheets/
+
+dist.zip

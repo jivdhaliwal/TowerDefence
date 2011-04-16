@@ -2,7 +2,6 @@ package towerdefence.engine.levelLoader;
 
 
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.xml.SlickXMLException;
 import org.newdawn.slick.util.xml.XMLElement;
 import org.newdawn.slick.util.xml.XMLElementList;
@@ -26,10 +25,11 @@ public class LevelLoader {
         XMLParser parser = new XMLParser();
 
         root = parser.parse(filepath);
-
         waveList = new Wave[root.getChildrenByName("Waves").get(0).getChildren().size()];
         
         mapPath = root.getChildrenByName("Tilemap").get(0).getAttribute("path");
+
+        loadWaves();
     }
 
 
@@ -43,7 +43,6 @@ public class LevelLoader {
             critterType = waves.get(i).getIntAttribute("type");
             numCritters = waves.get(i).getIntAttribute("count");
             timeToWait = waves.get(i).getIntAttribute("waitingTime");
-
             Wave wave = new Wave(critterType, numCritters, timeToWait);
             waveList[i] = wave;
         }
