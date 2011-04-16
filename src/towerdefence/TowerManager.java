@@ -57,6 +57,15 @@ public class TowerManager {
     }
 
     /*
+     * Use to compare against current critter list
+     * and then update towerManager's critter list
+     * if required
+     */
+    public ArrayList<Critter> getCritterList() {
+        return critterList;
+    }
+
+    /*
      * Update the critterList that towers use for finding closest critter
      * Currently called during each update, using a counter to delay it
      * Possible to only update when a critter dies.

@@ -172,11 +172,12 @@ public class GameplayState extends BasicGameState {
         waveCounter -= delta;
         generateCounter -= delta;
 
-        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
+//        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
 
         Input input = container.getInput();
 
         if (mouseCounter <= 0) {
+            
 //            if (input.isKeyPressed(Input.KEY_F2)) {
 //                game.enterState(TowerDefence.PATHTESTSTATE);
 //                mouseCounter=100;
@@ -219,9 +220,11 @@ public class GameplayState extends BasicGameState {
 //            tempCritterList.addAll(wave.getCritters());
 //        }
         critterManager.update(container, game, delta);
-        tempCritterList=critterManager.getCritters();
+//        tempCritterList=critterManager.getCritters();
+        if(critterManager.getCritters()!=towerFactory.getCritterList()) {
+            towerFactory.updateCritterList(critterManager.getCritters());
+        }
         
-        towerFactory.updateCritterList(tempCritterList);
         towerFactory.update(container, game, delta);
 
         input.addMouseListener(new MouseListener(){
