@@ -150,6 +150,11 @@ public class GameplayState extends BasicGameState {
                 "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
         trueTypeFont.drawString(50, 160,
                 "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+        if(startWaves && waveCounter>0) {
+            trueTypeFont.drawString(50, 530,
+                "Next wave in : " + String.valueOf(waveCounter/1000) + " seconds", Color.white);
+        }
+
         if(!startWaves) {
             trueTypeFont.drawString(50, 530,
                 "Press Enter to begin waves", Color.white);

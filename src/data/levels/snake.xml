@@ -2,9 +2,9 @@
 	<Tilemap path="data/levels/maps/snake.tmx" />
 	<Waves>
 		<Wave type="0" count="3" waitingTime="2000" />
-		<Wave type="0" count="1" waitingTime="2000" />
+		<Wave type="0" count="1" waitingTime="3500" />
 		<Wave type="0" count="2" waitingTime="2000" />
-		<Wave type="0" count="1" waitingTime="2000" />
-		<Wave type="0" count="20" waitingTime="5000" />
+		<Wave type="0" count="1" waitingTime="4000" />
+		<Wave type="0" count="20" waitingTime="0" />
 	</Waves>
 </Level>
