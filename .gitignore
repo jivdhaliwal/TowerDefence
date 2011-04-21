@@ -16,3 +16,11 @@ build.xml
 src/data/sprites/critters/Full Sheets/
 
 dist.zip
+
+
+#ignore shuos eclipse files
+.classpath
+
+.project
+
+JCuda/
