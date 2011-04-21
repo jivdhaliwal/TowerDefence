@@ -97,18 +97,18 @@ public class Reduction {
   public void reduction(int[] input, int towers) {
 
     
-    int size = input.length / towers;
+    int size = input.length / 2 / towers;
     
     int threadNum = Math.min(size, 512);
     int blockNum  = (int) Math.ceil((double)size / 512); 
     
     CUdeviceptr deviceInput = new CUdeviceptr();
-    JCudaDriver.cuMemAlloc(deviceInput, input.length * Sizeof.INT);
+    JCudaDriver.cuMemAlloc(deviceInput, size * towers * 2 * Sizeof.INT);
     JCudaDriver.cuMemcpyHtoD(deviceInput,
-      Pointer.to(input), input.length * Sizeof.INT);
+      Pointer.to(input), size * towers * 2 * Sizeof.INT);
     
     CUdeviceptr deviceOutput = new CUdeviceptr();
-    JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * Sizeof.INT);
+    JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.INT);
     
     launchKernel(deviceInput, deviceOutput, size, threadNum, blockNum, towers);
     
@@ -119,20 +119,20 @@ public class Reduction {
       size = blockNum;
       blockNum = (int) Math.ceil((double)size / 512);
       
-      JCudaDriver.cuMemAlloc(deviceInput, towers * size * Sizeof.INT);
-      JCudaDriver.cuMemcpyDtoD(deviceInput, deviceOutput, towers * size * Sizeof.INT);
+      JCudaDriver.cuMemAlloc(deviceInput, towers * size * 2 * Sizeof.INT);
+      JCudaDriver.cuMemcpyDtoD(deviceInput, deviceOutput, towers * size * 2 * Sizeof.INT);
       
       
       JCudaDriver.cuMemFree(deviceOutput);
-      JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * Sizeof.INT);
+      JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.INT);
       
       launchKernel(deviceInput, deviceOutput, size, threadNum, blockNum, towers);
       
     }
     ////////////
     
-    int hostOutput[] = new int[towers * blockNum];
-    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, towers * blockNum * Sizeof.INT);
+    int hostOutput[] = new int[towers * blockNum * 2];
+    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, towers * blockNum * 2 * Sizeof.INT);
     JCudaDriver.cuMemFree(deviceOutput);
     
     for (int result : hostOutput)
@@ -162,7 +162,7 @@ public class Reduction {
    
     JCudaDriver.cuParamSetSize(function, offset);
     JCudaDriver.cuFuncSetBlockShape(function, threadNum, 1, 1);
-    JCudaDriver.cuFuncSetSharedSize(function, threadNum * Sizeof.INT);
+    JCudaDriver.cuFuncSetSharedSize(function, threadNum * 2 * Sizeof.INT);
     
     JCudaDriver.cuLaunchGrid(function, blockNumX, blockNumY);
     JCudaDriver.cuCtxSynchronize();
@@ -175,13 +175,17 @@ public class Reduction {
   }
   
   public static void main(String[] args) throws Exception {
-    int threads = 1026;
-    int inputs[] = new int[threads];
-    for (int i = 0; i < threads; i ++)
-      inputs[i] = threads - i;
-
+//    int threads = 66;
+//    int inputs[] = new int[threads * 2];
+//    for (int i = 0; i < threads; i ++)
+//      inputs[i * 2] = threads - i; //(int)(Math.random() * 100);
+//   
+//    for (int i = 0; i < threads; i ++)
+//      inputs[i * 2 + 1] = i % (threads / 2);
+//   
+    int inputs[] = new int[]{0, 0, 2, 1, 8, 2, 18, 3, 32, 4, 50, 5, 72, 6, 98, 7, 128, 8, 162, 9, 200, 10, 2, 0, 0, 1, 2, 2, 8, 3, 18, 4, 32, 5, 50, 6, 72, 7, 98, 8, 128, 9, 162, 10, 8, 0, 2, 1, 0, 2, 2, 3, 8, 4, 18, 5, 32, 6, 50, 7, 72, 8, 98, 9, 128, 10};
     Reduction r = new Reduction("reduction.cu");
-    r.reduction(inputs, 2);
+    r.reduction(inputs, 3);
   }
   
 }

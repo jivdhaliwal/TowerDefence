@@ -12,7 +12,8 @@ __global__ void calcDistance(int** globalInputData, int size, int n, int** globa
       distance += d * d; 
     }
   
-    globalOutputData[offset] = distance;
+    globalOutputData[offset * 2] = distance;
+    globalOutputData[offset * 2 + 1] = x;
   }
   
 }

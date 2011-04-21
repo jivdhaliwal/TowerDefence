@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="22" height="22" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="tilesetgrassland2" tilewidth="32" tileheight="32">
-  <image source="../../tilesets/tilesetgrassland2.png" trans="000000"/>
- </tileset>
- <tileset firstgid="379" name="collision" tilewidth="32" tileheight="32">
-  <image source="../../tilesets/collision.png"/>
-  <tile id="0">
-   <properties>
-    <property name="Type" value="grass"/>
-    <property name="Type" value="grass"/>
-    <property name="Type" value="grass"/>
-    <property name="blocked" value="true"/>
-    <property name="blocked" value="true"/>
-    <property name="blocked" value="true"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="Type" value="noPlace"/>
-    <property name="Type" value="noPlace"/>
-    <property name="Type" value="noPlace"/>
-   </properties>
-  </tile>
- </tileset>
+ <tileset firstgid="1" source="tilesetgrassland2.tsx"/>
+ <tileset firstgid="379" source="collision.tsx"/>
  <layer name="collision" width="22" height="22" visible="0">
   <properties>
    <property name="Type" value="grass"/>

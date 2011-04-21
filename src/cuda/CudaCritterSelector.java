@@ -71,7 +71,7 @@ public class CudaCritterSelector {
     JCudaDriver.cuMemcpyHtoD(deviceQuery, Pointer.to(queryHostDevicePointers), numTowers * Sizeof.POINTER);
     
     CUdeviceptr deviceOutput = new CUdeviceptr();
-    JCudaDriver.cuMemAlloc(deviceOutput, numTowers * numThreads * Sizeof.INT);
+    JCudaDriver.cuMemAlloc(deviceOutput, numTowers * numThreads * 2 * Sizeof.INT);
     
     JCudaDriver.cuFuncSetBlockShape(function, Math.min(threadPerBlock, numThreads), 1, 1);
     
@@ -117,9 +117,9 @@ public class CudaCritterSelector {
     JCudaDriver.cuCtxSynchronize();
     
     
-    int hostOutput[] = new int[numTowers * numThreads];
+    int hostOutput[] = new int[numTowers * numThreads * 2];
     JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput,
-        numTowers * numThreads * Sizeof.INT);
+        numTowers * numThreads * 2 * Sizeof.INT);
  
     
     for (int output : hostOutput)
@@ -237,7 +237,7 @@ public class CudaCritterSelector {
     {
         for (int j=0; j<2; j++)
         {
-            hostInput[i][j] = j + i + 5;
+            hostInput[i][j] = j + i + 1;
         }
     }
     
@@ -246,7 +246,7 @@ public class CudaCritterSelector {
     int hostQuery[][] = new int[towerNo][2];
     for (int i = 0; i < towerNo; i++) {
       for (int j = 0; j < 2; j++) {
-        hostQuery[i][j] = (i + j * j);
+        hostQuery[i][j] = (i + j * j + 1);
       }
     }
     

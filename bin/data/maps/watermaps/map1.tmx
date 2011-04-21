@@ -6,26 +6,9 @@
   <property name="targetX" value="0"/>
   <property name="targetY" value="2"/>
  </properties>
- <tileset firstgid="1" name="tilesetgrassland2" tilewidth="32" tileheight="32">
-  <image source="../../tilesets/tilesetgrassland2.png" trans="000000" width="869" height="474"/>
- </tileset>
- <tileset firstgid="379" name="collision" tilewidth="32" tileheight="32">
-  <image source="../../tilesets/collision.png" width="64" height="32"/>
-  <tile id="0">
-   <properties>
-    <property name="Type" value="grass"/>
-    <property name="blocked" value="true"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="Type" value="noPlace"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="381" name="lighthouse" tilewidth="32" tileheight="32">
-  <image source="../../tilesets/oldstonebuildings/lighthouse.png" width="72" height="72"/>
- </tileset>
+ <tileset firstgid="1" source="tilesetgrassland2.tsx"/>
+ <tileset firstgid="379" source="collision.tsx"/>
+ <tileset firstgid="381" source="lighthouse.tsx"/>
  <layer name="collision" width="22" height="22">
   <properties>
    <property name="Type" value="grass"/>
