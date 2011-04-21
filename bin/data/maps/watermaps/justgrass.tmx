@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="22" height="22" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="startX" value="10"/>
+  <property name="startY" value="21"/>
+  <property name="targetX" value="10"/>
+  <property name="targetY" value="0"/>
+ </properties>
+ <tileset firstgid="1" name="tilesetgrassland2" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/tilesetgrassland2.png" trans="000000" width="869" height="474"/>
+ </tileset>
+ <tileset firstgid="379" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/collision.png" width="64" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Type" value="noPlace"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="collision" width="22" height="22">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC6tmZGCoHsWjeBSP4lE8ikfxgGIAIr4Lk5AHAAA=
+  </data>
+ </layer>
+ <layer name="grass" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+NmYGDgAWJeIOYDYm4sfGSATR5dDMRWA2J1INYAYk0cfGSATR5dTB2H/dTgE+Necvij7h1176h7R9076t5R9xLDBwBI24gQkAcAAA==
+  </data>
+ </layer>
+ <layer name="misc" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgIAxSgVifkYEhnQi1pIAGIG4E4iYqmzsKRsEoGAWjYBQQAvuB+AAQHwTiQ1Q09xYQ3wbiO0B8lwR9AKkCWBeQBwAA
+  </data>
+ </layer>
+</map>

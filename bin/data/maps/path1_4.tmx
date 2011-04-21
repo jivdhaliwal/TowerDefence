@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="21" height="21" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass-tiles-2-small" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/grass-tiles-2-small.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="13" name="KaljuSuurem" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/KaljuSuurem.png"/>
+ </tileset>
+ <tileset firstgid="127" name="collision" tilewidth="32" tileheight="32">
+  <image source="../tilesets/collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Collision" width="21" height="21">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC52SUQ7AMAhCuXmvvp99NAbx2SZmi1YK6JF0/tD1XyPVUihg6PpquJv6Es+K6XoSvqt1eYpJ+l/8oB50+PU4Pq6euDk/3f2Nhs2spl6nNWmeMKd9ce8p1Mi8yX4kjQTT6SBe3afbRerjZh+2+MT/qoXMuMtv5jnhp7c6bJcn/CnfLebLztP4APDpf7/kBgAA
+  </data>
+ </layer>
+ <layer name="Floor" width="21" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NlYGBgHcWjeBSP4lE8iochBgDVR/NZ5AYAAA==
+  </data>
+ </layer>
+ <layer name="Path" width="21" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC52SUQ7AMAhC6f0vvZ99NAbx2SZmi1YK6JF0/tD1XyPVUihg6PpquJv6Es+K6XoSvqt1eYpJ+l/8oB50+PU4Pq6euDk/3f2Nhs2spl6nNWmeMKd9ce8p1Mi8yX4kjQTT6SBe3afbRerjZh+2+MT/qoXMuMtv5jnhp7c6bJcn/CnfLebLztP4APRcvAfkBgAA
+  </data>
+ </layer>
+</map>

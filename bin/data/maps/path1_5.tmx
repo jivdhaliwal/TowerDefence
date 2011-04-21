@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="21" height="21" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass-tiles-2-small" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/grass-tiles-2-small.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="13" name="KaljuSuurem" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/KaljuSuurem.png"/>
+ </tileset>
+ <tileset firstgid="127" name="collision" tilewidth="32" tileheight="32">
+  <image source="../tilesets/collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="128" name="tree2-final" tilewidth="32" tileheight="32">
+  <image source="../tilesets/oganature/tree2-final.png"/>
+ </tileset>
+ <layer name="Collision" width="21" height="21">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoA2oH4Rm1mMxgxIz69EwIXFKzERXQyog5BZ6xBc54YHPTErCmZ5mIptLCSBFP7H2EWsmKeEykGYim0uMOmoDWplJDqaFO4aKmcgYADANSxDkBgAA
+  </data>
+ </layer>
+ <layer name="Floor" width="21" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NlYGBgHcWjeBSP4lE8iochBgDVR/NZ5AYAAA==
+  </data>
+ </layer>
+ <layer name="Tree" width="21" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3SSQ7AIAxD0Rw9tAU6MFyZf4VKUYtELL2tF5ZF1ogiYMNu1HkgIiEbdZ64cOMx6iyoaOhGnW+j4vt/tb+Kb/3n1z1zZQDh6+rE5AYAAA==
+  </data>
+ </layer>
+ <layer name="Path" width="21" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoA1go4GZjEPITGRMC/NHzRw1c9TMkWMmOZgW7hgqZiJjAJUBy53kBgAA
+  </data>
+ </layer>
+</map>
