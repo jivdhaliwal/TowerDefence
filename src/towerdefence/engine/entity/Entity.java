@@ -41,6 +41,7 @@ public abstract class Entity {
     Path path=null;
 
     PathFinder finder=null;
+    private int type;
 
     public Entity(String id)
     {
@@ -174,6 +175,14 @@ public abstract class Entity {
     {
         if(renderComponent != null)
             renderComponent.render(gc, sb, gr);
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
 

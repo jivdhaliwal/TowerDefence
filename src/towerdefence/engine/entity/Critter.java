@@ -31,14 +31,6 @@ public class Critter extends Entity {
         health-=damage;
     }
 
-    public void setType(int critterType) {
-        this.type = critterType;
-    }
-
-    public int getType() {
-        return type;
-    }
-
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
