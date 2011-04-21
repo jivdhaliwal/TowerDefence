@@ -13,6 +13,7 @@ import org.newdawn.slick.util.pathfinding.PathFinder;
 import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.component.CritterAnimationComponent;
 import towerdefence.engine.component.CritterFollowPathComponent;
+import towerdefence.engine.component.TopDownMovement;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.pathfinding.UnitMover;
 
@@ -66,7 +67,7 @@ public class CritterManager {
 
         critter.AddComponent(new CritterAnimationComponent(id, 
                 critterAnimation[critterType]));
-        critter.AddComponent(new CritterFollowPathComponent("CritterPath", path));
+        critter.AddComponent(new CritterFollowPathComponent("CritterPath", path, critterType));
         critterList.add(critter);
     }
 

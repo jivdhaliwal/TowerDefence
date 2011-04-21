@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 /**
+ * Parses sprite sheets and creates animations
  *
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
@@ -27,6 +28,7 @@ public class AnimationLoader {
     public AnimationLoader() {
     }
 
+    
     public Animation[] getCritterAnimation(int critterType) throws SlickException {
         Image normalSheet = null;
         if (critterType == NORMAL) {
@@ -36,27 +38,13 @@ public class AnimationLoader {
         } else if (critterType == ICE) {
             normalSheet = new Image("data/sprites/critters/antIce.png");
         }
+        
         SpriteSheet critterSheet = new SpriteSheet(normalSheet, 64, 64);
-        Image[] movementLeft = {critterSheet.getSprite(0, 0), critterSheet.getSprite(1, 0),
-            critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
-            critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0),
-            critterSheet.getSprite(6, 0), critterSheet.getSprite(7, 0)};
-        Image[] movementUp = {critterSheet.getSprite(0, 2), critterSheet.getSprite(1, 2),
-            critterSheet.getSprite(2, 2), critterSheet.getSprite(3, 2),
-            critterSheet.getSprite(4, 2), critterSheet.getSprite(5, 2),
-            critterSheet.getSprite(6, 2), critterSheet.getSprite(7, 2)};
-        Image[] movementRight = {critterSheet.getSprite(0, 4), critterSheet.getSprite(1, 4),
-            critterSheet.getSprite(2, 4), critterSheet.getSprite(3, 4),
-            critterSheet.getSprite(4, 4), critterSheet.getSprite(5, 4),
-            critterSheet.getSprite(6, 4), critterSheet.getSprite(7, 4)};
-        Image[] movementDown = {critterSheet.getSprite(0, 6), critterSheet.getSprite(1, 6),
-            critterSheet.getSprite(2, 6), critterSheet.getSprite(3, 6),
-            critterSheet.getSprite(4, 6), critterSheet.getSprite(5, 6),
-            critterSheet.getSprite(6, 6), critterSheet.getSprite(7, 6)};
-        left = new Animation(movementLeft, 100, true);
-        up = new Animation(movementUp, 100, true);
-        right = new Animation(movementRight, 100, true);
-        down = new Animation(movementDown, 100, true);
+
+        left = new Animation(critterSheet,0,0,7,0,true, 100, true);
+        up = new Animation(critterSheet,0,2,7,2,true, 100, true);
+        right = new Animation(critterSheet,0,4,7,4,true, 100, true);
+        down = new Animation(critterSheet,0,6,7,6,true, 100, true);
 
         Animation[] critterAnimation = {up,down,left,right};
 

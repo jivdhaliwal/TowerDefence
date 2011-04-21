@@ -39,8 +39,9 @@ public class CritterAnimationComponent extends RenderComponent {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr) {
+        // Using 64x64 critters (looks better) on a 32x32 grid so sprites need to
+        // be shifted left 16pixels and up 32 pixels to allign correctly.
         sprite.draw(entity.getPosition().x-16, entity.getPosition().y-32);
-
     }
 
     @Override

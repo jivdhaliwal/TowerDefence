@@ -21,6 +21,12 @@ public class CritterFollowPathComponent extends Component {
     Step currentStep, targetStep;
     private int targetIndex;
 
+    // Critter types
+    public final static int NORMAL = 0;
+    public final static int FIRE = 1;
+    public final static int ICE = 2;
+    public final static int BOSS = 3;
+
     public static final int UP = 0;
     public static final int DOWN = 1;
     public static final int LEFT = 2;
@@ -35,14 +41,24 @@ public class CritterFollowPathComponent extends Component {
     private Path path;
     
 
-    public CritterFollowPathComponent( String id , Path path) {
+    public CritterFollowPathComponent( String id , Path path, int critterType) {
         this.id = id;
 
         targetIndex = 1;
         distance = GameplayState.TILESIZE;
 
         //Set speed of critters. Anything higher than 0.2f is unstable at 60fps.
-        critterSpeed = 0.08f;
+        //Default = 0.08
+        if(critterType==FIRE) {
+            critterSpeed = 0.16f;
+        } else if(critterType==ICE) {
+            critterSpeed = 0.06f;
+        } else if(critterType==BOSS) {
+            critterSpeed = 0.03f;
+        } else {
+            critterSpeed = 0.08f;
+        }
+
 
         this.path = path;
     }
@@ -53,10 +69,8 @@ public class CritterFollowPathComponent extends Component {
      * Move entity from current position to specified tile
      *
      * @param currentPos current position of the entity
-     * @param cx current X tile
-     * @param cy current Y tile
-     * @param tx target X tile
-     * @param ty target Y tile
+     * @param currentTile current tile the critter is walking from
+     * @param targetTile target tile the critter is walking towards
      * 
      */
     public void moveToTile(Vector2f currentPos, Step currentTile, Step targetTile, int delta) {
