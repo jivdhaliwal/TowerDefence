@@ -24,12 +24,12 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
-import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Tower;
+import towerdefence.engine.levelLoader.LevelLoader;
+import towerdefence.engine.levelLoader.Wave;
 
 import towerdefence.engine.pathfinding.PathMap;
-import towerdefence.engine.pathfinding.UnitMover;
 
 /**
  *
@@ -38,37 +38,47 @@ import towerdefence.engine.pathfinding.UnitMover;
 public class GameplayState extends BasicGameState {
 
     int stateID = -1;
+
+    LevelLoader level;
+    
     int critterCount;
-    int generateCounter;
+    int tempCritterCount;
+
+    // Update Time Counters
     int mouseCounter;
+    int waveCounter;
+    int generateCounter;
+
+    boolean startWaves = false;
+
     // Map used to find critter paths
     private PathMap pathmap;
     // Path finder used to search the pathmap
     private PathFinder finder;
     // Gives the last path found for the current unit
     private TiledMap map;
-    private Image pathSprite;
-    private Image towerSprite;
-    private Animation wanderingNPCAnim;
 
-    ArrayList<CritterManager> critterWaveList = new ArrayList<CritterManager>();
-    CritterManager critterWave;
+    CritterManager critterManager;
+    private int waveNumber;
+//    ArrayList<CritterManager> critterWaveList = new ArrayList<CritterManager>();
+//    CritterManager critterWave;
     ArrayList<Critter> critterList;
     ArrayList<Tower> towerList = new ArrayList<Tower>();
 
     Critter critter = null;
     ParticleSystem ps;
     private TrueTypeFont trueTypeFont;
-    private Tower testTower;
-    private Tower testTower2;
     private TowerManager towerFactory;
     private renderWater waterAnimation;
+    private Animation wanderingNPCAnim;
 
     public static int TILESIZE;
     private int startX;
     private int startY;
     private int targetX;
     private int targetY;
+
+
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -81,9 +91,9 @@ public class GameplayState extends BasicGameState {
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
-//        pathSprite = new Image("data/sprites/path.png");
-//        map = new TiledMap("data/maps/path1_5.tmx");
-        map = new TiledMap("data/maps/watermaps/snake.tmx");
+        level = new LevelLoader("data/levels/snake.xml");
+
+        map = new TiledMap(level.getMapPath());
 
         startX = Integer.parseInt(map.getMapProperty("startX", null));
         startY = Integer.parseInt(map.getMapProperty("startY", null));
@@ -106,21 +116,11 @@ public class GameplayState extends BasicGameState {
 
         towerFactory = new TowerManager();
         
+        critterManager = new CritterManager(startX, startY,
+                targetX, targetY, finder);
+        waveNumber = 0;
+        critterCount = level.getWave(waveNumber).getNumCritters();
         
-        critterCount = 10;
-        /*
-        critterWave = new CritterManager(
-                new Vector2f((float) (GameplayState.TILESIZE * 18),
-                (float)(GameplayState.TILESIZE * 21)),
-                finder,critterCount,CritterManager.NORMAL );
-
-        critterList = critterWave.getCritters();
-
-        critterWaveList.add(critterWave);
-         * 
-         */
-        
-
         waterAnimation = new renderWater(map.getWidth(),map.getHeight());
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
@@ -129,38 +129,38 @@ public class GameplayState extends BasicGameState {
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setClip(32, 32, 640 , 640);
-        int tempCritterCount = 0;
+        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()-2) , TILESIZE*(map.getHeight()-2));
+        
         waterAnimation.render(container, game, g);
         map.render(0, 0,1);
         map.render(0, 0,2);
 
-        // Render the path for testing
-        /*
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                if (path != null) {
-                    if (path.contains(x, y)) {
-                        pathSprite.draw(x * 32, y * 32);
-                    }
-                }
-            }
-        }
-         * 
-         */
 
-        for(CritterManager wave : critterWaveList) {
-            wave.render(container, game, g);
-            tempCritterCount+=wave.getCritters().size();
-        }
+//        for(CritterManager wave : critterWaveList) {
+//            wave.render(container, game, g);
+//            tempCritterCount+=wave.getCritters().size();
+//        }
+
+        critterManager.render(container, game, g);
+        tempCritterCount=critterManager.getCritters().size();
+
         towerFactory.render(container, game, g);
         
         trueTypeFont.drawString(50, 110,
                 "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
         trueTypeFont.drawString(50, 160,
                 "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+        if(startWaves && waveCounter>0) {
+            trueTypeFont.drawString(50, 530,
+                "Next wave in : " + String.valueOf(waveCounter/1000) + " seconds", Color.white);
+        }
 
-//        wanderingNPCAnim.draw(50f, 32f);
+        if(!startWaves) {
+            trueTypeFont.drawString(50, 530,
+                "Press Enter to begin waves", Color.white);
+        }
+
+        wanderingNPCAnim.draw(50f, 32f);
 
         
 
@@ -168,24 +168,63 @@ public class GameplayState extends BasicGameState {
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 
-        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
+        mouseCounter -= delta;
+        waveCounter -= delta;
+        generateCounter -= delta;
+
+//        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
 
         Input input = container.getInput();
 
-        if (input.isKeyPressed(Input.KEY_F2)) {
-            game.enterState(TowerDefence.PATHTESTSTATE);
+        if (mouseCounter <= 0) {
+            
+//            if (input.isKeyPressed(Input.KEY_F2)) {
+//                game.enterState(TowerDefence.PATHTESTSTATE);
+//                mouseCounter=100;
+//            }
+
+            if (input.isKeyPressed(Input.KEY_ENTER)) {
+                startWaves = true;
+                mouseCounter=100;
+            }
+        }
+
+        // Reads level and generates the waves
+        if(startWaves) {
+            if (waveNumber < level.getNumWaves()) {
+                Wave currentWave = level.getWave(waveNumber);
+                if (waveCounter <= 0) {
+                    if (generateCounter <= 0) {
+                        if (critterCount > 0) {
+
+                            critterManager.addCritter(String.valueOf((waveNumber * 1000) + critterCount),
+                                    level.getWave(waveNumber).getCritterType());
+                            critterCount--;
+                            generateCounter = 1000;
+                        } else if (critterCount <=0 ) {
+                            waveCounter = currentWave.timeToWait();
+                            waveNumber++;
+                            if(waveNumber<level.getNumWaves()){
+                                critterCount = level.getWave(waveNumber).getNumCritters();
+                            }
+                        }
+                        
+                    }
+                } 
+            }
+        }
+
+//        for(CritterManager wave : critterWaveList) {
+//            wave.update(container, game, delta);
+//            // Adds critters from each wave to the temp critter list
+//            tempCritterList.addAll(wave.getCritters());
+//        }
+        critterManager.update(container, game, delta);
+//        tempCritterList=critterManager.getCritters();
+        if(critterManager.getCritters()!=towerFactory.getCritterList()) {
+            towerFactory.updateCritterList(critterManager.getCritters());
         }
         
-
-        mouseCounter -= delta;
-
-        for(CritterManager wave : critterWaveList) {
-            wave.update(container, game, delta);
-            // Adds critters from each wave to the temp critter list
-            tempCritterList.addAll(wave.getCritters());
-        }
-        
-        towerFactory.updateCritterList(tempCritterList);
         towerFactory.update(container, game, delta);
 
         input.addMouseListener(new MouseListener(){
@@ -212,21 +251,22 @@ public class GameplayState extends BasicGameState {
                                 Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-                    } else if (button == 1) {
-                        if (pathmap.getTerrain(currentXTile, currentYTile) == PathMap.GRASS) {
-                            try {
-                                CritterManager newWave = new CritterManager(
-                                        new Vector2f(currentXTile * GameplayState.TILESIZE,
-                                            currentYTile * GameplayState.TILESIZE),
-                                            targetX,targetY,finder, critterCount, CritterManager.NORMAL);
-
-                                critterWaveList.add(newWave);
-                                mouseCounter = 100;
-                            } catch (SlickException ex) {
-                                Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
                     }
+//                    } else if (button == 1) {
+//                        if (pathmap.getTerrain(currentXTile, currentYTile) == PathMap.GRASS) {
+//                            try {
+//                                CritterManager newWave = new CritterManager(
+//                                        new Vector2f(currentXTile * GameplayState.TILESIZE,
+//                                            currentYTile * GameplayState.TILESIZE),
+//                                            targetX,targetY,finder, critterCount, CritterManager.NORMAL);
+//
+//                                critterWaveList.add(newWave);
+//                                mouseCounter = 100;
+//                            } catch (SlickException ex) {
+//                                Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        }
+//                    }
                 }
             }
 

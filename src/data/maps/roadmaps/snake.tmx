@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="22" height="22" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="startX" value="0"/>
+  <property name="startY" value="17"/>
+  <property name="targetX" value="1"/>
+  <property name="targetY" value="3"/>
+ </properties>
+ <tileset firstgid="1" name="road" tilewidth="32" tileheight="32">
+  <image source="road.png"/>
+ </tileset>
+ <tileset firstgid="193" name="collision" tilewidth="32" tileheight="32">
+  <image source="collision.png"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="collision" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAUgcJDKmNbmUtvfw8FcWoUvrc2lNqC1uUMlfCkBQ93ckVqeDXUAAPmqORSQBwAA
+  </data>
+ </layer>
+ <layer name="Floor" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC3NjYGBwB2IPKmI3KHaF0jDzKeXDzA0F4jAgDgfiCCrwYeamAnEaEKcDcQYV+KPhMBoOQz0cwmgQDmFDMBxG08NoOKCHA7JduOpQNzxy6PUlCAMANhgnfpAHAAA=
+  </data>
+ </layer>
+ <layer name="Road" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGFqgk8o4AGquIBWwEBDHAXE8ELtAzVWkAlYC4jwgzkcy1wwJmwOxBRofXRwbuxaI64C4HslcaoBMPOZ6ArEvmbgXiPuAuB+LuSA7o4A4GogDycBBQBwMxCFYzM0C4mwgTiQDJwFxMhCn4AmjGgbi4gxb3JbgMZcHiL3IDOsALOaKAbE4EM8gEc9kQOSLBCzmqgGxOhCvIBGvZEDkiwI0c03RwolQOOLKFw0M1APIcTMBKoZcFlEjXyyAmjsFCU+lAMPyxQaouUuQ8FIKMCxfHICai6s8IyY/oJd92PLFUAEAp/UEoJAHAAA=
+  </data>
+ </layer>
+</map>

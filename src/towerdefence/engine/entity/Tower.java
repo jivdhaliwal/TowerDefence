@@ -119,29 +119,6 @@ public class Tower extends Entity {
         {
             component.update(gc,sb,delta);
         }
-        
-        
-        /*
-        if(laserCounter<=0) {
-            if(colourCounter%5==0){
-                laser = yellowLaser;
-                laserCounter=200;
-            } else if(colourCounter%5==1) {
-                laser = greenLaser;
-                laserCounter=200;
-            } else if(colourCounter%5==2) {
-                laser = blueLaser;
-                laserCounter=200;
-            } else if(colourCounter%5==3) {
-                laser = purpleLaser;
-                laserCounter=200;
-            } else {
-                laser = redLaser;
-                laserCounter=200;
-            }
-        }
-         * 
-         */
 
     }
 
@@ -166,10 +143,6 @@ public class Tower extends Entity {
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
 
-        
-
-
     }
     
-
 }
