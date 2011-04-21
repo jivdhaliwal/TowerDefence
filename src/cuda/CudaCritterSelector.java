@@ -2,11 +2,11 @@ package cuda;
 
 import jcuda.driver.*;
 
-public class cudaCritterSelector {
+public class CudaCritterSelector {
   private DistanceCalc dc;
    Reduction rd;
   
-  public cudaCritterSelector() {
+  public CudaCritterSelector() {
     JCudaDriver.cuInit(0);
     CUcontext pctx = new CUcontext();
     CUdevice dev = new CUdevice();
@@ -46,7 +46,7 @@ public class cudaCritterSelector {
         hostQuery[i][j] = (i + j * j + 1);
       }
     }
-    cudaCritterSelector c = new cudaCritterSelector();
+    CudaCritterSelector c = new CudaCritterSelector();
     for (int i : c.selectCritters(hostInput, hostQuery, 10))
       System.out.println(i);
 

@@ -24,3 +24,5 @@ dist.zip
 .project
 
 JCuda/
+
+bin/
