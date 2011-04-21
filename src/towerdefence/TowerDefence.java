@@ -11,7 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class TowerDefence extends StateBasedGame
 {
      static int height = 22*32;
-     static int width = 22*32;
+     static int width = 27*32;
 
      static boolean fullscreen = false;
 

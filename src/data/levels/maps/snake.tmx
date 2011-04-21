@@ -13,7 +13,7 @@
    <property name="Type" value="grass"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NggIAaRgaGakYITU0wlM2lBOMylxKMy1xK8FCNG2xytAgHWsYbLdPZUIzT0fxGeRjS2lxK/Y8rHCiNK1zxRi334kpn1AYAlAtsSZAHAAA=
+   H4sIAAAAAAAAC6thZGCogeJqJDY1MAggm0spoLe51PA7urmUYFzmUoJxmUtpeNLbXFqFAy3jjZbpbDS/jeY3WplLDYxuLqVxhS/eqIlpZS4MAwCTzBS+kAcAAA==
   </data>
  </layer>
  <layer name="grass" width="22" height="22">

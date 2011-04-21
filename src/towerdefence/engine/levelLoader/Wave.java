@@ -16,16 +16,27 @@ public class Wave {
         this.timeToWait = timeToWait;
     }
 
+    /**
+     * @return the critterType
+     */
     public int getCritterType() {
         return critterType;
     }
 
+    /**
+     * @return the numCritters
+     */
     public int getNumCritters() {
         return numCritters;
     }
 
-    public int timeToWait() {
+    /**
+     * @return the timeToWait
+     */
+    public int getTimeToWait() {
         return timeToWait;
     }
+
+
 
 }

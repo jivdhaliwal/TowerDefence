@@ -15,6 +15,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -39,6 +40,7 @@ public class GameplayState extends BasicGameState {
 
     int stateID = -1;
 
+
     LevelLoader level;
     
     int critterCount;
@@ -57,6 +59,8 @@ public class GameplayState extends BasicGameState {
     private PathFinder finder;
     // Gives the last path found for the current unit
     private TiledMap map;
+    // Map for gui underlay
+    private TiledMap guiMap;
 
     CritterManager critterManager;
     private int waveNumber;
@@ -67,6 +71,7 @@ public class GameplayState extends BasicGameState {
 
     Critter critter = null;
     ParticleSystem ps;
+
     private TrueTypeFont trueTypeFont;
     private TowerManager towerFactory;
     private renderWater waterAnimation;
@@ -77,6 +82,7 @@ public class GameplayState extends BasicGameState {
     private int startY;
     private int targetX;
     private int targetY;
+
 
 
 
@@ -92,6 +98,7 @@ public class GameplayState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
         level = new LevelLoader("data/levels/snake.xml");
+        guiMap = new TiledMap("data/gui/guiMap.tmx");
 
         map = new TiledMap(level.getMapPath());
 
@@ -99,7 +106,6 @@ public class GameplayState extends BasicGameState {
         startY = Integer.parseInt(map.getMapProperty("startY", null));
         targetX = Integer.parseInt(map.getMapProperty("targetX", null));
         targetY = Integer.parseInt(map.getMapProperty("targetY", null));
-
 
         TILESIZE=map.getTileWidth();
 
@@ -121,7 +127,7 @@ public class GameplayState extends BasicGameState {
         waveNumber = 0;
         critterCount = level.getWave(waveNumber).getNumCritters();
         
-        waterAnimation = new renderWater(map.getWidth(),map.getHeight());
+        waterAnimation = new renderWater(map.getWidth()+5,map.getHeight());
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
@@ -129,11 +135,12 @@ public class GameplayState extends BasicGameState {
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()-2) , TILESIZE*(map.getHeight()-2));
+        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()+3) , TILESIZE*(map.getHeight()-2));
         
         waterAnimation.render(container, game, g);
         map.render(0, 0,1);
         map.render(0, 0,2);
+        guiMap.render(21*32, 0);
 
 
 //        for(CritterManager wave : critterWaveList) {
@@ -152,7 +159,7 @@ public class GameplayState extends BasicGameState {
                 "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
         if(startWaves && waveCounter>0) {
             trueTypeFont.drawString(50, 530,
-                "Next wave in : " + String.valueOf(waveCounter/1000) + " seconds", Color.white);
+                "Next wave in : " + String.valueOf(waveCounter/1000.0) + " seconds", Color.white);
         }
 
         if(!startWaves) {
@@ -162,7 +169,6 @@ public class GameplayState extends BasicGameState {
 
         wanderingNPCAnim.draw(50f, 32f);
 
-        
 
     }
 
@@ -189,6 +195,7 @@ public class GameplayState extends BasicGameState {
             }
         }
 
+
         // Reads level and generates the waves
         if(startWaves) {
             if (waveNumber < level.getNumWaves()) {
@@ -202,7 +209,7 @@ public class GameplayState extends BasicGameState {
                             critterCount--;
                             generateCounter = 1000;
                         } else if (critterCount <=0 ) {
-                            waveCounter = currentWave.timeToWait();
+                            waveCounter = currentWave.getTimeToWait();
                             waveNumber++;
                             if(waveNumber<level.getNumWaves()){
                                 critterCount = level.getWave(waveNumber).getNumCritters();
@@ -237,18 +244,20 @@ public class GameplayState extends BasicGameState {
                     int currentXTile = (int) Math.floor((x / GameplayState.TILESIZE));
                     int currentYTile = (int) Math.floor((y / GameplayState.TILESIZE));
                     if (button == 0) {
-                        if ( pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS &&
-                                pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
-                            try {
-                                towerFactory.addTower(String.valueOf(x),
-                                        new Vector2f(currentXTile * GameplayState.TILESIZE,
-                                        currentYTile * GameplayState.TILESIZE));
-                                
-                                pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
-                                
-                                mouseCounter = 100;
-                            } catch (SlickException ex) {
-                                Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+                        if(currentXTile <= 21) {
+                            if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
+                                    && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
+                                try {
+                                    towerFactory.addTower(String.valueOf(x),
+                                            new Vector2f(currentXTile * GameplayState.TILESIZE,
+                                            currentYTile * GameplayState.TILESIZE));
+
+                                    pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
+
+                                    mouseCounter = 100;
+                                } catch (SlickException ex) {
+                                    Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
                         }
                     }

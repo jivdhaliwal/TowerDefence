@@ -1,6 +1,7 @@
 package towerdefence;
 
 import java.util.ArrayList;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,8 +10,10 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
+import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.component.CritterAnimationComponent;
 import towerdefence.engine.component.CritterFollowPathComponent;
+import towerdefence.engine.component.TopDownMovement;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.pathfinding.UnitMover;
 
@@ -23,12 +26,12 @@ import towerdefence.engine.pathfinding.UnitMover;
 
 public class CritterManager {
 
-    int numCritters;
+    int generateCounter;
 
     // Critter types
     public final static int NORMAL = 0;
-    public final static int LEVEL1 = 1;
-    public final static int LEVEL2 = 2;
+    public final static int FIRE = 1;
+    public final static int ICE = 2;
     public final static int BOSS = 3;
 
     Vector2f initialPos;
@@ -37,16 +40,20 @@ public class CritterManager {
     Path path;
 
     private ArrayList<Critter> critterList = new ArrayList<Critter>();
-    private int critterCount;
-    private int generateCounter;
-    private int critterType;
+    private Animation[][] critterAnimation = new Animation[3][];
 
+    private AnimationLoader animationLoader = new AnimationLoader();
     
     public CritterManager(int startX, int startY, int goalX, int goalY,
             PathFinder finder) throws SlickException {
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), startX, startY, goalX, goalY);
         this.initialPos = new Vector2f(startX * GameplayState.TILESIZE, startY * GameplayState.TILESIZE);
+
+        critterAnimation[NORMAL] = animationLoader.getCritterAnimation(NORMAL);
+        critterAnimation[FIRE] = animationLoader.getCritterAnimation(FIRE);
+        critterAnimation[ICE] = animationLoader.getCritterAnimation(ICE);
+
     }
 
 
@@ -58,8 +65,9 @@ public class CritterManager {
         critter.setPosition(initialPos);
         critter.setType(critterType);
 
-        critter.AddComponent(new CritterAnimationComponent(id, critterType));
-        critter.AddComponent(new CritterFollowPathComponent("CritterPath",path));
+        critter.AddComponent(new CritterAnimationComponent(id, 
+                critterAnimation[critterType]));
+        critter.AddComponent(new CritterFollowPathComponent("CritterPath", path, critterType));
         critterList.add(critter);
     }
 
