@@ -28,7 +28,7 @@ public class CudaCritterSelector {
   
   
   public static void main(String[] args) throws Exception {
-    int critterNo = 65536;
+    int critterNo = 100000;
     int hostInput[] = new int[critterNo * 2];
     for(int i = 0; i < critterNo; i++)
     {
@@ -36,7 +36,7 @@ public class CudaCritterSelector {
        hostInput[i * 2 + 1] = (int)Math.floor(Math.random() * 200);
     }
     
-    int towerNo = 512;
+    int towerNo = 6;
     int hostQuery[] = new int[towerNo * 2];
     for (int i = 0; i < towerNo; i++) {
       for (int j = 0; j < 2; j++) {
@@ -48,7 +48,7 @@ public class CudaCritterSelector {
     
     start = System.currentTimeMillis();
     System.out.print("CPU: ");
-    for (int k = 0; k < 10; k ++ ) {
+    for (int k = 0; k < 60; k ++ ) {
       int min[] = new int[towerNo];
       for (int i = 0; i < critterNo; i ++){
         for (int j = 0; j < towerNo; j ++) {
@@ -68,7 +68,7 @@ public class CudaCritterSelector {
     CudaCritterSelector c = new CudaCritterSelector();
     start = System.currentTimeMillis();
     //int result[] =
-    for (int k = 0; k < 10; k ++ )
+    for (int k = 0; k < 60; k ++ )
       c.selectCritters(hostInput, hostQuery, 2);
     end   = System.currentTimeMillis();
     System.out.println("finished in " + (end - start) + "ms");

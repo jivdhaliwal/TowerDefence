@@ -7,7 +7,7 @@ build/
 nbproject/
 bin/cuda/
 bin/towerdefence/
-
+bin/
 #ignore distribution dir
 dist/
 
