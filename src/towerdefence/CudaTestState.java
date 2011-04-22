@@ -26,7 +26,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
 import towerdefence.engine.entity.Critter;
-import towerdefence.engine.entity.Tower;
+import towerdefence.engine.entity.CudaTower;
 import towerdefence.engine.levelLoader.LevelLoader;
 import towerdefence.engine.levelLoader.Wave;
 
@@ -36,7 +36,7 @@ import towerdefence.engine.pathfinding.PathMap;
  *
  * @author Jiv
  */
-public class GameplayState extends BasicGameState {
+public class CudaTestState extends BasicGameState {
 
     int stateID = -1;
 
@@ -67,13 +67,13 @@ public class GameplayState extends BasicGameState {
 //    ArrayList<CritterManager> critterWaveList = new ArrayList<CritterManager>();
 //    CritterManager critterWave;
     ArrayList<Critter> critterList;
-    ArrayList<Tower> towerList = new ArrayList<Tower>();
+    ArrayList<CudaTower> towerList = new ArrayList<CudaTower>();
 
     Critter critter = null;
     ParticleSystem ps;
 
     private TrueTypeFont trueTypeFont;
-    private TowerManager towerFactory;
+    private CudaTowerManager towerFactory;
     private renderWater waterAnimation;
     private Animation wanderingNPCAnim;
 
@@ -86,13 +86,13 @@ public class GameplayState extends BasicGameState {
 
 
 
-    GameplayState(int stateID) {
+    CudaTestState(int stateID) {
         this.stateID = stateID;
     }
 
     @Override
     public int getID() {
-        return 1;
+        return 3;
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
@@ -120,7 +120,7 @@ public class GameplayState extends BasicGameState {
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
 
-        towerFactory = new TowerManager();
+        towerFactory = new CudaTowerManager();
         
         critterManager = new CritterManager(startX, startY,
                 targetX, targetY, finder);
@@ -131,6 +131,7 @@ public class GameplayState extends BasicGameState {
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
+        startWaves = true;
 
     }
 
@@ -167,8 +168,6 @@ public class GameplayState extends BasicGameState {
                 "Press Enter to begin waves", Color.white);
         }
 
-        wanderingNPCAnim.draw(50f, 32f);
-
 
     }
 
@@ -184,10 +183,10 @@ public class GameplayState extends BasicGameState {
 
         if (mouseCounter <= 0) {
             
-            if (input.isKeyPressed(Input.KEY_F2)) {
-                game.enterState(TowerDefence.CUDATESTSTATE);
-                mouseCounter=100;
-            }
+//            if (input.isKeyPressed(Input.KEY_F2)) {
+//                game.enterState(TowerDefence.PATHTESTSTATE);
+//                mouseCounter=100;
+//            }
 
             if (input.isKeyPressed(Input.KEY_ENTER)) {
                 startWaves = true;
@@ -241,22 +240,22 @@ public class GameplayState extends BasicGameState {
 
             public void mouseClicked(int button, int x, int y, int clickCount) {
                 if (mouseCounter <= 0) {
-                    int currentXTile = (int) Math.floor((x / GameplayState.TILESIZE));
-                    int currentYTile = (int) Math.floor((y / GameplayState.TILESIZE));
+                    int currentXTile = (int) Math.floor((x / CudaTestState.TILESIZE));
+                    int currentYTile = (int) Math.floor((y / CudaTestState.TILESIZE));
                     if (button == 0) {
                         if(currentXTile <= 21) {
                             if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
                                     && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
                                 try {
                                     towerFactory.addTower(String.valueOf(x),
-                                            new Vector2f(currentXTile * GameplayState.TILESIZE,
-                                            currentYTile * GameplayState.TILESIZE));
+                                            new Vector2f(currentXTile * CudaTestState.TILESIZE,
+                                            currentYTile * CudaTestState.TILESIZE));
 
                                     pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
 
                                     mouseCounter = 100;
                                 } catch (SlickException ex) {
-                                    Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(CudaTestState.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
                         }
