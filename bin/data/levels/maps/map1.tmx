@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="22" height="22" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="startX" value="18"/>
+  <property name="startY" value="21"/>
+  <property name="targetX" value="0"/>
+  <property name="targetY" value="2"/>
+ </properties>
+ <tileset firstgid="1" source="tilesetgrassland2.tsx"/>
+ <tileset firstgid="379" source="collision.tsx"/>
+ <tileset firstgid="381" source="lighthouse.tsx"/>
+ <layer name="collision" width="22" height="22">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC72UwQoAIAhD87vr4zsFElHTNgWPPca2bE0zw7i7phtvPZelc+eyvKzmZvNBuJl8UG4mH5SL+Ij24aUX8Srqr+dG8ry9qeilSq/SX2UflP3NcBX/TXEfFPfsZ07cCY7J+S+QBwAA
+  </data>
+ </layer>
+ <layer name="grass" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC8WUuw2AMAwFTc9CjMCvoYcOAVvw24CFEQJLIbKdBBKw5ALFvuL5BECYmjz2oHATpZuX3Src3EMXBNdHdT9we3h2HxMX31zvY8vNwP0+Nlwpe5wZ4Z7LbMHVd9Q8TVm55ovzC8gerwSX2vnKd5OLun/cjn6PUPlyLkp5Sf6u2kwofyVuybyNwN+F8r+K7tzjm+K6/h+QWzNck/Oc/8jdGO7TSi9uHJ3c9OLuRNner5AHAAA=
+  </data>
+ </layer>
+ <layer name="misc" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoA2oZWRgqGOkvrn1QDMbaGDuKBgFo2AUjIJRMJAAAONTAVeQBwAA
+  </data>
+ </layer>
+</map>

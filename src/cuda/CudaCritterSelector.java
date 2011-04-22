@@ -2,11 +2,11 @@ package cuda;
 
 import jcuda.driver.*;
 
-public class cudaCritterSelector {
+public class CudaCritterSelector {
   private DistanceCalc dc;
    Reduction rd;
   
-  public cudaCritterSelector() {
+  public CudaCritterSelector() {
     JCudaDriver.cuInit(0);
     CUcontext pctx = new CUcontext();
     CUdevice dev = new CUdevice();
@@ -20,35 +20,42 @@ public class cudaCritterSelector {
     }
   }
   
-  public int[] selectCritters(int critters[][], int towers[][], int range) {
+  public int[] selectCritters(float critters[], float towers[], int range) {
     CUdeviceptr deviceOutput = new CUdeviceptr();
-    dc.calcDist(critters, towers, 512, deviceOutput);
-    return rd.reduction(deviceOutput, critters.length, towers.length, range);
+    dc.calcDist(critters, towers, deviceOutput);
+    return rd.reduction(deviceOutput, critters.length / 2, towers.length / 2, range);
   }
   
   
   public static void main(String[] args) throws Exception {
-    
-    int hostInput[][] = new int[2000][2];
-    for(int i = 0; i < 2000; i++)
+    int critterNo = 2000;
+    float hostInput[] = new float[critterNo * 2];
+    for(int i = 0; i < critterNo; i++)
     {
-        for (int j=0; j<2; j++)
-        {
-            hostInput[i][j] = (int)(Math.random() * 100);
-        }
+       hostInput[i * 2] = (float)Math.floor(Math.random() * 200);
+       hostInput[i * 2 + 1] = (float)Math.floor(Math.random() * 200);
     }
     
-    int towerNo = 20;
-    
-    int hostQuery[][] = new int[towerNo][2];
+    int towerNo = 5;
+    float hostQuery[] = new float[towerNo * 2];
     for (int i = 0; i < towerNo; i++) {
       for (int j = 0; j < 2; j++) {
-        hostQuery[i][j] = (i + j * j + 1);
+        hostQuery[i * 2] = (float)Math.floor(Math.random() * 200);
+        hostQuery[i * 2 + 1] = (float)Math.floor(Math.random() * 200);
       }
     }
-    cudaCritterSelector c = new cudaCritterSelector();
-    for (int i : c.selectCritters(hostInput, hostQuery, 10))
+ 
+    
+    CudaCritterSelector c = new CudaCritterSelector();
+    long start, end;
+    start = System.currentTimeMillis();
+    int result[] = c.selectCritters(hostInput, hostQuery, 1000);
+    end   = System.currentTimeMillis();
+    System.out.println("finished in " + (end - start) + "ms");
+    
+    for (int i:result)
       System.out.println(i);
 
+    
   }
 }

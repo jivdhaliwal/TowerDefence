@@ -36,14 +36,14 @@ public class cudaKernel {
           throw new IOException("Input file not found: "+cuFileName);
       }
       String modelString = "-m"+System.getProperty("sun.arch.data.model");
-      String command =
-        "nvcc " + modelString + " -arch sm_11 -cubin "+
-        cuFile.getPath()+" -o "+cubinFileName;
+//      String command =
+//        "nvcc " + modelString + " -arch sm_11 -cubin "+
+//        cuFile.getPath()+" -o "+cubinFileName;
 
       
-//      String command =
-//          "/usr/local/cuda/bin/nvcc " + modelString + " -arch sm_11 -cubin "+
-//          cuFile.getPath()+" -o "+cubinFileName;
+      String command =
+          "/usr/local/cuda/bin/nvcc " + modelString + " -arch sm_11 -cubin "+
+          cuFile.getPath()+" -o "+cubinFileName;
 
       System.out.println("Executing\n"+command);
       Process process = Runtime.getRuntime().exec(command);

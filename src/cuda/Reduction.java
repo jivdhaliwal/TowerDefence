@@ -8,14 +8,16 @@ public class Reduction extends cudaKernel {
     super(filename);
   }
   
-  public int[] reduction(CUdeviceptr deviceInput, int size, int towers, int range) {    
+  public int[] reduction(CUdeviceptr deviceInput, int size, int towers, int range) {
     int threadNum = Math.min(size, 512);
     int blockNum  = (int) Math.ceil((double)size / 512); 
     
     CUdeviceptr deviceOutput = new CUdeviceptr();
-    JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.INT);
+    JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.FLOAT);
+    
     
     launchKernel(deviceInput, deviceOutput, size, threadNum, blockNum, towers);
+    
     
     ////////////
     while (blockNum > 1) {
@@ -24,26 +26,31 @@ public class Reduction extends cudaKernel {
       size = blockNum;
       blockNum = (int) Math.ceil((double)size / 512);
       
-      JCudaDriver.cuMemAlloc(deviceInput, towers * size * 2 * Sizeof.INT);
-      JCudaDriver.cuMemcpyDtoD(deviceInput, deviceOutput, towers * size * 2 * Sizeof.INT);
-      
+      JCudaDriver.cuMemAlloc(deviceInput, towers * size * 2 * Sizeof.FLOAT);
+      JCudaDriver.cuMemcpyDtoD(deviceInput, deviceOutput, towers * size * 2 * Sizeof.FLOAT);
       
       JCudaDriver.cuMemFree(deviceOutput);
-      JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.INT);
+      JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.FLOAT);
+      
       
       launchKernel(deviceInput, deviceOutput, size, threadNum, blockNum, towers);
+      
       
     }
     ////////////
     
-    int hostOutput[] = new int[towers * blockNum * 2];
-    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, towers * blockNum * 2 * Sizeof.INT);
+    float hostOutput[] = new float[towers * blockNum * 2];
+    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, towers * blockNum * 2 * Sizeof.FLOAT);
+    
+    
+    
+    JCudaDriver.cuMemFree(deviceInput);
     JCudaDriver.cuMemFree(deviceOutput);
     
     int result[] = new int[towers];
     for (int i = 0; i < towers; i ++) {
       if (hostOutput[i * 2] <= range)
-        result[i] = hostOutput[i * 2 + 1];
+        result[i] = (int)hostOutput[i * 2 + 1];
       else
         result[i] = -1;
     }
@@ -52,6 +59,7 @@ public class Reduction extends cudaKernel {
   }
   
   private void launchKernel(CUdeviceptr deviceInput, CUdeviceptr deviceOutput, int n, int threadNum, int blockNumX, int blockNumY) {
+    
     CUfunction function = new CUfunction();
     JCudaDriver.cuModuleGetFunction(function, getModule(), "reduce");
     
@@ -74,17 +82,19 @@ public class Reduction extends cudaKernel {
    
     JCudaDriver.cuParamSetSize(function, offset);
     JCudaDriver.cuFuncSetBlockShape(function, threadNum, 1, 1);
-    JCudaDriver.cuFuncSetSharedSize(function, threadNum * 2 * Sizeof.INT);
- 
+    JCudaDriver.cuFuncSetSharedSize(function, threadNum * 2 * Sizeof.FLOAT);
     
     JCudaDriver.cuLaunchGrid(function, blockNumX, blockNumY);
+    
     JCudaDriver.cuCtxSynchronize();
     
     JCudaDriver.cuMemFreeHost(dIn);
     JCudaDriver.cuMemFreeHost(dOut);
     JCudaDriver.cuMemFreeHost(pN);
-    
     JCudaDriver.cuMemFree(deviceInput);
+    
+    
+    
   }
   
   

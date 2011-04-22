@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="22" height="22" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="tilesetgrassland2.tsx"/>
+ <tileset firstgid="379" source="collision.tsx"/>
+ <layer name="collision" width="22" height="22" visible="0">
+  <properties>
+   <property name="Type" value="grass"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NggIAaRgaGakYITSrAp3com1tDpPnIagmZW02Cu4nRg81uXO4mRS2pbiDHb7jcQo47CbkJGyY37aC7D5v7KQHo5lILUNNcWoUDteONVumM2vmCVvmYluUOLcvJoVhfUMNcANr0AguQBwAA
+  </data>
+ </layer>
+ <layer name="grass" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC9WUXQqAIBCEPV/1aEeI6hb9HbyVFAZR9ycIEuYldofPZlfnnjOTPGly+tPq/avvRtpJq8BvibWHwNc3aiw9J6knDQLunLOLvddLBsvdatwoDSfHVJJldhI3siOjlpNjtzB+4ZtmCXPKc5TsTolxjCplFr5r2HHmQy/mhDmOTrfzibPFhHfhuGucpVnC3eG48/8pfXc47lSj2c2cu+Vrfdf/7nsDxTkdvZAHAAA=
+  </data>
+ </layer>
+ <layer name="misc" width="22" height="22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWjYBSMglEwCkbBQAMAYvPNI5AHAAA=
+  </data>
+ </layer>
+</map>

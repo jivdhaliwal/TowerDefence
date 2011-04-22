@@ -5,6 +5,8 @@ build/
 
 #ignore nbproject dir
 nbproject/
+bin/cuda/
+bin/towerdefence/
 
 #ignore distribution dir
 dist/
