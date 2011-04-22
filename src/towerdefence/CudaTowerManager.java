@@ -99,9 +99,8 @@ public class CudaTowerManager {
 
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
         
-        if(critterArray.length>0) {
-            
-            if(towerArray.length>0) {
+        if(towerList.size()>0) {
+            if(towerList.size()>0) {
                 targetCritters = cudaSelecter.selectCritters(critterArray, towerArray, 128);
                 for(int j=0;j<targetCritters.length;j++) {
                     if(targetCritters[j]!=-1) {
@@ -114,10 +113,9 @@ public class CudaTowerManager {
         }
         
         
-//        for(Tower tower : towerList) {
-//            tower.updateCritterList(critterList);
-//            tower.update(gc, sb, delta);
-//        }
+        for (CudaTower tower : towerList) {
+            tower.update(gc, sb, delta);
+        }
     }
     
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr) {
