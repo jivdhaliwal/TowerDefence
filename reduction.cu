@@ -1,6 +1,6 @@
 extern "C"
-__global__ void reduce(float *g_idata, float *g_odata, int n) {
-  extern __shared__ float sdata[];
+__global__ void reduce(int *g_idata, int *g_odata, int n) {
+  extern __shared__ int sdata[];
 
   unsigned int blockSize = min(blockDim.x, n - blockDim.x * blockIdx.x);
   
