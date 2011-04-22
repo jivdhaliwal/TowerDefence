@@ -13,7 +13,7 @@ public class Reduction extends cudaKernel {
     int blockNum  = (int) Math.ceil((double)size / 512); 
     
     CUdeviceptr deviceOutput = new CUdeviceptr();
-    JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.INT);
+    JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.FLOAT);
     
     
     launchKernel(deviceInput, deviceOutput, size, threadNum, blockNum, towers);
@@ -26,11 +26,11 @@ public class Reduction extends cudaKernel {
       size = blockNum;
       blockNum = (int) Math.ceil((double)size / 512);
       
-      JCudaDriver.cuMemAlloc(deviceInput, towers * size * 2 * Sizeof.INT);
-      JCudaDriver.cuMemcpyDtoD(deviceInput, deviceOutput, towers * size * 2 * Sizeof.INT);
+      JCudaDriver.cuMemAlloc(deviceInput, towers * size * 2 * Sizeof.FLOAT);
+      JCudaDriver.cuMemcpyDtoD(deviceInput, deviceOutput, towers * size * 2 * Sizeof.FLOAT);
       
       JCudaDriver.cuMemFree(deviceOutput);
-      JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.INT);
+      JCudaDriver.cuMemAlloc(deviceOutput, towers * blockNum * 2 * Sizeof.FLOAT);
       
       
       launchKernel(deviceInput, deviceOutput, size, threadNum, blockNum, towers);
@@ -39,8 +39,8 @@ public class Reduction extends cudaKernel {
     }
     ////////////
     
-    int hostOutput[] = new int[towers * blockNum * 2];
-    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, towers * blockNum * 2 * Sizeof.INT);
+    float hostOutput[] = new float[towers * blockNum * 2];
+    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, towers * blockNum * 2 * Sizeof.FLOAT);
     
     
     
@@ -82,7 +82,7 @@ public class Reduction extends cudaKernel {
    
     JCudaDriver.cuParamSetSize(function, offset);
     JCudaDriver.cuFuncSetBlockShape(function, threadNum, 1, 1);
-    JCudaDriver.cuFuncSetSharedSize(function, threadNum * 2 * Sizeof.INT);
+    JCudaDriver.cuFuncSetSharedSize(function, threadNum * 2 * Sizeof.FLOAT);
     
     JCudaDriver.cuLaunchGrid(function, blockNumX, blockNumY);
     

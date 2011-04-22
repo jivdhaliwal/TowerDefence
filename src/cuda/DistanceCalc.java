@@ -8,7 +8,7 @@ public class DistanceCalc extends cudaKernel {
     super(filename);
   }
   
-  public void calcDist(int critters[], int towers[], int range, CUdeviceptr deviceOutput) {
+  public void calcDist(float critters[], float towers[], CUdeviceptr deviceOutput) {
    
     CUfunction function = new CUfunction();
     JCudaDriver.cuModuleGetFunction(function, getModule(), "calcDistance");
@@ -36,7 +36,6 @@ public class DistanceCalc extends cudaKernel {
     Pointer dOut = Pointer.to(deviceOutput);
     
     Pointer pN    = Pointer.to(new int[]{numThreads});
-    Pointer pR    = Pointer.to(new int[]{range});
 
     int offset = 0;
     offset = JCudaDriver.align(offset, Sizeof.POINTER);
@@ -46,10 +45,6 @@ public class DistanceCalc extends cudaKernel {
     offset = JCudaDriver.align(offset, Sizeof.INT);
     JCudaDriver.cuParamSetv(function, offset, pN, Sizeof.INT);
     offset += Sizeof.INT;
-    
-    offset = JCudaDriver.align(offset, Sizeof.FLOAT);
-    JCudaDriver.cuParamSetv(function, offset, pR, Sizeof.FLOAT);
-    offset += Sizeof.FLOAT;
     
     offset = JCudaDriver.align(offset, Sizeof.POINTER);
     JCudaDriver.cuParamSetv(function, offset, dQu, Sizeof.POINTER);
@@ -64,15 +59,6 @@ public class DistanceCalc extends cudaKernel {
     JCudaDriver.cuLaunchGrid(function, numBlocks, numTowers);
     JCudaDriver.cuCtxSynchronize();
     
-    
-//    int hostOutput[] = new int[2 * numTowers * numThreads];
-//    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput,
-//        numTowers * numThreads * 2 * Sizeof.INT);
-// 
-//    
-//    for (int output : hostOutput)
-//      System.out.println(output);
-    
     JCudaDriver.cuMemFreeHost(dIn);
     JCudaDriver.cuMemFreeHost(dOut);
 
@@ -83,47 +69,41 @@ public class DistanceCalc extends cudaKernel {
     JCudaDriver.cuMemFree(deviceQuery);
     
   }    
-  public static void main(String[] args) {
-    JCudaDriver.cuInit(0);
-    DistanceCalc dc;
-    CUcontext pctx = new CUcontext();
-    CUdevice dev = new CUdevice();
-    JCudaDriver.cuDeviceGet(dev, 0);
-    JCudaDriver.cuCtxCreate(pctx, 0, dev);
-    try {
-      dc = new DistanceCalc("CUDA_Distance.cu");
-      CUdeviceptr deviceOutput = new CUdeviceptr();
-      
-      
-      long start, end;
-      start = System.currentTimeMillis();
-      
-      int critterNo = 65536;
-      int hostInput[] = new int[critterNo * 2];
-      for(int i = 0; i < critterNo; i++)
-      {
-         hostInput[i * 2] = (int)i; //Math.floor(Math.random() * 200);
-         hostInput[i * 2 + 1] = (int)i; //Math.floor(Math.random() * 200);
-      }
-      
-      int towerNo = 511;
-      int hostQuery[] = new int[towerNo * 2];
-      for (int i = 0; i < towerNo; i++) {
-        for (int j = 0; j < 2; j++) {
-          hostQuery[i * 2] = (int)i; //Math.floor(Math.random() * 200);
-          hostQuery[i * 2 + 1] = (int)i; //Math.floor(Math.random() * 200);
-        }
-      }
-      
-      dc.calcDist(hostInput, hostQuery, 512, deviceOutput);
-      JCudaDriver.cuMemFree(deviceOutput);
-      
-      end   = System.currentTimeMillis();
-      System.out.println("finished in " + (end - start) + "ms");
-      
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
+//  public static void main(String[] args) {
+//    JCudaDriver.cuInit(0);
+//    DistanceCalc dc;
+//    CUcontext pctx = new CUcontext();
+//    CUdevice dev = new CUdevice();
+//    JCudaDriver.cuDeviceGet(dev, 0);
+//    JCudaDriver.cuCtxCreate(pctx, 0, dev);
+//    try {
+//      dc = new DistanceCalc("CUDA_Distance.cu");
+//      CUdeviceptr deviceOutput = new CUdeviceptr();
+//      
+//      int hostInput[] = new int[6];
+//      for(int i = 0; i < 3; i++)
+//      {
+//         hostInput[i * 2] = i;// (int)(Math.random() * 100);
+//         hostInput[i * 2 + 1] = i;// (int)(Math.random() * 100);
+//      }
+//      for (int i : hostInput)
+//        System.out.println(i);
+//      int towerNo = 2;
+//      
+//      int hostQuery[] = new int[towerNo * 2];
+//      for (int i = 0; i < towerNo; i++) {
+//        for (int j = 0; j < 2; j++) {
+//          hostQuery[i * 2] = i; //(int)(Math.random() * 100);
+//          hostQuery[i * 2 + 1] = i; //(int)(Math.random() * 100);
+//        }
+//      }
+//      
+//      dc.calcDist(hostInput, hostQuery, 512, deviceOutput);
+//      JCudaDriver.cuMemFree(deviceOutput);
+//      
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//    }
+//  }
   
 }
