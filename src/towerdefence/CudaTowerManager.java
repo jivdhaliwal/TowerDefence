@@ -99,10 +99,14 @@ public class CudaTowerManager {
                 critterArray[i * 2] = (int)critterList.get(i).getPosition().x;
                 critterArray[(i * 2) + 1] = (int)critterList.get(i).getPosition().y;
             }
+            
+            if(towerList!=null) {
+                cudaSelecter.selectCritters(critterArray, towerArray, 128);
+            }
         }
         
         
-//        cudaSelecter.selectCritters(critterArray, towerArray, 128);
+        
         
 //        for(Tower tower : towerList) {
 //            tower.updateCritterList(critterList);
