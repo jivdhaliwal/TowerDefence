@@ -90,6 +90,9 @@ public class CudaTowerManager {
      */
     public void updateCritterList(ArrayList<Critter> critterList) {
         this.critterList = critterList;
+    }
+    
+    private void generateCritterArray() {
         critterArray = new int[critterList.size() * 2];
         for (int i = 0; i < critterList.size(); i++) {
             critterArray[i * 2] = (int) critterList.get(i).getPosition().x;
@@ -97,10 +100,12 @@ public class CudaTowerManager {
         }
     }
 
+
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
         
-        if(towerList.size()>0) {
+        if(critterList.size()>0) {
             if(towerList.size()>0) {
+                generateCritterArray();
                 targetCritters = cudaSelecter.selectCritters(critterArray, towerArray, 128);
                 for(int j=0;j<targetCritters.length;j++) {
                     if(targetCritters[j]!=-1) {
