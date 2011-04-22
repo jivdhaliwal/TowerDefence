@@ -42,7 +42,7 @@ public class cudaKernel {
 
       
       String command =
-          "/usr/local/cuda/bin/nvcc " + modelString + " -arch sm_11 -cubin "+
+          "nvcc " + modelString + " -arch sm_11 -cubin "+
           cuFile.getPath()+" -o "+cubinFileName;
 
       System.out.println("Executing\n"+command);
