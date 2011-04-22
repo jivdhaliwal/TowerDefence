@@ -8,57 +8,35 @@ public class DistanceCalc extends cudaKernel {
     super(filename);
   }
   
-  public void calcDist(int critters[][], int towers[][], int threadPerBlock, CUdeviceptr deviceOutput) {
+  public void calcDist(int critters[], int towers[], int range, CUdeviceptr deviceOutput) {
+   
     CUfunction function = new CUfunction();
     JCudaDriver.cuModuleGetFunction(function, getModule(), "calcDistance");
 
-    int numThreads = critters.length;
+    int numThreads = critters.length / 2;
+    int numTowers = towers.length / 2;
     
-    int numBlocks = (int) Math.ceil((double)numThreads / threadPerBlock);
+    int numBlocks = (int) Math.ceil((double)numThreads / 512);
 
-    int numTowers = towers.length;
-    int size = critters[0].length;
-
-    CUdeviceptr hostDevicePointers[] = new CUdeviceptr[numThreads];
-    for(int i = 0; i < numThreads; i++) {
-        hostDevicePointers[i] = new CUdeviceptr();
-        JCudaDriver.cuMemAlloc(hostDevicePointers[i], size * Sizeof.INT);
-        
-        JCudaDriver.cuMemcpyHtoD(hostDevicePointers[i],
-            Pointer.to(critters[i]), size * Sizeof.INT);
-    }
-    
-    CUdeviceptr queryHostDevicePointers[] = new CUdeviceptr[numTowers];
-    for (int i = 0; i < numTowers; i++) {
-      queryHostDevicePointers[i] = new CUdeviceptr();
-      JCudaDriver.cuMemAlloc(queryHostDevicePointers[i], size * Sizeof.INT);
-      
-      JCudaDriver.cuMemcpyHtoD(queryHostDevicePointers[i],
-          Pointer.to(towers[i]), size * Sizeof.INT);
-    }
-    
     CUdeviceptr deviceInput = new CUdeviceptr();
+    JCudaDriver.cuMemAlloc(deviceInput, critters.length * Sizeof.FLOAT);
+    JCudaDriver.cuMemcpyHtoD(deviceInput, Pointer.to(critters), critters.length * Sizeof.FLOAT);
+    
     CUdeviceptr deviceQuery = new CUdeviceptr();
+    JCudaDriver.cuMemAlloc(deviceQuery, towers.length * Sizeof.FLOAT);
+    JCudaDriver.cuMemcpyHtoD(deviceQuery, Pointer.to(towers), towers.length * Sizeof.FLOAT);
     
-    JCudaDriver.cuMemAlloc(deviceInput, numThreads * Sizeof.POINTER);
-    JCudaDriver.cuMemcpyHtoD(deviceInput, Pointer.to(hostDevicePointers),
-        numThreads * Sizeof.POINTER);
-
+    JCudaDriver.cuMemAlloc(deviceOutput, numTowers * numThreads * 2 * Sizeof.FLOAT);
     
-    JCudaDriver.cuMemAlloc(deviceQuery, numTowers * Sizeof.POINTER);
-    JCudaDriver.cuMemcpyHtoD(deviceQuery, Pointer.to(queryHostDevicePointers), numTowers * Sizeof.POINTER);
+    JCudaDriver.cuFuncSetBlockShape(function, Math.min(512, numThreads), 1, 1);
     
-    //CUdeviceptr deviceOutput = new CUdeviceptr();
-    JCudaDriver.cuMemAlloc(deviceOutput, numTowers * numThreads * 2 * Sizeof.INT);
-    
-    JCudaDriver.cuFuncSetBlockShape(function, Math.min(threadPerBlock, numThreads), 1, 1);
     
     Pointer dIn = Pointer.to(deviceInput);
     Pointer dQu = Pointer.to(deviceQuery);
     Pointer dOut = Pointer.to(deviceOutput);
     
-    Pointer pSize = Pointer.to(new int[]{size});
     Pointer pN    = Pointer.to(new int[]{numThreads});
+    Pointer pR    = Pointer.to(new int[]{range});
 
     int offset = 0;
     offset = JCudaDriver.align(offset, Sizeof.POINTER);
@@ -66,12 +44,12 @@ public class DistanceCalc extends cudaKernel {
     offset += Sizeof.POINTER;
 
     offset = JCudaDriver.align(offset, Sizeof.INT);
-    JCudaDriver.cuParamSetv(function, offset, pSize, Sizeof.INT);
-    offset += Sizeof.INT;
-    
-    offset = JCudaDriver.align(offset, Sizeof.INT);
     JCudaDriver.cuParamSetv(function, offset, pN, Sizeof.INT);
     offset += Sizeof.INT;
+    
+    offset = JCudaDriver.align(offset, Sizeof.FLOAT);
+    JCudaDriver.cuParamSetv(function, offset, pR, Sizeof.FLOAT);
+    offset += Sizeof.FLOAT;
     
     offset = JCudaDriver.align(offset, Sizeof.POINTER);
     JCudaDriver.cuParamSetv(function, offset, dQu, Sizeof.POINTER);
@@ -86,22 +64,66 @@ public class DistanceCalc extends cudaKernel {
     JCudaDriver.cuLaunchGrid(function, numBlocks, numTowers);
     JCudaDriver.cuCtxSynchronize();
     
-    for(int i = 0; i < numThreads; i++) {
-        JCudaDriver.cuMemFree(hostDevicePointers[i]);
-    }
-    for (int i = 0; i < numTowers; i++) {
-      JCudaDriver.cuMemFree(queryHostDevicePointers[i]);
-    }
+    
+//    int hostOutput[] = new int[2 * numTowers * numThreads];
+//    JCudaDriver.cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput,
+//        numTowers * numThreads * 2 * Sizeof.INT);
+// 
+//    
+//    for (int output : hostOutput)
+//      System.out.println(output);
+    
     JCudaDriver.cuMemFreeHost(dIn);
     JCudaDriver.cuMemFreeHost(dOut);
-    JCudaDriver.cuMemFreeHost(pSize);
+
     JCudaDriver.cuMemFreeHost(pN);
     JCudaDriver.cuMemFreeHost(dQu);
    
     JCudaDriver.cuMemFree(deviceInput);
     JCudaDriver.cuMemFree(deviceQuery);
-
     
   }    
+  public static void main(String[] args) {
+    JCudaDriver.cuInit(0);
+    DistanceCalc dc;
+    CUcontext pctx = new CUcontext();
+    CUdevice dev = new CUdevice();
+    JCudaDriver.cuDeviceGet(dev, 0);
+    JCudaDriver.cuCtxCreate(pctx, 0, dev);
+    try {
+      dc = new DistanceCalc("CUDA_Distance.cu");
+      CUdeviceptr deviceOutput = new CUdeviceptr();
+      
+      
+      long start, end;
+      start = System.currentTimeMillis();
+      
+      int critterNo = 65536;
+      int hostInput[] = new int[critterNo * 2];
+      for(int i = 0; i < critterNo; i++)
+      {
+         hostInput[i * 2] = (int)i; //Math.floor(Math.random() * 200);
+         hostInput[i * 2 + 1] = (int)i; //Math.floor(Math.random() * 200);
+      }
+      
+      int towerNo = 511;
+      int hostQuery[] = new int[towerNo * 2];
+      for (int i = 0; i < towerNo; i++) {
+        for (int j = 0; j < 2; j++) {
+          hostQuery[i * 2] = (int)i; //Math.floor(Math.random() * 200);
+          hostQuery[i * 2 + 1] = (int)i; //Math.floor(Math.random() * 200);
+        }
+      }
+      
+      dc.calcDist(hostInput, hostQuery, 512, deviceOutput);
+      JCudaDriver.cuMemFree(deviceOutput);
+      
+      end   = System.currentTimeMillis();
+      System.out.println("finished in " + (end - start) + "ms");
+      
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+  }
   
 }
