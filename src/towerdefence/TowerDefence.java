@@ -35,8 +35,8 @@ public class TowerDefence extends StateBasedGame
 //          this.addState(new PathTestState(PATHTESTSTATE));
           this.addState(new GameplayState(GAMEPLAYSTATE));
           this.addState(new CudaTestState(CUDATESTSTATE));
-//          this.enterState(GAMEPLAYSTATE);
-          this.enterState(CUDATESTSTATE);
+          this.enterState(GAMEPLAYSTATE);
+//          this.enterState(CUDATESTSTATE);
           //this.enterState(PATHTESTSTATE);
      }
 

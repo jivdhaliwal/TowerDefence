@@ -250,7 +250,7 @@ public class GameplayState extends BasicGameState {
                                 try {
                                     towerFactory.addTower(String.valueOf(x),
                                             new Vector2f(currentXTile * GameplayState.TILESIZE,
-                                            currentYTile * GameplayState.TILESIZE));
+                                            currentYTile * GameplayState.TILESIZE),TowerManager.NORMAL);
 
                                     pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
 

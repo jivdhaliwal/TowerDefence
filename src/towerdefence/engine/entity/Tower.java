@@ -13,6 +13,8 @@ import towerdefence.engine.component.Component;
  *
  * Tower - An entity that deals with distance checking against critters
  * and shoots critters
+ * 
+ * TODO Rotate Tower head
  *
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
@@ -20,20 +22,13 @@ public class Tower extends Entity {
 
     ArrayList<Critter> critterList = null;
     Critter targetCritter = null;
-
-    private final Image yellowLaser;
-    private final Image blueLaser;
-    private final Image greenLaser;
-    private final Image purpleLaser;
-    private final Image redLaser;
-    private Image laser;
+    
+    private Image[] sprites;
 
     float range;
     float damagePerSec;
 
     private int shootingCounter;
-    private int colourCounter=0;
-    private int laserCounter=0;
 
     boolean isShooting;
 
@@ -45,12 +40,6 @@ public class Tower extends Entity {
 
         this.rotation=0;
 
-        yellowLaser = new Image("data/sprites/laser/yellow.png");
-        blueLaser = new Image("data/sprites/laser/blue.png");
-        greenLaser = new Image("data/sprites/laser/green.png");
-        purpleLaser = new Image("data/sprites/laser/purple.png");
-        redLaser = new Image("data/sprites/laser/red.png");
-        laser = greenLaser;
     }
 
     /*
@@ -103,12 +92,18 @@ public class Tower extends Entity {
     private void shootCritter(Critter critter) {
         critter.takeDamage(damagePerSec/10f);
     }
+    
+    /**
+     * @param sprites the sprites to set
+     */
+    public void setSprites(Image[] sprites) {
+        this.sprites = sprites;
+    }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
         shootingCounter-=delta;
-        laserCounter-=delta;
 
         if(shootingCounter<=0) {
             findClosestCritter();
@@ -135,14 +130,19 @@ public class Tower extends Entity {
 
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) (targetCritter.getPosition().sub(this.getPosition())).getTheta()-90);
+            
+            // Draw tower's turret (which will rotate towards critters
+            sprites[1].draw(this.getPosition().x,this.getPosition().y);
             // Draw lazer and extend it using the distance from the tower to the
             // target critter
-            laser.draw(this.getPosition().x, this.getPosition().y+16, 32,
+            sprites[2].draw(this.getPosition().x, this.getPosition().y+16, 32,
                     this.getPosition().distance(targetCritter.getPosition()));
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
-
+        
     }
+
+    
     
 }

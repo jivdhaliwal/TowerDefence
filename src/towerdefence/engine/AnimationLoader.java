@@ -12,7 +12,7 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class AnimationLoader {
 
-    // Critter types
+    // Critter and tower types
     public final static int NORMAL = 0;
     public final static int FIRE = 1;
     public final static int ICE = 2;
@@ -49,6 +49,25 @@ public class AnimationLoader {
         Animation[] critterAnimation = {up,down,left,right};
 
         return critterAnimation;
+    }
+    
+    public Image[] getTowerSprites(int towerType) throws SlickException {
+        Image[] tower = new Image[3];
+        if(towerType==NORMAL) {
+            tower[0] = new Image("data/sprites/towers/greentower.png");
+            tower[1] = new Image("data/sprites/towers/arrow.png");
+            tower[2] = new Image("data/sprites/laser/green.png");
+        } else if(towerType==FIRE) {
+            tower[0] = new Image("data/sprites/towers/redtower.png");
+            tower[1] = new Image("data/sprites/towers/arrow.png");
+            tower[2] = new Image("data/sprites/laser/red.png");
+        } else if(towerType==ICE) {
+            tower[0] = new Image("data/sprites/towers/bluetower.png");
+            tower[1] = new Image("data/sprites/towers/arrow.png");
+            tower[2] = new Image("data/sprites/laser/blue.png");  
+        }
+        
+        return tower;
     }
 }
 

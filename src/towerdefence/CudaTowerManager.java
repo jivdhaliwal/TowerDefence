@@ -106,7 +106,7 @@ public class CudaTowerManager {
         if(critterList.size()>0) {
             if(towerList.size()>0) {
                 generateCritterArray();
-                targetCritters = cudaSelecter.selectCritters(critterArray, towerArray, 128);
+                targetCritters = cudaSelecter.selectCritters(critterArray, towerArray, 128*128);
                 for(int j=0;j<targetCritters.length;j++) {
                     if(targetCritters[j]!=-1) {
                         towerList.get(j).setTargetCritter(critterList.get(targetCritters[j]));
