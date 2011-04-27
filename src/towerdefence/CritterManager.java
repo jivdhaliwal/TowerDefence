@@ -40,19 +40,16 @@ public class CritterManager {
     Path path;
 
     private ArrayList<Critter> critterList = new ArrayList<Critter>();
-    private Animation[][] critterAnimation = new Animation[3][];
+    private Animation[][] critterAnimation;
 
     private AnimationLoader animationLoader = new AnimationLoader();
     
     public CritterManager(int startX, int startY, int goalX, int goalY,
-            PathFinder finder) throws SlickException {
+            PathFinder finder, Animation[][] critterAnimation) throws SlickException {
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), startX, startY, goalX, goalY);
         this.initialPos = new Vector2f(startX * GameplayState.TILESIZE, startY * GameplayState.TILESIZE);
-
-        critterAnimation[NORMAL] = animationLoader.getCritterAnimation(NORMAL);
-        critterAnimation[FIRE] = animationLoader.getCritterAnimation(FIRE);
-        critterAnimation[ICE] = animationLoader.getCritterAnimation(ICE);
+        this.critterAnimation = critterAnimation;
 
     }
 

@@ -6,6 +6,7 @@ package towerdefence;
 
 import java.util.ArrayList;
 import java.awt.Font;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Animation;
@@ -15,7 +16,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -25,6 +25,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
+import towerdefence.engine.AnimationLoader;
+import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Tower;
 import towerdefence.engine.levelLoader.LevelLoader;
@@ -40,6 +42,19 @@ public class GameplayState extends BasicGameState {
 
     int stateID = -1;
 
+    // Tower and Critter types
+    public final static int NORMAL = 0;
+    public final static int FIRE = 1;
+    public final static int ICE = 2;
+    // Critter type
+    public final static int BOSS = 3;
+    
+    private AnimationLoader spriteLoader = new AnimationLoader();
+    private Image[][] towerSprites  = new Image[3][];
+    private Animation[][] critterAnimation = new Animation[3][];
+    
+    Tower selectedTower=null;
+    
 
     LevelLoader level;
     
@@ -51,7 +66,7 @@ public class GameplayState extends BasicGameState {
     int waveCounter;
     int generateCounter;
 
-    boolean startWaves = false;
+    boolean startWaves;
 
     // Map used to find critter paths
     private PathMap pathmap;
@@ -82,9 +97,7 @@ public class GameplayState extends BasicGameState {
     private int startY;
     private int targetX;
     private int targetY;
-
-
-
+    
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -96,34 +109,30 @@ public class GameplayState extends BasicGameState {
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
+        
+        // Load Level
         level = new LevelLoader("data/levels/snake.xml");
         guiMap = new TiledMap("data/gui/guiMap.tmx");
 
         map = new TiledMap(level.getMapPath());
 
+        // Get Start and Target positions from map
         startX = Integer.parseInt(map.getMapProperty("startX", null));
         startY = Integer.parseInt(map.getMapProperty("startY", null));
         targetX = Integer.parseInt(map.getMapProperty("targetX", null));
         targetY = Integer.parseInt(map.getMapProperty("targetY", null));
 
         TILESIZE=map.getTileWidth();
-
-        Image normalSheet = new Image("data/sprites/wandering_trader2.png");
-        SpriteSheet critterSheet = new SpriteSheet(normalSheet, 32, 64);
-        Image[] wanderingNPC = {critterSheet.getSprite(0, 0),critterSheet.getSprite(1, 0),
-            critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
-            critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0)};
-        wanderingNPCAnim = new Animation(wanderingNPC, 230,true);
-
-
+        
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
-
-        towerFactory = new TowerManager();
+        
+        loadResources();
+        
+        towerFactory = new TowerManager(towerSprites);
         
         critterManager = new CritterManager(startX, startY,
-                targetX, targetY, finder);
+                targetX, targetY, finder,critterAnimation);
         waveNumber = 0;
         critterCount = level.getWave(waveNumber).getNumCritters();
         
@@ -131,7 +140,27 @@ public class GameplayState extends BasicGameState {
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
+        
+        startWaves = false;
 
+    }
+
+    private void loadResources() throws SlickException {
+        // Load tower sprites
+        towerSprites[NORMAL] = spriteLoader.getTowerSprites(NORMAL);
+        towerSprites[FIRE] = spriteLoader.getTowerSprites(FIRE);
+        towerSprites[ICE] = spriteLoader.getTowerSprites(ICE);
+        critterAnimation[NORMAL] = spriteLoader.getCritterAnimation(NORMAL);
+        critterAnimation[FIRE] = spriteLoader.getCritterAnimation(FIRE);
+        critterAnimation[ICE] = spriteLoader.getCritterAnimation(ICE);
+        
+        // Load the wandering NPC - He who's purpose is to question purpose
+        Image normalSheet = new Image("data/sprites/wandering_trader2.png");
+        SpriteSheet critterSheet = new SpriteSheet(normalSheet, 32, 64);
+        Image[] wanderingNPC = {critterSheet.getSprite(0, 0),critterSheet.getSprite(1, 0),
+            critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
+            critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0)};
+        wanderingNPCAnim = new Animation(wanderingNPC, 230,true);
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
@@ -169,6 +198,9 @@ public class GameplayState extends BasicGameState {
 
         wanderingNPCAnim.draw(50f, 32f);
 
+        if(selectedTower!=null) {
+            selectedTower.render(container, game, g);
+        }
 
     }
 
@@ -192,6 +224,28 @@ public class GameplayState extends BasicGameState {
             if (input.isKeyPressed(Input.KEY_ENTER)) {
                 startWaves = true;
                 mouseCounter=100;
+            }
+            
+            if (input.isKeyPressed(Input.KEY_R)) {
+                container.reinit();
+            }
+            
+            if (input.isKeyPressed(Input.KEY_P)) {
+                if(container.isPaused()) {
+                    container.resume();
+                } else {
+                    container.pause();
+                }
+            }
+            
+            if (input.isKeyPressed(Input.KEY_1)) {
+                setSelectedTower(input,TowerManager.NORMAL);
+            }
+            if (input.isKeyPressed(Input.KEY_2)) {
+                setSelectedTower(input,TowerManager.FIRE);
+            }
+            if (input.isKeyPressed(Input.KEY_3)) {
+                setSelectedTower(input,TowerManager.ICE);;
             }
         }
 
@@ -248,9 +302,10 @@ public class GameplayState extends BasicGameState {
                             if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
                                     && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
                                 try {
+                                    java.util.Random towerType = new Random();
                                     towerFactory.addTower(String.valueOf(x),
                                             new Vector2f(currentXTile * GameplayState.TILESIZE,
-                                            currentYTile * GameplayState.TILESIZE),TowerManager.NORMAL);
+                                            currentYTile * GameplayState.TILESIZE),towerType.nextInt(3));
 
                                     pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
 
@@ -280,15 +335,22 @@ public class GameplayState extends BasicGameState {
             }
 
             public void mousePressed(int button, int x, int y) {
+                if(button==1) {
+                    selectedTower=null;
+                }
             }
 
             public void mouseReleased(int button, int x, int y) {
             }
 
             public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+                if(selectedTower!=null) {
+                    selectedTower.setPosition(new Vector2f(newx-16,newy-16));
+                }
             }
 
             public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+                
             }
 
             public void setInput(Input input) {
@@ -304,7 +366,20 @@ public class GameplayState extends BasicGameState {
             public void inputStarted() {
             }
         });
+        
+        if(selectedTower!=null) {
+            selectedTower.update(container, game, delta);
+        }
 
+    }
+
+    private void setSelectedTower(Input input, int type) throws SlickException {
+        selectedTower = new Tower("selected");
+        selectedTower.setType(type);
+        selectedTower.AddComponent(new ImageRenderComponent("CritterRender",
+                towerSprites[type][0]));
+        selectedTower.setPosition(new Vector2f(input.getMouseX()-16,
+                input.getMouseY()-16));
     }
 
 }

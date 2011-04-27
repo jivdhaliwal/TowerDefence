@@ -25,6 +25,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
+import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.CudaTower;
 import towerdefence.engine.levelLoader.LevelLoader;
@@ -40,6 +41,15 @@ public class CudaTestState extends BasicGameState {
 
     int stateID = -1;
 
+    // Tower and Critter types
+    public final static int NORMAL = 0;
+    public final static int FIRE = 1;
+    public final static int ICE = 2;
+    // Critter type
+    public final static int BOSS = 3;
+    
+    private AnimationLoader spriteLoader = new AnimationLoader();
+    private Animation[][] critterAnimation = new Animation[3][];
 
     LevelLoader level;
     
@@ -119,11 +129,15 @@ public class CudaTestState extends BasicGameState {
 
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
+        
+        critterAnimation[NORMAL] = spriteLoader.getCritterAnimation(NORMAL);
+        critterAnimation[FIRE] = spriteLoader.getCritterAnimation(FIRE);
+        critterAnimation[ICE] = spriteLoader.getCritterAnimation(ICE);
 
         towerFactory = new CudaTowerManager();
         
         critterManager = new CritterManager(startX, startY,
-                targetX, targetY, finder);
+                targetX, targetY, finder, critterAnimation);
         waveNumber = 0;
         critterCount = level.getWave(waveNumber).getNumCritters();
         

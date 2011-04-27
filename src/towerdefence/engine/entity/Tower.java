@@ -14,7 +14,6 @@ import towerdefence.engine.component.Component;
  * Tower - An entity that deals with distance checking against critters
  * and shoots critters
  * 
- * TODO Rotate Tower head
  *
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
@@ -131,12 +130,12 @@ public class Tower extends Entity {
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) (targetCritter.getPosition().sub(this.getPosition())).getTheta()-90);
             
-            // Draw tower's turret (which will rotate towards critters
-            sprites[1].draw(this.getPosition().x,this.getPosition().y);
             // Draw lazer and extend it using the distance from the tower to the
             // target critter
             sprites[2].draw(this.getPosition().x, this.getPosition().y+16, 32,
                     this.getPosition().distance(targetCritter.getPosition()));
+            // Draw tower's turret (which will rotate towards critters
+            sprites[1].draw(this.getPosition().x,this.getPosition().y);
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }

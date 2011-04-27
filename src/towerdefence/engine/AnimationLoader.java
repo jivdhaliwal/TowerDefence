@@ -30,21 +30,23 @@ public class AnimationLoader {
 
     
     public Animation[] getCritterAnimation(int critterType) throws SlickException {
+        int updateRate=100;
         Image normalSheet = null;
+        
         if (critterType == NORMAL) {
             normalSheet = new Image("data/sprites/critters/antNormal.png");
         } else if (critterType == FIRE) {
             normalSheet = new Image("data/sprites/critters/antFire.png");
+            updateRate=70;
         } else if (critterType == ICE) {
             normalSheet = new Image("data/sprites/critters/antIce.png");
+            updateRate=130;
         }
-        
         SpriteSheet critterSheet = new SpriteSheet(normalSheet, 64, 64);
-
-        left = new Animation(critterSheet,0,0,7,0,true, 100, true);
-        up = new Animation(critterSheet,0,2,7,2,true, 100, true);
-        right = new Animation(critterSheet,0,4,7,4,true, 100, true);
-        down = new Animation(critterSheet,0,6,7,6,true, 100, true);
+        left = new Animation(critterSheet,0,0,7,0,true, updateRate, true);
+        up = new Animation(critterSheet,0,2,7,2,true, updateRate, true);
+        right = new Animation(critterSheet,0,4,7,4,true, updateRate, true);
+        down = new Animation(critterSheet,0,6,7,6,true, updateRate, true);
 
         Animation[] critterAnimation = {up,down,left,right};
 

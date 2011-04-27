@@ -29,7 +29,7 @@ public class TowerManager {
 
     private ArrayList<Tower> towerList = new ArrayList<Tower>();
     private ArrayList<Critter> critterList;
-    private final Image[][] towerSprites = new Image[3][];
+    private final Image[][] towerSprites;
     private AnimationLoader spriteLoader = new AnimationLoader();
     
     // Tower types
@@ -38,11 +38,10 @@ public class TowerManager {
     public final static int ICE = 2;
 
 
-    public TowerManager() throws SlickException {
+    public TowerManager(Image[][] towerSprites) throws SlickException {
         
-        towerSprites[NORMAL] = spriteLoader.getTowerSprites(NORMAL);
-        towerSprites[FIRE] = spriteLoader.getTowerSprites(FIRE);
-        towerSprites[ICE] = spriteLoader.getTowerSprites(ICE);
+        this.towerSprites = towerSprites;
+        
     }
 
     /*
