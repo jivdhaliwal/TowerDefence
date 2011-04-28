@@ -1,0 +1,13 @@
+<Settings>
+	<Player startingMoney="1000" health="100"/>
+	<Critter>
+		<NORMALCritter health="100" speed="1" />
+		<FIRECritter health="75" speed="2"/>
+		<ICECritter health="150" speed="0.75"/>
+	</Critter>
+	<Tower>
+		<NORMALTower baseDPS="25" range="128" lockOn="true"/>
+		<FIRETower baseDPS="25" range="128" lockOn="true"/>
+		<ICETower baseDPS="25" range="128" lockOn="true"/>
+	</Tower>
+</Settings>
