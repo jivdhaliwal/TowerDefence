@@ -41,25 +41,15 @@ public class CritterFollowPathComponent extends Component {
     private Path path;
     
 
-    public CritterFollowPathComponent( String id , Path path, int critterType) {
+    public CritterFollowPathComponent( String id , Path path, int type) {
         this.id = id;
 
         targetIndex = 1;
         distance = GameplayState.TILESIZE;
 
-        //Set speed of critters. Anything higher than 0.2f is unstable at 60fps.
-        //Default = 0.08
-        if(critterType==FIRE) {
-            critterSpeed = 0.16f;
-        } else if(critterType==ICE) {
-            critterSpeed = 0.06f;
-        } else if(critterType==BOSS) {
-            critterSpeed = 0.03f;
-        } else {
-            critterSpeed = 0.08f;
-        }
-
-
+        critterSpeed= (float)GameplayState.critterSpeed[type] * 0.08f;
+        
+        
         this.path = path;
     }
 

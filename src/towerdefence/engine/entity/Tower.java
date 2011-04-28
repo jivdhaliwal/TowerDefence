@@ -7,6 +7,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import towerdefence.GameplayState;
 import towerdefence.engine.component.Component;
 
 /**
@@ -26,6 +27,7 @@ public class Tower extends Entity {
 
     float range;
     float damagePerSec;
+    private int type;
 
     private int shootingCounter;
 
@@ -34,11 +36,9 @@ public class Tower extends Entity {
 
     public Tower(String id) throws SlickException{
         super(id);
-        range = 128;
-        damagePerSec = 25;
 
         this.rotation=0;
-
+        
     }
 
     /*
@@ -97,6 +97,13 @@ public class Tower extends Entity {
      */
     public void setSprites(Image[] sprites) {
         this.sprites = sprites;
+    }
+    
+    @Override
+    public void setType(int type) {
+        this.type=type;
+        range = GameplayState.towerRange[type];
+        damagePerSec = GameplayState.baseDPS[type];
     }
 
     @Override

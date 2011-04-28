@@ -53,9 +53,7 @@ public class TowerManager {
         tower.setType(type);
         tower.setSprites(getTowerSprites()[type]);
         tower.AddComponent(new ImageRenderComponent("CritterRender", getTowerSprites()[type][0]));
-        if (!containsCritter(tower)) {
-            towerList.add(tower);
-        }
+        towerList.add(tower);
     }
 
     public void deleteTower(Tower tower) {

@@ -2,6 +2,7 @@ package towerdefence.engine.entity;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
+import towerdefence.GameplayState;
 import towerdefence.engine.component.Component;
 
 /**
@@ -25,6 +26,12 @@ public class Critter extends Entity {
         super(id);
         isDead = false;
         health = 100;
+    }
+    
+    @Override
+    public void setType(int type) {
+        this.type = type;
+        health = GameplayState.critterHealth[type];
     }
 
     public void takeDamage(float damage) {

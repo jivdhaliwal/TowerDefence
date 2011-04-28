@@ -63,41 +63,6 @@ public class Settings {
     }
 
     /**
-     * @return the critterHealth
-     */
-    public int getCritterHealth(int type) {
-        return critterHealth[type];
-    }
-
-    /**
-     * @return the critterSpeed
-     */
-    public double getCritterSpeed(int type) {
-        return critterSpeed[type];
-    }
-
-    /**
-     * @return the baseDPS
-     */
-    public int getBaseDPS(int type) {
-        return baseDPS[type];
-    }
-
-    /**
-     * @return the range
-     */
-    public int getRange(int type) {
-        return range[type];
-    }
-
-    /**
-     * @return the lockOn
-     */
-    public boolean getLockOn(int type) {
-        return lockOn[type];
-    }
-
-    /**
      * @return the startingMoney
      */
     public int getStartingMoney() {
@@ -110,6 +75,43 @@ public class Settings {
     public int getPlayerHealth() {
         return playerHealth;
     }
+
+    /**
+     * @return the critterHealth
+     */
+    public int[] getCritterHealth() {
+        return critterHealth;
+    }
+
+    /**
+     * @return the critterSpeed
+     */
+    public double[] getCritterSpeed() {
+        return critterSpeed;
+    }
+
+    /**
+     * @return the baseDPS
+     */
+    public int[] getBaseDPS() {
+        return baseDPS;
+    }
+
+    /**
+     * @return the range
+     */
+    public int[] getRange() {
+        return range;
+    }
+
+    /**
+     * @return the lockOn
+     */
+    public boolean[] getLockOn() {
+        return lockOn;
+    }
+
+
     
     
 }

@@ -26,6 +26,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
 import towerdefence.engine.AnimationLoader;
+import towerdefence.engine.Settings;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Tower;
@@ -48,6 +49,8 @@ public class GameplayState extends BasicGameState {
     public final static int ICE = 2;
     // Critter type
     public final static int BOSS = 3;
+    
+    public Settings settings;
     
     private AnimationLoader spriteLoader = new AnimationLoader();
     private Image[][] towerSprites  = new Image[3][];
@@ -98,6 +101,13 @@ public class GameplayState extends BasicGameState {
     private int targetX;
     private int targetY;
     
+    public static int startingMoney;
+    public static int playerHealth;
+    public static int[] critterHealth;
+    public static double[] critterSpeed;
+    public static int[] baseDPS;
+    public static int[] towerRange;
+    public static boolean[] lockOn;
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -109,6 +119,8 @@ public class GameplayState extends BasicGameState {
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
+        
+        settings = new Settings();
         
         // Load Level
         level = new LevelLoader("data/levels/snake.xml");
@@ -161,6 +173,15 @@ public class GameplayState extends BasicGameState {
             critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
             critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0)};
         wanderingNPCAnim = new Animation(wanderingNPC, 230,true);
+        
+        // Load settings
+        startingMoney = settings.getStartingMoney();
+        playerHealth = settings.getPlayerHealth();
+        critterHealth = settings.getCritterHealth();
+        critterSpeed = settings.getCritterSpeed();
+        baseDPS = settings.getBaseDPS();
+        towerRange = settings.getRange();
+        
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
