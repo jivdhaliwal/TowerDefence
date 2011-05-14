@@ -109,13 +109,13 @@ public class Tower extends Entity {
         this.type=type;
         range = GameplayState.towerRange[type];
         damagePerSec = GameplayState.baseDPS[type];
+        circle = new Circle(position.x+(GameplayState.TILESIZE/2), position.y+(GameplayState.TILESIZE/2), range);
     }
     
     @Override
     public void setPosition(Vector2f position)
     {
         this.position = position;
-        circle = new Circle(position.x+(GameplayState.TILESIZE/2), position.y+(GameplayState.TILESIZE/2), range);
     }
 
     @Override
