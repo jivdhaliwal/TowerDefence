@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.GameplayState;
@@ -25,20 +27,23 @@ public class Tower extends Entity {
     
     private Image[] sprites;
 
-    float range;
+    private float range;
     float damagePerSec;
     private int type;
 
     private int shootingCounter;
 
     boolean isShooting;
+    
+    private Circle circle;
+    private int mouseXTile;
+    private int mouseYTile;
 
 
     public Tower(String id) throws SlickException{
         super(id);
 
         this.rotation=0;
-        
     }
 
     /*
@@ -105,10 +110,22 @@ public class Tower extends Entity {
         range = GameplayState.towerRange[type];
         damagePerSec = GameplayState.baseDPS[type];
     }
+    
+    @Override
+    public void setPosition(Vector2f position)
+    {
+        this.position = position;
+        circle = new Circle(position.x+(GameplayState.TILESIZE/2), position.y+(GameplayState.TILESIZE/2), range);
+    }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
+        Input i = gc.getInput();
+        
+        mouseXTile = (int) Math.floor((i.getMouseX() / GameplayState.TILESIZE));
+        mouseYTile = (int) Math.floor((i.getMouseY() / GameplayState.TILESIZE));
+        
         shootingCounter-=delta;
 
         if(shootingCounter<=0) {
@@ -127,6 +144,10 @@ public class Tower extends Entity {
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {
 
+        if(mouseXTile==getTilePosition().x && mouseYTile==getTilePosition().y) {
+            gr.draw(circle);
+        }
+        
         if(renderComponent != null) {
             renderComponent.render(gc, sb, gr);
         }
@@ -148,7 +169,5 @@ public class Tower extends Entity {
         }
         
     }
-
-    
     
 }

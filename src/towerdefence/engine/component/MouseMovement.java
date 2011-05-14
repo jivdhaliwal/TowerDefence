@@ -21,7 +21,8 @@ public class MouseMovement extends Component {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
-        Input i = gc.getInput();i.addMouseListener(new MouseListener(){
+        Input i = gc.getInput();
+        i.addMouseListener(new MouseListener(){
 
             public void mouseWheelMoved(int change) {
             }
