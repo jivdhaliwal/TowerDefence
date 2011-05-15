@@ -27,7 +27,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
 import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.Settings;
-import towerdefence.engine.Wallet;
+import towerdefence.engine.Player;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Tower;
@@ -190,9 +190,10 @@ public class GameplayState extends BasicGameState {
         towerCost = settings.getCost();
         
         // Initialise wallet singleton
-        Wallet.getInstance().setCash(startingMoney);
-        Wallet.getInstance().setCritterReward(critterReward);
-        Wallet.getInstance().setTowerCost(towerCost);
+        Player.getInstance().setCash(startingMoney);
+        Player.getInstance().setCritterReward(critterReward);
+        Player.getInstance().setTowerCost(towerCost);
+        Player.getInstance().setHealth(playerHealth);
         
     }
 
@@ -216,7 +217,9 @@ public class GameplayState extends BasicGameState {
         towerFactory.render(container, game, g);
         
         trueTypeFont.drawString(50, 200,
-                "Cash : $" + String.valueOf(Wallet.getInstance().getCash()), Color.white);
+                "Cash : $" + String.valueOf(Player.getInstance().getCash()), Color.white);
+        trueTypeFont.drawString(50, 250,
+                "Health : " + String.valueOf(Player.getInstance().getHealth()), Color.white);
         
         trueTypeFont.drawString(50, 110,
                 "# of Critters : " + String.valueOf(tempCritterCount), Color.white);

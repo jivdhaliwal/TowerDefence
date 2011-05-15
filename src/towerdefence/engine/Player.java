@@ -8,24 +8,25 @@ import towerdefence.GameplayState;
  * 
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
-public class Wallet {
+public class Player {
     
-    private static Wallet wallet = null;
+    private static Player player = null;
     
     private int cash;
+    private int health;
     
     private int[] critterReward;
     private int[] towerCost;
 
-    private Wallet() {
+    private Player() {
         cash = 0;
     }
     
-    public static Wallet getInstance() {
-        if(wallet==null) { 
-            wallet = new Wallet();
+    public static Player getInstance() {
+        if(player==null) { 
+            player = new Player();
         }
-        return wallet;
+        return player;
     }
 
     /**
@@ -49,11 +50,11 @@ public class Wallet {
      * @param type Critter type
      */
     public void killCritter(int type) {
-        cash+=critterReward[type];
+        setCash(getCash() + critterReward[type]);
     }
     
     public void addTower(int type) {
-        cash-=towerCost[type];
+        setCash(getCash() - getTowerCost()[type]);
     }
 
     /**
@@ -74,7 +75,29 @@ public class Wallet {
      * @return the towerCost
      */
     public int getTowerCost(int type) {
-        return towerCost[type];
+        return getTowerCost()[type];
     }
+
+    /**
+     * @return the health
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
+     * @param health the health to set
+     */
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    /**
+     * @return the towerCost
+     */
+    public int[] getTowerCost() {
+        return towerCost;
+    }
+
     
 }

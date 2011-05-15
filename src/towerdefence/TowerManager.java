@@ -13,7 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.engine.AnimationLoader;
-import towerdefence.engine.Wallet;
+import towerdefence.engine.Player;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.*;
 
@@ -50,8 +50,8 @@ public class TowerManager {
      */
     public void addTower(String id, Vector2f position, int type) throws SlickException {
         
-        if(Wallet.getInstance().getCash()-Wallet.getInstance().getTowerCost(type) >=0) {
-            Wallet.getInstance().addTower(type);
+        if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(type) >=0) {
+            Player.getInstance().addTower(type);
             Tower tower = new Tower(id);
             tower.setPosition(position);
             tower.setType(type);

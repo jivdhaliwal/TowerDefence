@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import towerdefence.GameplayState;
+import towerdefence.engine.Player;
 
 /**
  *
@@ -88,22 +89,26 @@ public class CritterFollowPathComponent extends Component {
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
 
-        position = entity.getPosition();
+        if(entity!=null) {
+            position = entity.getPosition();
+        
 
-        if (path!=null && targetIndex < path.getLength()) {
-            currentStep = path.getStep(targetIndex-1);
-            targetStep = path.getStep(targetIndex);
-            if (distance > 0) {
-                moveToTile(position, currentStep, targetStep, delta);
-                distance-=delta*critterSpeed;
-            } else if (distance <= 0) {
-                entity.setPosition(new Vector2f(targetStep.getX()*GameplayState.TILESIZE,
-                        targetStep.getY()*GameplayState.TILESIZE));
-                targetIndex++;
-                distance = (float)GameplayState.TILESIZE;
+            if (path != null && targetIndex < path.getLength()) {
+                currentStep = path.getStep(targetIndex - 1);
+                targetStep = path.getStep(targetIndex);
+                if (distance > 0) {
+                    moveToTile(position, currentStep, targetStep, delta);
+                    distance -= delta * critterSpeed;
+                } else if (distance <= 0) {
+                    entity.setPosition(new Vector2f(targetStep.getX() * GameplayState.TILESIZE,
+                            targetStep.getY() * GameplayState.TILESIZE));
+                    targetIndex++;
+                    distance = (float) GameplayState.TILESIZE;
+                }
+            } else if (targetIndex >= path.getLength()) {
+                Player.getInstance().setHealth(Player.getInstance().getHealth() - 1);
+                entity = null;
             }
-        } else if((path==null || targetIndex >= path.getLength())) {
-            entity.killEntity();
         }
     }
 

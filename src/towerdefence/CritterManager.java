@@ -11,7 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
 import towerdefence.engine.AnimationLoader;
-import towerdefence.engine.Wallet;
+import towerdefence.engine.Player;
 import towerdefence.engine.component.CritterAnimationComponent;
 import towerdefence.engine.component.CritterFollowPathComponent;
 import towerdefence.engine.component.TopDownMovement;
@@ -89,7 +89,9 @@ public class CritterManager {
         // Remove dead critters
         for (int i = 0; i < critterList.size(); i++) {
             if (critterList.get(i).isDead()) {
-                Wallet.getInstance().killCritter(critterList.get(i).getType());
+                Player.getInstance().killCritter(critterList.get(i).getType());
+                critterList.remove(i);
+            } else if (critterList.get(i)==null) {
                 critterList.remove(i);
             }
         }
