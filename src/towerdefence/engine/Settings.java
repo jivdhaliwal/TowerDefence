@@ -18,13 +18,20 @@ public class Settings {
     
     private final XMLElement root;
     
+    // Player settings
     private int startingMoney;
     private int playerHealth;
+    
+    // Critter settings
     private int[] critterHealth = new int[3];
     private double[] critterSpeed = new double[3];
+    private int[] reward = new int[3];
+    
+    // Tower settings
     private int[] baseDPS = new int[3];
     private int[] range = new int[3];
     private boolean[] lockOn = new boolean[3];
+    private int[] cost = new int[3];
     
     public Settings() throws SlickException {
         XMLParser parser = new XMLParser();
@@ -49,6 +56,7 @@ public class Settings {
         for(int i=0;i<critters.size();i++) {
             critterHealth[i]=critters.get(i).getIntAttribute("health");
             critterSpeed[i]=critters.get(i).getDoubleAttribute("speed");
+            reward[i]=critters.get(i).getIntAttribute("reward");
         }
     }
     
@@ -59,6 +67,7 @@ public class Settings {
             baseDPS[i]=towers.get(i).getIntAttribute("baseDPS");
             range[i]=towers.get(i).getIntAttribute("range");
             lockOn[i]=towers.get(i).getBooleanAttribute("lockOn");
+            cost[i]=towers.get(i).getIntAttribute("cost");
         }
     }
 
@@ -109,6 +118,20 @@ public class Settings {
      */
     public boolean[] getLockOn() {
         return lockOn;
+    }
+
+    /**
+     * @return the reward
+     */
+    public int[] getReward() {
+        return reward;
+    }
+
+    /**
+     * @return the cost
+     */
+    public int[] getCost() {
+        return cost;
     }
 
 

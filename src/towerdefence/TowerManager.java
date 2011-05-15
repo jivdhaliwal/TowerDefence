@@ -13,6 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.engine.AnimationLoader;
+import towerdefence.engine.Wallet;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.*;
 
@@ -48,12 +49,16 @@ public class TowerManager {
      * Default Tower when no type is defined
      */
     public void addTower(String id, Vector2f position, int type) throws SlickException {
-        Tower tower = new Tower(id);
-        tower.setPosition(position);
-        tower.setType(type);
-        tower.setSprites(getTowerSprites()[type]);
-        tower.AddComponent(new ImageRenderComponent("CritterRender", getTowerSprites()[type][0]));
-        towerList.add(tower);
+        
+        if(Wallet.getInstance().getCash()-Wallet.getInstance().getTowerCost(type) >=0) {
+            Wallet.getInstance().addTower(type);
+            Tower tower = new Tower(id);
+            tower.setPosition(position);
+            tower.setType(type);
+            tower.setSprites(getTowerSprites()[type]);
+            tower.AddComponent(new ImageRenderComponent("CritterRender", getTowerSprites()[type][0]));
+            towerList.add(tower);
+        }
     }
 
     public void deleteTower(Tower tower) {

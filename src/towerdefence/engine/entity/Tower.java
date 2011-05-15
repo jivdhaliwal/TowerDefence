@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
@@ -146,6 +147,8 @@ public class Tower extends Entity {
 
         if(mouseXTile==getTilePosition().x && mouseYTile==getTilePosition().y) {
             gr.draw(circle);
+            gr.drawString("Range = "+(int)range, position.x+32, position.y+20);
+            gr.drawString("DPS = "+(int)damagePerSec, position.x+32, position.y+35);
         }
         
         if(renderComponent != null) {

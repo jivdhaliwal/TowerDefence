@@ -56,8 +56,9 @@ public abstract class Entity {
 
     public void AddComponent(Component component)
     {
-        if(RenderComponent.class.isInstance(component))
+        if(RenderComponent.class.isInstance(component)) {
             renderComponent = (RenderComponent)component;
+        }
 
         component.setOwnerEntity(this);
         components.add(component);

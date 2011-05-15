@@ -28,6 +28,15 @@ public class Critter extends Entity {
         health = 100;
     }
     
+    /**
+     * @return the type
+     */
+    @Override
+    public int getType() {
+        return type;
+    }
+
+    
     @Override
     public void setType(int type) {
         this.type = type;
@@ -52,6 +61,7 @@ public class Critter extends Entity {
         }
     }
 
+    
 
 
 }

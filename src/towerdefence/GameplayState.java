@@ -27,6 +27,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
 import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.Settings;
+import towerdefence.engine.Wallet;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Tower;
@@ -108,6 +109,8 @@ public class GameplayState extends BasicGameState {
     public static int[] baseDPS;
     public static int[] towerRange;
     public static boolean[] lockOn;
+    public int[] critterReward;
+    public int[] towerCost;
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -121,6 +124,8 @@ public class GameplayState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         
         settings = new Settings();
+        
+        
         
         // Load Level
         level = new LevelLoader("data/levels/snake.xml");
@@ -181,6 +186,13 @@ public class GameplayState extends BasicGameState {
         critterSpeed = settings.getCritterSpeed();
         baseDPS = settings.getBaseDPS();
         towerRange = settings.getRange();
+        critterReward = settings.getReward();
+        towerCost = settings.getCost();
+        
+        // Initialise wallet singleton
+        Wallet.getInstance().setCash(startingMoney);
+        Wallet.getInstance().setCritterReward(critterReward);
+        Wallet.getInstance().setTowerCost(towerCost);
         
     }
 
@@ -202,6 +214,9 @@ public class GameplayState extends BasicGameState {
         tempCritterCount=critterManager.getCritters().size();
 
         towerFactory.render(container, game, g);
+        
+        trueTypeFont.drawString(50, 200,
+                "Cash : $" + String.valueOf(Wallet.getInstance().getCash()), Color.white);
         
         trueTypeFont.drawString(50, 110,
                 "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
