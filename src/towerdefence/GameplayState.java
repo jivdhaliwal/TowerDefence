@@ -230,46 +230,6 @@ public class GameplayState extends BasicGameState {
         
     }
 
-    private Input inputHandler(GameContainer container, StateBasedGame game) throws SlickException {
-        //        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
-        Input input = container.getInput();
-        if (mouseCounter <= 0) {
-            
-            if (input.isKeyPressed(Input.KEY_F2)) {
-                game.enterState(TowerDefence.CUDATESTSTATE);
-                mouseCounter=100;
-            }
-
-            if (input.isKeyPressed(Input.KEY_ENTER)) {
-                startWaves = true;
-                mouseCounter=100;
-            }
-            
-            if (input.isKeyPressed(Input.KEY_R)) {
-                container.reinit();
-            }
-            
-            if (input.isKeyPressed(Input.KEY_P)) {
-                if(container.isPaused()) {
-                    container.resume();
-                } else {
-                    container.pause();
-                }
-            }
-            
-            if (input.isKeyPressed(Input.KEY_1)) {
-                setSelectedTower(input,TowerManager.NORMAL);
-            }
-            if (input.isKeyPressed(Input.KEY_2)) {
-                setSelectedTower(input,TowerManager.FIRE);
-            }
-            if (input.isKeyPressed(Input.KEY_3)) {
-                setSelectedTower(input,TowerManager.ICE);;
-            }
-        }
-        return input;
-    }
-    
     private void mouseListener(Input input) {
         input.addMouseListener(new MouseListener(){
 
@@ -410,9 +370,45 @@ public class GameplayState extends BasicGameState {
         mouseCounter -= delta;
         waveCounter -= delta;
         generateCounter -= delta;
-        
-        Input input = inputHandler(container, game);
-        
+
+//        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
+
+        Input input = container.getInput();
+
+        if (mouseCounter <= 0) {
+            
+            if (input.isKeyPressed(Input.KEY_F2)) {
+                game.enterState(TowerDefence.CUDATESTSTATE);
+                mouseCounter=100;
+            }
+
+            if (input.isKeyPressed(Input.KEY_ENTER)) {
+                startWaves = true;
+                mouseCounter=100;
+            }
+            
+            if (input.isKeyPressed(Input.KEY_R)) {
+                container.reinit();
+            }
+            
+            if (input.isKeyPressed(Input.KEY_P)) {
+                if(container.isPaused()) {
+                    container.resume();
+                } else {
+                    container.pause();
+                }
+            }
+            
+            if (input.isKeyPressed(Input.KEY_1)) {
+                setSelectedTower(input,TowerManager.NORMAL);
+            }
+            if (input.isKeyPressed(Input.KEY_2)) {
+                setSelectedTower(input,TowerManager.FIRE);
+            }
+            if (input.isKeyPressed(Input.KEY_3)) {
+                setSelectedTower(input,TowerManager.ICE);;
+            }
+        }
         generateWaves();
 
 //        for(CritterManager wave : critterWaveList) {
