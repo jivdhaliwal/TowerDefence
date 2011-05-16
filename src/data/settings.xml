@@ -1,5 +1,5 @@
 <Settings>
-	<Player startingMoney="1000" health="100"/>
+	<Player startingMoney="500" health="20"/>
 	<Critter>
 <!--                For smooth movement don't increase the speed past 2.5-->
 		<NORMALCritter health="100" speed="1" reward="50" />

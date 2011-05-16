@@ -1,9 +1,15 @@
 package towerdefence.engine.entity;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.ShapeFill;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.GameplayState;
 import towerdefence.engine.component.Component;
+
 
 /**
  *
@@ -14,18 +20,21 @@ import towerdefence.engine.component.Component;
  */
 public class Critter extends Entity {
 
-
     // Critter types
     public final static int NORMAL = 0;
     public final static int FIRE = 1;
     public final static int ICE = 2;
     public final static int BOSS = 3;
     private int type;
+    
+    private Rectangle healthBar;
+    private ShapeFill healthCol;
 
     public Critter(String id) {
         super(id);
         isDead = false;
         health = 100;
+        healthBar = new Rectangle(position.x, position.y, GameplayState.TILESIZE, 3);
     }
     
     /**
@@ -45,6 +54,16 @@ public class Critter extends Entity {
 
     public void takeDamage(float damage) {
         health-=damage;
+        healthBar.setSize((health/GameplayState.critterHealth[type])*GameplayState.TILESIZE, 3);
+    }
+    
+    @Override
+    public void setPosition(Vector2f position)
+    {
+        this.position = position;
+        healthBar.setX(position.x);
+        healthBar.setY(position.y);
+        
     }
 
     @Override
@@ -59,9 +78,22 @@ public class Critter extends Entity {
         {
             component.update(gc,sb,delta);
         }
+        
+        
     }
-
     
-
+    @Override
+    public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
+    {
+        if(renderComponent != null) {
+            renderComponent.render(gc, sb, gr);
+        }
+        
+        gr.draw(healthBar);
+        gr.setColor(Color.red);
+        gr.fill(healthBar);
+        gr.setColor(Color.white);
+        
+    }
 
 }

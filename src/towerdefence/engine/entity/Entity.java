@@ -72,8 +72,9 @@ public abstract class Entity {
     {
         for(Component comp : components)
         {
-            if( comp.getId().equalsIgnoreCase(id) )
+            if( comp.getId().equalsIgnoreCase(id) ) {
                 return comp;
+            }
         }
 
         return null;

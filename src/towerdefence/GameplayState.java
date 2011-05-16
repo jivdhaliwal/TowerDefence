@@ -337,16 +337,17 @@ public class GameplayState extends BasicGameState {
     private void renderText() {
         trueTypeFont.drawString(50, 200,
                 "Cash : $" + String.valueOf(Player.getInstance().getCash()), Color.white);
-        trueTypeFont.drawString(50, 250,
+        trueTypeFont.drawString(50, 230,
                 "Health : " + String.valueOf(Player.getInstance().getHealth()), Color.white);
         
-        trueTypeFont.drawString(50, 110,
-                "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
-        trueTypeFont.drawString(50, 160,
-                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+//        trueTypeFont.drawString(50, 110,
+//                "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
+//        trueTypeFont.drawString(50, 160,
+//                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+        
         if(startWaves && waveCounter>0) {
             trueTypeFont.drawString(50, 530,
-                "Next wave in : " + String.valueOf(waveCounter/1000.0) + " seconds", Color.white);
+                "Next wave in : " + String.valueOf(waveCounter/1000) + " seconds", Color.white);
         }
 
         if(!startWaves) {
@@ -355,7 +356,7 @@ public class GameplayState extends BasicGameState {
         }
     }
     
-    private void setSelectedTower(Input input, int type) throws SlickException {
+    private void setSelectedTower(int type) throws SlickException {
         selectedTower = new Tower("selected");
         selectedTower.setType(type);
         selectedTower.setSprites(towerSprites[type]);
@@ -400,13 +401,13 @@ public class GameplayState extends BasicGameState {
             }
             
             if (input.isKeyPressed(Input.KEY_1)) {
-                setSelectedTower(input,TowerManager.NORMAL);
+                setSelectedTower(TowerManager.NORMAL);
             }
             if (input.isKeyPressed(Input.KEY_2)) {
-                setSelectedTower(input,TowerManager.FIRE);
+                setSelectedTower(TowerManager.FIRE);
             }
             if (input.isKeyPressed(Input.KEY_3)) {
-                setSelectedTower(input,TowerManager.ICE);;
+                setSelectedTower(TowerManager.ICE);;
             }
         }
         generateWaves();
@@ -433,9 +434,10 @@ public class GameplayState extends BasicGameState {
     }
     
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()+3) , TILESIZE*(map.getHeight()-2));
+        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()-2) , TILESIZE*(map.getHeight()-2));
         
         waterAnimation.render(container, game, g);
+        
         map.render(0, 0,1);
         map.render(0, 0,2);
         
