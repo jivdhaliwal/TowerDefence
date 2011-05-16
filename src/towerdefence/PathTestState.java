@@ -14,10 +14,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
-import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import towerdefence.engine.component.MouseMovement;
 import towerdefence.engine.entity.Critter;
 
@@ -161,8 +159,9 @@ public class PathTestState extends BasicGameState {
             public void inputStarted() {
             }
         });
-        for(Critter enemy : critters)
+        for(Critter enemy : critters) {
             enemy.update(container, game, delta);
+        }
 
     }
 
