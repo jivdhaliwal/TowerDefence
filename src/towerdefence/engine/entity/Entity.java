@@ -174,8 +174,9 @@ public abstract class Entity {
 
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {
-        if(renderComponent != null)
+        if(renderComponent != null) {
             renderComponent.render(gc, sb, gr);
+        }
     }
 
     public int getType() {

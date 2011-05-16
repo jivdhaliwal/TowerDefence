@@ -166,6 +166,32 @@ public class GameplayState extends BasicGameState {
 
     }
 
+    private void generateWaves() throws SlickException {
+        // Reads level and generates the waves
+        if(startWaves) {
+            if (waveNumber < level.getNumWaves()) {
+                Wave currentWave = level.getWave(waveNumber);
+                if (waveCounter <= 0) {
+                    if (generateCounter <= 0) {
+                        if (critterCount > 0) {
+                            critterManager.addCritter(String.valueOf((waveNumber * 1000) + critterCount),
+                                    level.getWave(waveNumber).getCritterType());
+                            critterCount--;
+                            generateCounter = 1000;
+                        } else if (critterCount <=0 ) {
+                            waveCounter = currentWave.getTimeToWait();
+                            waveNumber++;
+                            if(waveNumber<level.getNumWaves()){
+                                critterCount = level.getWave(waveNumber).getNumCritters();
+                            }
+                        }
+                        
+                    }
+                } 
+            }
+        }
+    }
+
     private void loadResources() throws SlickException {
         // Load tower sprites
         towerSprites[NORMAL] = spriteLoader.getTowerSprites(NORMAL);
@@ -204,68 +230,9 @@ public class GameplayState extends BasicGameState {
         
     }
 
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()+3) , TILESIZE*(map.getHeight()-2));
-        
-        waterAnimation.render(container, game, g);
-        map.render(0, 0,1);
-        map.render(0, 0,2);
-        
-        if (tileHighlight != null) {
-            tileHighlight.draw(((int) Math.floor((mouseX / GameplayState.TILESIZE))) * GameplayState.TILESIZE,
-                    ((int) Math.floor((mouseY / GameplayState.TILESIZE))) * GameplayState.TILESIZE);
-        }
-        
-        guiMap.render(21*32, 0);
-
-
-//        for(CritterManager wave : critterWaveList) {
-//            wave.render(container, game, g);
-//            tempCritterCount+=wave.getCritters().size();
-//        }
-
-        critterManager.render(container, game, g);
-        tempCritterCount=critterManager.getCritters().size();
-
-        towerFactory.render(container, game, g);
-        
-        trueTypeFont.drawString(50, 200,
-                "Cash : $" + String.valueOf(Player.getInstance().getCash()), Color.white);
-        trueTypeFont.drawString(50, 250,
-                "Health : " + String.valueOf(Player.getInstance().getHealth()), Color.white);
-        
-        trueTypeFont.drawString(50, 110,
-                "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
-        trueTypeFont.drawString(50, 160,
-                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
-        if(startWaves && waveCounter>0) {
-            trueTypeFont.drawString(50, 530,
-                "Next wave in : " + String.valueOf(waveCounter/1000.0) + " seconds", Color.white);
-        }
-
-        if(!startWaves) {
-            trueTypeFont.drawString(50, 530,
-                "Press Enter to begin waves", Color.white);
-        }
-
-        wanderingNPCAnim.draw(50f, 32f);
-
-        if(selectedTower!=null) {
-            selectedTower.render(container, game, g);
-        }
-
-    }
-
-    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-
-        mouseCounter -= delta;
-        waveCounter -= delta;
-        generateCounter -= delta;
-
-//        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
-
+    private Input inputHandler(GameContainer container, StateBasedGame game) throws SlickException {
+        //        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
         Input input = container.getInput();
-
         if (mouseCounter <= 0) {
             
             if (input.isKeyPressed(Input.KEY_F2)) {
@@ -300,46 +267,10 @@ public class GameplayState extends BasicGameState {
                 setSelectedTower(input,TowerManager.ICE);;
             }
         }
-
-
-        // Reads level and generates the waves
-        if(startWaves) {
-            if (waveNumber < level.getNumWaves()) {
-                Wave currentWave = level.getWave(waveNumber);
-                if (waveCounter <= 0) {
-                    if (generateCounter <= 0) {
-                        if (critterCount > 0) {
-
-                            critterManager.addCritter(String.valueOf((waveNumber * 1000) + critterCount),
-                                    level.getWave(waveNumber).getCritterType());
-                            critterCount--;
-                            generateCounter = 1000;
-                        } else if (critterCount <=0 ) {
-                            waveCounter = currentWave.getTimeToWait();
-                            waveNumber++;
-                            if(waveNumber<level.getNumWaves()){
-                                critterCount = level.getWave(waveNumber).getNumCritters();
-                            }
-                        }
-                        
-                    }
-                } 
-            }
-        }
-
-//        for(CritterManager wave : critterWaveList) {
-//            wave.update(container, game, delta);
-//            // Adds critters from each wave to the temp critter list
-//            tempCritterList.addAll(wave.getCritters());
-//        }
-        critterManager.update(container, game, delta);
-//        tempCritterList=critterManager.getCritters();
-        if(critterManager.getCritters()!=towerFactory.getCritterList()) {
-            towerFactory.updateCritterList(critterManager.getCritters());
-        }
-        
-        towerFactory.update(container, game, delta);
-
+        return input;
+    }
+    
+    private void mouseListener(Input input) {
         input.addMouseListener(new MouseListener(){
 
             public void mouseWheelMoved(int change) {
@@ -441,13 +372,29 @@ public class GameplayState extends BasicGameState {
             public void inputStarted() {
             }
         });
-        
-        if(selectedTower!=null) {
-            selectedTower.update(container, game, delta);
-        }
-
     }
 
+    private void renderText() {
+        trueTypeFont.drawString(50, 200,
+                "Cash : $" + String.valueOf(Player.getInstance().getCash()), Color.white);
+        trueTypeFont.drawString(50, 250,
+                "Health : " + String.valueOf(Player.getInstance().getHealth()), Color.white);
+        
+        trueTypeFont.drawString(50, 110,
+                "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
+        trueTypeFont.drawString(50, 160,
+                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+        if(startWaves && waveCounter>0) {
+            trueTypeFont.drawString(50, 530,
+                "Next wave in : " + String.valueOf(waveCounter/1000.0) + " seconds", Color.white);
+        }
+
+        if(!startWaves) {
+            trueTypeFont.drawString(50, 530,
+                "Press Enter to begin waves", Color.white);
+        }
+    }
+    
     private void setSelectedTower(Input input, int type) throws SlickException {
         selectedTower = new Tower("selected");
         selectedTower.setType(type);
@@ -456,6 +403,71 @@ public class GameplayState extends BasicGameState {
                 towerSprites[type][0]));
         selectedTower.setPosition(new Vector2f(mouseX-16,mouseY-16));
         selectedTower.isPlaced=false;
+    }
+
+    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+
+        mouseCounter -= delta;
+        waveCounter -= delta;
+        generateCounter -= delta;
+        
+        Input input = inputHandler(container, game);
+        
+        generateWaves();
+
+//        for(CritterManager wave : critterWaveList) {
+//            wave.update(container, game, delta);
+//            // Adds critters from each wave to the temp critter list
+//            tempCritterList.addAll(wave.getCritters());
+//        }
+        critterManager.update(container, game, delta);
+//        tempCritterList=critterManager.getCritters();
+        if(critterManager.getCritters()!=towerFactory.getCritterList()) {
+            towerFactory.updateCritterList(critterManager.getCritters());
+        }
+        
+        towerFactory.update(container, game, delta);
+
+        mouseListener(input);
+        
+        if(selectedTower!=null) {
+            selectedTower.update(container, game, delta);
+        }
+
+    }
+    
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()+3) , TILESIZE*(map.getHeight()-2));
+        
+        waterAnimation.render(container, game, g);
+        map.render(0, 0,1);
+        map.render(0, 0,2);
+        
+        if (tileHighlight != null) {
+            tileHighlight.draw(((int) Math.floor((mouseX / GameplayState.TILESIZE))) * GameplayState.TILESIZE,
+                    ((int) Math.floor((mouseY / GameplayState.TILESIZE))) * GameplayState.TILESIZE);
+        }
+        
+        guiMap.render(21*32, 0);
+
+
+//        for(CritterManager wave : critterWaveList) {
+//            wave.render(container, game, g);
+//            tempCritterCount+=wave.getCritters().size();
+//        }
+
+        critterManager.render(container, game, g);
+        tempCritterCount=critterManager.getCritters().size();
+
+        towerFactory.render(container, game, g);
+        renderText();
+
+        wanderingNPCAnim.draw(50f, 32f);
+
+        if(selectedTower!=null) {
+            selectedTower.render(container, game, g);
+        }
+
     }
 
 }
