@@ -60,6 +60,13 @@ public class TowerManager {
             towerList.add(tower);
         }
     }
+    
+    public void addTower(Tower tower) {
+        if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(tower.getType()) >=0) {
+            Player.getInstance().addTower(tower.getType());
+            towerList.add(tower);
+        }
+    }
 
     public void deleteTower(Tower tower) {
         towerList.remove(tower);

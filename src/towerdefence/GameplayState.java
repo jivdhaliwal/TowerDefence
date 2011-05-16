@@ -56,6 +56,9 @@ public class GameplayState extends BasicGameState {
     private AnimationLoader spriteLoader = new AnimationLoader();
     private Image[][] towerSprites  = new Image[3][];
     private Animation[][] critterAnimation = new Animation[3][];
+    private Image tileHighlight;
+    private Image validTile;
+    private Image invalidTile;
     
     Tower selectedTower=null;
     
@@ -111,6 +114,9 @@ public class GameplayState extends BasicGameState {
     public static boolean[] lockOn;
     public int[] critterReward;
     public int[] towerCost;
+    
+    private int mouseY;
+    private int mouseX;
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -124,9 +130,7 @@ public class GameplayState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         
         settings = new Settings();
-        
-        
-        
+ 
         // Load Level
         level = new LevelLoader("data/levels/snake.xml");
         guiMap = new TiledMap("data/gui/guiMap.tmx");
@@ -178,6 +182,9 @@ public class GameplayState extends BasicGameState {
             critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
             critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0)};
         wanderingNPCAnim = new Animation(wanderingNPC, 230,true);
+        validTile = new Image("data/sprites/validTileSelect.png");
+        invalidTile = new Image("data/sprites/invalidTileSelect.png");
+        tileHighlight = validTile;
         
         // Load settings
         startingMoney = settings.getStartingMoney();
@@ -203,6 +210,12 @@ public class GameplayState extends BasicGameState {
         waterAnimation.render(container, game, g);
         map.render(0, 0,1);
         map.render(0, 0,2);
+        
+        if (tileHighlight != null) {
+            tileHighlight.draw(((int) Math.floor((mouseX / GameplayState.TILESIZE))) * GameplayState.TILESIZE,
+                    ((int) Math.floor((mouseY / GameplayState.TILESIZE))) * GameplayState.TILESIZE);
+        }
+        
         guiMap.render(21*32, 0);
 
 
@@ -336,23 +349,24 @@ public class GameplayState extends BasicGameState {
                 if (mouseCounter <= 0) {
                     int currentXTile = (int) Math.floor((x / GameplayState.TILESIZE));
                     int currentYTile = (int) Math.floor((y / GameplayState.TILESIZE));
-                    if (button == 0) {
-                        if(currentXTile <= 21) {
+                    if (button == 0 && currentXTile <= 21 && selectedTower!=null) {
                             if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
                                     && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
-                                try {
-                                    java.util.Random towerType = new Random();
-                                    towerFactory.addTower(String.valueOf(x),
-                                            new Vector2f(currentXTile * GameplayState.TILESIZE,
-                                            currentYTile * GameplayState.TILESIZE),towerType.nextInt(3));
-
+//                                try {
+//                                    java.util.Random towerType = new Random();
+//                                    towerFactory.addTower(String.valueOf(x),
+//                                            new Vector2f(currentXTile * GameplayState.TILESIZE,
+//                                            currentYTile * GameplayState.TILESIZE),towerType.nextInt(3));
+                                    selectedTower.isPlaced=true;
+                                    selectedTower.setPosition(new Vector2f(currentXTile*TILESIZE,currentYTile*TILESIZE));
+                                    towerFactory.addTower(selectedTower);
+                                    selectedTower=null;
                                     pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
 
                                     mouseCounter = 100;
-                                } catch (SlickException ex) {
-                                    Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
+//                                } catch (SlickException ex) {
+//                                    Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
+//                                }
                         }
                     }
 //                    } else if (button == 1) {
@@ -370,21 +384,43 @@ public class GameplayState extends BasicGameState {
 //                            }
 //                        }
 //                    }
+                    if(button==1 && selectedTower!=null) {
+                        selectedTower=null;
+                    }
                 }
             }
 
             public void mousePressed(int button, int x, int y) {
-                if(button==1) {
-                    selectedTower=null;
-                }
+                
             }
 
             public void mouseReleased(int button, int x, int y) {
             }
 
             public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-                if(selectedTower!=null) {
-                    selectedTower.setPosition(new Vector2f(newx-16,newy-16));
+                
+                int currentXTile = (int) Math.floor((newx / GameplayState.TILESIZE));
+                
+                if (mouseCounter <= 0 && currentXTile <= 21) {
+                    int currentYTile = (int) Math.floor((newy / GameplayState.TILESIZE));
+                    mouseX = newx;
+                    mouseY = newy;
+                    
+
+                    if (selectedTower != null) {
+                        selectedTower.setPosition(new Vector2f(newx-16,newy-16));
+                    }
+                    
+                    
+                    if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
+                            && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
+                        tileHighlight = validTile;
+                    } else {
+                        tileHighlight = invalidTile;
+                    }
+                    mouseCounter = 32;
+                } else if (currentXTile>21) {
+                    tileHighlight = null;
                 }
             }
 
@@ -415,10 +451,11 @@ public class GameplayState extends BasicGameState {
     private void setSelectedTower(Input input, int type) throws SlickException {
         selectedTower = new Tower("selected");
         selectedTower.setType(type);
+        selectedTower.setSprites(towerSprites[type]);
         selectedTower.AddComponent(new ImageRenderComponent("CritterRender",
                 towerSprites[type][0]));
-        selectedTower.setPosition(new Vector2f(input.getMouseX()-16,
-                input.getMouseY()-16));
+        selectedTower.setPosition(new Vector2f(mouseX-16,mouseY-16));
+        selectedTower.isPlaced=false;
     }
 
 }

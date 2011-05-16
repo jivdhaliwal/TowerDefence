@@ -35,6 +35,7 @@ public class Tower extends Entity {
     private int shootingCounter;
 
     boolean isShooting;
+    public boolean isPlaced;
     
     private Circle circle;
     private int mouseXTile;
@@ -117,6 +118,8 @@ public class Tower extends Entity {
     public void setPosition(Vector2f position)
     {
         this.position = position;
+        circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
+        circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
     }
 
     @Override
@@ -124,8 +127,10 @@ public class Tower extends Entity {
     {
         Input i = gc.getInput();
         
-        mouseXTile = (int) Math.floor((i.getMouseX() / GameplayState.TILESIZE));
-        mouseYTile = (int) Math.floor((i.getMouseY() / GameplayState.TILESIZE));
+        mouseXTile = (int) Math.floor((i.getAbsoluteMouseX() / GameplayState.TILESIZE));
+        mouseYTile = (int) Math.floor((i.getAbsoluteMouseY() / GameplayState.TILESIZE));
+        
+        System.out.println(mouseXTile);
         
         shootingCounter-=delta;
 
@@ -144,8 +149,7 @@ public class Tower extends Entity {
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {
-
-        if(mouseXTile==getTilePosition().x && mouseYTile==getTilePosition().y) {
+        if(isPlaced && mouseXTile==getTilePosition().x && mouseYTile==getTilePosition().y) {
             gr.draw(circle);
             gr.drawString("Range = "+(int)range, position.x+32, position.y+20);
             gr.drawString("DPS = "+(int)damagePerSec, position.x+32, position.y+35);

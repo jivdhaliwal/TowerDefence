@@ -7,8 +7,8 @@
 		<ICECritter health="150" speed="0.75" reward="100"/>
 	</Critter>
 	<Tower>
-		<NORMALTower baseDPS="25" range="128" lockOn="true" cost="100"/>
-		<FIRETower baseDPS="25" range="128" lockOn="true" cost="150"/>
+		<NORMALTower baseDPS="25" range="66" lockOn="true" cost="100"/>
+		<FIRETower baseDPS="25" range="98" lockOn="true" cost="150"/>
 		<ICETower baseDPS="25" range="128" lockOn="true" cost="200"/>
 	</Tower>
 </Settings>
