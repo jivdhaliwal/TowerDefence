@@ -11,7 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class TowerDefence extends StateBasedGame
 {
      static int height = 22*32;
-     static int width = 22*32;
+     static int width = 27*32;
 
      static boolean fullscreen = false;
 
@@ -28,13 +28,18 @@ public class TowerDefence extends StateBasedGame
 
      
 
-     public TowerDefence(String title)
+     public TowerDefence(String title) throws SlickException
      {
           super(title);
 
 //          this.addState(new PathTestState(PATHTESTSTATE));
-          this.addState(new GameplayState(GAMEPLAYSTATE));
+          
+          GameplayState gameplaystate = new GameplayState(GAMEPLAYSTATE);
+          gameplaystate.loadLevel("data/levels/snake.xml");
+          this.addState(gameplaystate);
+          
           this.addState(new CudaTestState(CUDATESTSTATE));
+          
           this.enterState(GAMEPLAYSTATE);
 //          this.enterState(CUDATESTSTATE);
           //this.enterState(PATHTESTSTATE);

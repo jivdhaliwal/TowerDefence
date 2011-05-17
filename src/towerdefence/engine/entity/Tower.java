@@ -35,17 +35,20 @@ public class Tower extends Entity {
     private int shootingCounter;
 
     boolean isShooting;
-    public boolean isPlaced;
+    private boolean isPlaced=true;
+    private boolean isActive;
     
-    private Circle circle;
+    private Circle circle=null;
     private int mouseXTile;
     private int mouseYTile;
 
 
-    public Tower(String id) throws SlickException{
+    public Tower(String id, boolean isActive) throws SlickException{
         super(id);
 
         this.rotation=0;
+        this.isActive = isActive;
+        
     }
 
     /*
@@ -111,15 +114,21 @@ public class Tower extends Entity {
         this.type=type;
         range = GameplayState.towerRange[type];
         damagePerSec = GameplayState.baseDPS[type];
-        circle = new Circle(position.x+(GameplayState.TILESIZE/2), position.y+(GameplayState.TILESIZE/2), range);
+        circle.setRadius(range);
+        circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
+        circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
     }
     
     @Override
     public void setPosition(Vector2f position)
     {
         this.position = position;
-        circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
-        circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
+        if(circle==null) {
+            circle = new Circle(position.x+(GameplayState.TILESIZE/2),position.y+(GameplayState.TILESIZE/2),range);
+        } else {
+            circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
+            circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
+        }
     }
 
     @Override
@@ -130,13 +139,13 @@ public class Tower extends Entity {
         mouseXTile = (int) Math.floor((i.getAbsoluteMouseX() / GameplayState.TILESIZE));
         mouseYTile = (int) Math.floor((i.getAbsoluteMouseY() / GameplayState.TILESIZE));
         
-        System.out.println(mouseXTile);
-        
         shootingCounter-=delta;
 
-        if(shootingCounter<=0) {
-            findClosestCritter();
-            shootingCounter=100;
+        if(isActive) {
+            if(shootingCounter<=0) {
+                findClosestCritter();
+                shootingCounter=100;
+            }
         }
 
         for(Component component : components)
@@ -149,10 +158,17 @@ public class Tower extends Entity {
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {
-        if(isPlaced && mouseXTile==getTilePosition().x && mouseYTile==getTilePosition().y) {
-            gr.draw(circle);
+        
+        if(!isPlaced) {
+            if(circle!=null) {gr.draw(circle);}
             gr.drawString("Range = "+(int)range, position.x+32, position.y+20);
             gr.drawString("DPS = "+(int)damagePerSec, position.x+32, position.y+35);
+        } else if(isPlaced && mouseXTile==getTilePosition().x && mouseYTile==getTilePosition().y) {
+            if(isActive) {
+                if(circle!=null) {gr.draw(circle);}
+            }
+            gr.drawString("Range = "+(int)range, position.x, position.y+30);
+            gr.drawString("DPS = "+(int)damagePerSec, position.x, position.y+45);
         }
         
         if(renderComponent != null) {
@@ -175,6 +191,20 @@ public class Tower extends Entity {
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
         
+    }
+
+    /**
+     * @param isActive the isActive to set
+     */
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    /**
+     * @param isPlaced the isPlaced to set
+     */
+    public void setIsPlaced(boolean isPlaced) {
+        this.isPlaced = isPlaced;
     }
     
 }

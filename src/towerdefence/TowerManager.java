@@ -52,11 +52,11 @@ public class TowerManager {
         
         if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(type) >=0) {
             Player.getInstance().addTower(type);
-            Tower tower = new Tower(id);
+            Tower tower = new Tower(id, true);
             tower.setPosition(position);
             tower.setType(type);
             tower.setSprites(getTowerSprites()[type]);
-            tower.AddComponent(new ImageRenderComponent("CritterRender", getTowerSprites()[type][0]));
+            tower.AddComponent(new ImageRenderComponent("TowerRender", getTowerSprites()[type][0]));
             towerList.add(tower);
         }
     }

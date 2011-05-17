@@ -18,13 +18,16 @@ public class LevelLoader {
     private static XMLElement root;
     
     private String mapPath;
-
-
+    
+    private final String levelName;
 
     public LevelLoader(String filepath) throws SlickException {
         XMLParser parser = new XMLParser();
 
         root = parser.parse(filepath);
+        
+        levelName = root.getAttribute("name");
+        
         waveList = new Wave[root.getChildrenByName("Waves").get(0).getChildren().size()];
         
         mapPath = root.getChildrenByName("Tilemap").get(0).getAttribute("path");
@@ -59,5 +62,12 @@ public class LevelLoader {
 
     public int getNumWaves() {
         return waveList.length;
+    }
+
+    /**
+     * @return the levelName
+     */
+    public String getLevelName() {
+        return levelName;
     }
 }
