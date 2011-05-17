@@ -1,16 +1,22 @@
 package towerdefence.engine.entity;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.GameplayState;
+import towerdefence.engine.Player;
 import towerdefence.engine.component.Component;
 
 /**
@@ -41,6 +47,11 @@ public class Tower extends Entity {
     private Circle circle=null;
     private int mouseXTile;
     private int mouseYTile;
+    
+    private final UnicodeFont unicodeFont;
+    
+    String costOverlay;
+    String overlay;
 
 
     public Tower(String id, boolean isActive) throws SlickException{
@@ -49,6 +60,9 @@ public class Tower extends Entity {
         this.rotation=0;
         this.isActive = isActive;
         
+        unicodeFont = new UnicodeFont("data/fonts/pf_tempesta_seven.ttf", 8, false, false);
+        unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
+        
     }
 
     /*
@@ -56,6 +70,23 @@ public class Tower extends Entity {
      */
     public void updateCritterList(ArrayList<Critter> critterList) {
         this.critterList = critterList;
+    }
+
+    private void renderTextOverlay() {
+        String tempOverlay;
+        
+        if(isActive) {
+            tempOverlay = "Sale Value : $"+
+                    (Player.getInstance().getTowerCost(type))/2+"\n"+overlay;
+        } else {
+            tempOverlay = costOverlay + overlay;
+        }
+        
+        if (Player.getInstance().getCash() - Player.getInstance().getTowerCost(type) >= 0) {
+            unicodeFont.drawString(42 + (21 * 32), 416,tempOverlay);
+        } else {
+            unicodeFont.drawString(42 + (21 * 32), 416,tempOverlay, Color.red);
+        }
     }
 
     private void findClosestCritter() {
@@ -98,6 +129,32 @@ public class Tower extends Entity {
         }
     }
 
+    private void guiOverlay(Graphics gr) {
+        
+        costOverlay = "Cost : $" + Player.getInstance().getTowerCost(type)+"\n";
+        overlay = "Range = " + (int)range +"\nDPS = " + (int)damagePerSec+"\n";
+        
+        if (!isPlaced) {
+            if (circle != null) {
+                gr.draw(circle);
+            }
+            renderTextOverlay();
+        } else if (isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y) {
+            if (isActive) {
+                if (circle != null) {
+                    gr.draw(circle);
+                }
+                if(!GameplayState.towerSelected) {
+                    renderTextOverlay();
+                }
+            } else {
+                renderTextOverlay();
+            }
+            
+            
+        }
+    }
+
     private void shootCritter(Critter critter) {
         critter.takeDamage(damagePerSec/10f);
     }
@@ -135,9 +192,21 @@ public class Tower extends Entity {
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
         Input i = gc.getInput();
-        
         mouseXTile = (int) Math.floor((i.getAbsoluteMouseX() / GameplayState.TILESIZE));
         mouseYTile = (int) Math.floor((i.getAbsoluteMouseY() / GameplayState.TILESIZE));
+        
+        if(isActive && isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y){
+            if(i.isKeyPressed(Input.KEY_DELETE)) {
+                Player.getInstance().sellTower(type);
+                this.killEntity();
+            }
+        }
+        
+        try {
+            unicodeFont.loadGlyphs(100);
+        } catch (SlickException ex) {
+            Logger.getLogger(Tower.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         shootingCounter-=delta;
 
@@ -157,20 +226,7 @@ public class Tower extends Entity {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
-    {
-        
-        if(!isPlaced) {
-            if(circle!=null) {gr.draw(circle);}
-            gr.drawString("Range = "+(int)range, position.x+32, position.y+20);
-            gr.drawString("DPS = "+(int)damagePerSec, position.x+32, position.y+35);
-        } else if(isPlaced && mouseXTile==getTilePosition().x && mouseYTile==getTilePosition().y) {
-            if(isActive) {
-                if(circle!=null) {gr.draw(circle);}
-            }
-            gr.drawString("Range = "+(int)range, position.x, position.y+30);
-            gr.drawString("DPS = "+(int)damagePerSec, position.x, position.y+45);
-        }
-        
+    {   
         if(renderComponent != null) {
             renderComponent.render(gc, sb, gr);
         }
@@ -191,6 +247,8 @@ public class Tower extends Entity {
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
         
+        guiOverlay(gr);
+        
     }
 
     /**
@@ -205,6 +263,14 @@ public class Tower extends Entity {
      */
     public void setIsPlaced(boolean isPlaced) {
         this.isPlaced = isPlaced;
+    }
+
+    /**
+     * @return the type
+     */
+    @Override
+    public int getType() {
+        return type;
     }
     
 }

@@ -79,6 +79,15 @@ public class PathMap implements TileBasedMap {
         terrain[(int)position.x][(int)position.y] = NOPLACE;
 
     }
+    /*
+     * Clear type for position so towers can be placed
+     * Used when towers are deleted to refresh pathmap
+     */
+    public void setEmptyTerrain(Vector2f position) {
+
+        terrain[(int)position.x][(int)position.y] = 0;
+
+    }
 
     /*
      * Clear visited array

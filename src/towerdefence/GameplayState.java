@@ -75,7 +75,7 @@ public class GameplayState extends BasicGameState {
     boolean startWaves;
 
     // Map used to find critter paths
-    private PathMap pathmap;
+    public static PathMap pathmap;
     // Path finder used to search the pathmap
     private PathFinder finder;
     // Gives the last path found for the current unit
@@ -122,6 +122,7 @@ public class GameplayState extends BasicGameState {
     
     private int mouseY;
     private int mouseX;
+    public static boolean towerSelected;
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -276,6 +277,7 @@ public class GameplayState extends BasicGameState {
                                         && currentYTile==guiTower.getTilePosition().y) {
                                     try {
                                         setSelectedTower(guiTower.getType());
+                                        mouseCounter=100;
                                     } catch (SlickException ex) {
                                         Logger.getLogger(GameplayState.class.getName()).log(Level.SEVERE, null, ex);
                                     }
@@ -364,13 +366,13 @@ public class GameplayState extends BasicGameState {
             unicodeFont.drawString(guiLeftX + 15, guiBottomY - 100,
                     "Next wave in :", Color.white);
             if (waveCounter > 0) {
-                unicodeFont.drawString(guiLeftX + 25, guiBottomY - 80,
+                unicodeFont.drawString(guiLeftX + 30, guiBottomY - 70,
                         String.valueOf(waveCounter / 1000) + " seconds", Color.white);
             }
         } else if (!startWaves) {
-            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 100,
+            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 95,
                     "Press Enter", Color.white);
-            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 80,
+            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 75,
                     "   to begin", Color.white);
         }
     }
@@ -481,7 +483,10 @@ public class GameplayState extends BasicGameState {
         }
         
         if(selectedTower!=null) {
+            towerSelected = true;
             selectedTower.update(container, game, delta);
+        } else {
+            towerSelected = false;
         }
 
     }

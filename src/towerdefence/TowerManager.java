@@ -109,9 +109,13 @@ public class TowerManager {
     }
 
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
-        for(Tower tower : towerList) {
-            tower.updateCritterList(critterList);
-            tower.update(gc, sb, delta);
+        for(int i=0;i<towerList.size();i++) {
+            towerList.get(i).updateCritterList(critterList);
+            towerList.get(i).update(gc, sb, delta);
+            if(towerList.get(i).isDead()){
+                GameplayState.pathmap.setEmptyTerrain(towerList.get(i).getTilePosition());
+                towerList.remove(i);
+            }
         }
     }
     

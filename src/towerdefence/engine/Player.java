@@ -56,6 +56,10 @@ public class Player {
     public void addTower(int type) {
         setCash(getCash() - getTowerCost()[type]);
     }
+    
+    public void sellTower(int type) {
+        setCash(getCash() + (getTowerCost()[type])/2);
+    }
 
     /**
      * @param critterReward the critterReward to set
