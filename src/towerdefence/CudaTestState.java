@@ -26,6 +26,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
 import towerdefence.engine.AnimationLoader;
+import towerdefence.engine.Player;
+import towerdefence.engine.Settings;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.CudaTower;
 import towerdefence.engine.levelLoader.LevelLoader;
@@ -41,6 +43,17 @@ public class CudaTestState extends BasicGameState {
 
     int stateID = -1;
 
+    public static int startingMoney;
+    public static int playerHealth;
+    public static int[] critterHealth;
+    public static double[] critterSpeed;
+    public static int[] baseDPS;
+    public static int[] towerRange;
+    public static boolean[] lockOn;
+    public int[] critterReward;
+    public int[] towerCost;
+    
+    
     // Tower and Critter types
     public final static int NORMAL = 0;
     public final static int FIRE = 1;
@@ -93,7 +106,7 @@ public class CudaTestState extends BasicGameState {
     private int targetX;
     private int targetY;
 
-
+    public Settings settings;
 
 
     CudaTestState(int stateID) {
@@ -106,7 +119,24 @@ public class CudaTestState extends BasicGameState {
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
+        settings = new Settings();
+        // Load settings
+        startingMoney = settings.getStartingMoney();
+        playerHealth = settings.getPlayerHealth();
+        critterHealth = settings.getCritterHealth();
+        critterSpeed = settings.getCritterSpeed();
+        baseDPS = settings.getBaseDPS();
+        towerRange = settings.getRange();
+        critterReward = settings.getReward();
+        towerCost = settings.getCost();
+        
+        
+        // Initialise wallet singleton
+        Player.getInstance().setCash(startingMoney);
+        Player.getInstance().setCritterReward(critterReward);
+        Player.getInstance().setTowerCost(towerCost);
+        Player.getInstance().setHealth(playerHealth);
+        
         level = new LevelLoader("data/levels/snake.xml");
         guiMap = new TiledMap("data/gui/guiMap.tmx");
 

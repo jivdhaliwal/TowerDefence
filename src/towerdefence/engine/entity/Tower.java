@@ -16,6 +16,7 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.GameplayState;
+import towerdefence.TowerManager;
 import towerdefence.engine.Player;
 import towerdefence.engine.component.Component;
 
@@ -36,7 +37,7 @@ public class Tower extends Entity {
     public final static int BOSS = 3;
 
     ArrayList<Critter> critterList = null;
-    Critter targetCritter = null;
+    private Critter targetCritter = null;
     
     private Image[] sprites;
 
@@ -118,7 +119,7 @@ public class Tower extends Entity {
         if(critterList!=null) {
 
             // If no critters is locked on
-            if(targetCritter==null) {
+            if(getTargetCritter()==null) {
                 Critter tempTarget = new Critter("test");
                 // Set initial position very far away from the map
                 tempTarget.setPosition(new Vector2f(-1000f,-1000f));
@@ -131,22 +132,22 @@ public class Tower extends Entity {
                     // Do this for all critters to eventually find the closest one
                     if(critterDistance < range) {
                         if(critterDistance < tempDistance) {
-                            targetCritter=enemy;
+                            setTargetCritter(enemy);
                             tempTarget=enemy;
                         }
                     }
                     // Remnants of the multicolour lazers
                     // colourCounter++;
                 }
-            } else if (targetCritter!=null) {
+            } else if (getTargetCritter()!=null) {
                 // If the critter is out of range or dead, find a new target
                 // Else shoot the
-                if(this.getPosition().distance(targetCritter.getPosition()) >= range) {
-                    targetCritter = null;
-                } else if(targetCritter.isDead()||targetCritter.isDelete()) {
-                    targetCritter=null;
+                if(this.getPosition().distance(getTargetCritter().getPosition()) >= range) {
+                    setTargetCritter(null);
+                } else if(getTargetCritter().isDead()||getTargetCritter().isDelete()) {
+                    setTargetCritter(null);
                 } else {
-                    shootCritter(targetCritter);
+                    shootCritter(getTargetCritter());
                 }
             }
         }
@@ -225,6 +226,7 @@ public class Tower extends Entity {
         mouseXTile = (int) Math.floor((i.getAbsoluteMouseX() / GameplayState.TILESIZE));
         mouseYTile = (int) Math.floor((i.getAbsoluteMouseY() / GameplayState.TILESIZE));
         
+        
         if(isActive && isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y){
             if(i.isKeyPressed(Input.KEY_DELETE) || i.isKeyPressed(Input.KEY_NUMPAD0)) {
                 Player.getInstance().sellTower(type);
@@ -240,10 +242,19 @@ public class Tower extends Entity {
         
         shootingCounter-=delta;
 
-        if(isActive) {
-            if(shootingCounter<=0) {
-                findClosestCritter();
-                shootingCounter=100;
+        if(!TowerManager.cudaTowersEnabled) {
+            if(isActive) {
+                if(shootingCounter<=0) {
+                    findClosestCritter();
+                    shootingCounter=100;
+                }
+            }
+        } else {
+            if (shootingCounter <= 0) {
+                if (getTargetCritter() != null) {
+                    shootCritter(getTargetCritter());
+                }
+                shootingCounter = 100;
             }
         }
 
@@ -262,15 +273,15 @@ public class Tower extends Entity {
         }
         // Laser shooting
         // Check tower has a target
-        if (targetCritter != null) {
+        if (getTargetCritter() != null) {
 
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
-                    (float) (targetCritter.getPosition().sub(this.getPosition())).getTheta()-90);
+                    (float) (getTargetCritter().getPosition().sub(this.getPosition())).getTheta()-90);
             
             // Draw lazer and extend it using the distance from the tower to the
             // target critter
             sprites[2].draw(this.getPosition().x, this.getPosition().y+16, 32,
-                    this.getPosition().distance(targetCritter.getPosition()));
+                    this.getPosition().distance(getTargetCritter().getPosition()));
             // Draw tower's turret (which will rotate towards critters
             sprites[1].draw(this.getPosition().x,this.getPosition().y);
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
@@ -301,6 +312,20 @@ public class Tower extends Entity {
     @Override
     public int getType() {
         return type;
+    }
+
+    /**
+     * @return the targetCritter
+     */
+    public Critter getTargetCritter() {
+        return targetCritter;
+    }
+
+    /**
+     * @param targetCritter the targetCritter to set
+     */
+    public void setTargetCritter(Critter targetCritter) {
+        this.targetCritter = targetCritter;
     }
     
 }

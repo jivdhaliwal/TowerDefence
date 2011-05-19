@@ -19,6 +19,9 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.ComponentListener;
+import org.newdawn.slick.gui.MouseOverArea;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -39,7 +42,7 @@ import towerdefence.engine.pathfinding.PathMap;
  *
  * @author Jiv
  */
-public class GameplayState extends BasicGameState {
+public class GameplayState extends BasicGameState implements ComponentListener {
 
     int stateID = -1;
 
@@ -126,6 +129,11 @@ public class GameplayState extends BasicGameState {
     
     private Image gameoverImage;
     private boolean gameOver;
+    
+    private MouseOverArea cudaArea;
+    private Image cudaEnable;
+    private Image cudaDisable;
+    private GameContainer container;
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -178,7 +186,12 @@ public class GameplayState extends BasicGameState {
 //        unicodeFont = new UnicodeFont("data/fonts/ArchitectsDaughter.ttf", 13, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
 
+        cudaArea = new MouseOverArea(container, cudaEnable, guiLeftX, guiTopY+304, 128, 40,this);
+        cudaArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
+        
         startWaves = false;
+        
+        this.container = container;
 
     }
 
@@ -234,6 +247,9 @@ public class GameplayState extends BasicGameState {
         tileHighlight = validTile;
         
         gameoverImage = new Image("data/gui/gameover.png");
+        
+        cudaEnable = new Image("data/gui/cudaEnable.png");
+        cudaDisable = new Image("data/gui/cudaDisable.png");
         
         // Load settings
         startingMoney = settings.getStartingMoney();
@@ -307,7 +323,6 @@ public class GameplayState extends BasicGameState {
             }
 
             public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-                
                 mouseX = newx;
                 mouseY = newy;
                 
@@ -478,11 +493,12 @@ public class GameplayState extends BasicGameState {
         mouseListener(input);
         
         generateWaves();
+         
         if(Player.getInstance().getHealth()>0) {
             critterManager.update(container, game, delta);
-//            if(critterManager.getCritters()!=towerFactory.getCritterList()) {
+            if(critterManager.getCritters()!=towerFactory.getCritterList()) {
                 towerFactory.updateCritterList(critterManager.getCritters());
-//            }
+            }
 
             towerFactory.update(container, game, delta);
 
@@ -531,6 +547,7 @@ public class GameplayState extends BasicGameState {
         } else {
             gameoverImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
         }
+        
         renderGuiText();
 
         wanderingNPCAnim.draw(50f, 32f);
@@ -542,6 +559,8 @@ public class GameplayState extends BasicGameState {
         if(selectedTower!=null) {
             selectedTower.render(container, game, g);
         }
+        
+        cudaArea.render(container, g);
         
 
     }
@@ -560,4 +579,15 @@ public class GameplayState extends BasicGameState {
         this.level = level;
     }
 
+    public void componentActivated(AbstractComponent source) {
+        if (source == cudaArea) {
+            if (towerFactory.isCudaTowersEnabled()) {
+                towerFactory.setCudaTowersEnabled(false);
+                cudaArea = new MouseOverArea(container, cudaEnable, guiLeftX, guiTopY+304, 128, 40,this);
+            } else if (!towerFactory.isCudaTowersEnabled()) {
+                towerFactory.setCudaTowersEnabled(true);
+                cudaArea = new MouseOverArea(container, cudaDisable, guiLeftX, guiTopY+304, 128, 40,this);
+            }
+        }
+    }
 }
