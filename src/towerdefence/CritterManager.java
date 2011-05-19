@@ -14,7 +14,6 @@ import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.Player;
 import towerdefence.engine.component.CritterAnimationComponent;
 import towerdefence.engine.component.CritterFollowPathComponent;
-import towerdefence.engine.component.TopDownMovement;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.pathfinding.UnitMover;
 
