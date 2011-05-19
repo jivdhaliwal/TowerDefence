@@ -1,5 +1,5 @@
-<Level name="Fork">
-	<Tilemap path="data/levels/maps/fork.tmx" />
+<Level name="Left">
+	<Tilemap path="data/levels/maps/left.tmx" />
 	<Waves>
 		<Wave type="1" count="25" waitingTime="7500" />
 		<Wave type="1" count="1" waitingTime="5000" />
@@ -9,14 +9,33 @@
 		<Wave type="1" count="5" waitingTime="2000" />
 		<Wave type="0" count="10" waitingTime="0" />
 		<Wave type="1" count="25" waitingTime="0000" />
-		<Wave type="2" count="4" waitingTime="0" />
-		<Wave type="1" count="5" waitingTime="5000" />
+		<Wave type="2" count="2" waitingTime="500" />
+		<Wave type="2" count="2" waitingTime="0" />
+		<Wave type="1" count="10" waitingTime="5000" />
+		<Wave type="0" count="10" waitingTime="0000" />
+		<Wave type="1" count="25" waitingTime="7500" />
+		<Wave type="1" count="1" waitingTime="5000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="0000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="0000" />
+		<Wave type="1" count="25" waitingTime="2000" />
+		<Wave type="0" count="10" waitingTime="0" />
+		<Wave type="1" count="25" waitingTime="0000" />
+		<Wave type="2" count="2" waitingTime="500" />
+		<Wave type="2" count="2" waitingTime="0" />
+		<Wave type="1" count="10" waitingTime="5000" />
 		<Wave type="0" count="10" waitingTime="0000" />
 		<Wave type="1" count="3" waitingTime="2000" />
 		<Wave type="1" count="25" waitingTime="0000" />
 		<Wave type="2" count="5" waitingTime="4000" />
 		<Wave type="0" count="20" waitingTime="8000" />
 		<Wave type="1" count="25" waitingTime="7500" />
+		<Wave type="1" count="1" waitingTime="5000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="1" count="10" waitingTime="7500" />
 		<Wave type="1" count="25" waitingTime="7500" />
 		<Wave type="1" count="1" waitingTime="5000" />
 		<Wave type="2" count="3" waitingTime="2000" />
@@ -72,11 +91,29 @@
 		<Wave type="1" count="3" waitingTime="2000" />
 		<Wave type="2" count="5" waitingTime="4000" />
 		<Wave type="0" count="20" waitingTime="0" />
-		<Wave type="1" count="1" waitingTime="5000" />
-		<Wave type="2" count="3" waitingTime="2000" />
-		<Wave type="1" count="10" waitingTime="7500" />
 		<Wave type="2" count="3" waitingTime="2000" />
 		<Wave type="2" count="3" waitingTime="0000" />
+		<Wave type="2" count="5" waitingTime="4000" />
+		<Wave type="0" count="20" waitingTime="8000" />
+		<Wave type="1" count="25" waitingTime="7500" />
+		<Wave type="1" count="1" waitingTime="5000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="0000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="0000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="0000" />
+		<Wave type="1" count="25" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="2000" />
+		<Wave type="2" count="3" waitingTime="0000" />
+		<Wave type="1" count="25" waitingTime="2000" />
+		<Wave type="1" count="10" waitingTime="7500" />
+		<Wave type="2" count="3" waitingTime="2000" />
 		<Wave type="1" count="5" waitingTime="0" />
 		<Wave type="1" count="10" waitingTime="7500" />
 		<Wave type="0" count="10" waitingTime="5000" />

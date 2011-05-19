@@ -2,9 +2,9 @@
 <map version="1.0" orientation="orthogonal" width="22" height="22" tilewidth="32" tileheight="32">
  <properties>
   <property name="startX" value="0"/>
-  <property name="startY" value="19"/>
-  <property name="targetX" value="3"/>
-  <property name="targetY" value="0"/>
+  <property name="startY" value="3"/>
+  <property name="targetX" value="0"/>
+  <property name="targetY" value="9"/>
  </properties>
  <tileset firstgid="1" source="tilesetgrassland2.tsx"/>
  <tileset firstgid="379" source="collision.tsx"/>
@@ -13,17 +13,17 @@
    <property name="Type" value="grass"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC6thZGCogeJqJDY1MAggm0spoLe51PA7urmUYFzmUoJxmUtpeNLbXFqFAy3jjZbpbDS/jeY3WplLDYxuLqVxhS/eqIlpZS4MAwCTzBS+kAcAAA==
+   H4sIAAAAAAAAC6thZGCooRGmNqCV+0DsaiphdHOpgXGZS2lYDhdzKUl3uMzFF6/Uci+1zcUlP2ruqLnULncoLTPxmUvNcp3ScgdXmNMKAwAUN+epkAcAAA==
   </data>
  </layer>
  <layer name="grass" width="22" height="22">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NggIB0IOYD4lQG6gKQuZo0MpeW7m0A4kYycSYOc9WAWB2INaB2kMrH5tdmIPYmE/sw0C4M6W1uBgP58dXEgDt8aRVvML94MZAffy04zB3NbyMvv9ErzsmNI0L5DT3sqRVv5MYVsfmN2gAAwHA/iZAHAAA=
+   H4sIAAAAAAAAC2NgGFqgkUo4E81cKyrhVDRzvSnEPjjMpRSkDxNzCcUrueYSildyzaU0XgmFL7nhP2ru8Da3gYG08rGJSHOpVU7CQDMDZeVlCw5zhwoAAOFkky6QBwAA
   </data>
  </layer>
  <layer name="misc" width="22" height="22">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgGAWjYBSMglEwCgYW6DMOtAsGHgAASwuIU5AHAAA=
+   H4sIAAAAAAAAC2NgGAUwoM840C4YBaNgFIyCUTBSAQAy13LPkAcAAA==
   </data>
  </layer>
 </map>

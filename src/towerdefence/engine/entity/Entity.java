@@ -42,6 +42,7 @@ public abstract class Entity {
 
     PathFinder finder=null;
     private int type;
+    private boolean delete;
 
     public Entity(String id)
     {
@@ -186,6 +187,24 @@ public abstract class Entity {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    /**
+     * @param health the health to set
+     */
+    public void setHealth(float health) {
+        this.health = health;
+    }
+    
+    public void deleteEntity() {
+        delete=true;
+    }
+
+    /**
+     * @return the delete
+     */
+    public boolean isDelete() {
+        return delete;
     }
 
 

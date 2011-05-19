@@ -44,17 +44,24 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     
     private int TILESIZE = 32;
     
-    private MouseOverArea snakeArea,forkArea;
+    private MouseOverArea snakeArea,forkArea,zigzagArea,
+            squareArea,leftArea,haichArea;
     
     private ArrayList<MouseOverArea> areas = new ArrayList<MouseOverArea>();
     
     private Image snake;
     private Image fork;
-    private int i;
+    private Image zigzag;
+    private Image square;
+    private Image left;
+    private Image haich;
+    
+    
     private LevelLoader level=null;
     private TiledMap map=null;
     private StateBasedGame game;
     private UnicodeFont unicodeFont;
+    
     
     
     LevelSelectState(int stateID) {
@@ -73,14 +80,27 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         waterAnimation = new RenderWater(container.getWidth()/32,
                 container.getHeight()/32);
         
+        zigzag = new Image("data/gui/levels/zigzag.png");
         snake = new Image("data/gui/levels/snake.png");
         fork = new Image("data/gui/levels/fork.png");
+        square = new Image("data/gui/levels/square.png");
+        left = new Image("data/gui/levels/left.png");
+        haich = new Image("data/gui/levels/haich.png");
         
+        zigzagArea = new MouseOverArea(container, zigzag, guiLeftX, easyLevelTopY, 140, 40, this);
+        squareArea = new MouseOverArea(container, square, guiLeftX, easyLevelTopY+40, 140, 40, this);
         snakeArea = new MouseOverArea(container, snake, guiLeftX, mediumLevelTopY, 140, 40, this);
         forkArea = new MouseOverArea(container, fork, guiLeftX, mediumLevelTopY+40,140, 40, this);
+        leftArea = new MouseOverArea(container, left, guiLeftX, hardLevelTopY,140, 40, this);
+        haichArea = new MouseOverArea(container, haich, guiLeftX, hardLevelTopY+40,140, 40, this);
+        
         
         snakeArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         forkArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
+        zigzagArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
+        leftArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
+        haichArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
+        squareArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         
         unicodeFont = new UnicodeFont("data/fonts/Jellyka_Estrya_Handwriting.ttf", 100, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
@@ -102,6 +122,10 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
         snakeArea.render(container, g);
         forkArea.render(container, g);
+        zigzagArea.render(container, g);
+        squareArea.render(container, g);
+        leftArea.render(container, g); 
+        haichArea.render(container, g);
         
         unicodeFont.drawString(64, 32, "Select a level and press the spacebar to begin");
     }
@@ -112,6 +136,12 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
 
     public void componentActivated(AbstractComponent source)  {
         try {
+        if (source == zigzagArea) {
+            
+                level = new LevelLoader("data/levels/zigzag.xml");
+                map = new TiledMap(level.getMapPath());
+            
+        }
         if (source == forkArea) {
             
                 level = new LevelLoader("data/levels/fork.xml");
@@ -121,6 +151,24 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         if (source == snakeArea) {
             
                 level = new LevelLoader("data/levels/snake.xml");
+                map = new TiledMap(level.getMapPath());
+            
+        }
+        if (source == leftArea) {
+            
+                level = new LevelLoader("data/levels/left.xml");
+                map = new TiledMap(level.getMapPath());
+            
+        }
+        if (source == haichArea) {
+            
+                level = new LevelLoader("data/levels/haich.xml");
+                map = new TiledMap(level.getMapPath());
+            
+        }
+        if (source == squareArea) {
+            
+                level = new LevelLoader("data/levels/square.xml");
                 map = new TiledMap(level.getMapPath());
             
         }

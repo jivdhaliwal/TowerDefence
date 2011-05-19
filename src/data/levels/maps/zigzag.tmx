@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="22" height="22" tilewidth="32" tileheight="32">
  <properties>
-  <property name="startX" value="0"/>
-  <property name="startY" value="19"/>
-  <property name="targetX" value="3"/>
+  <property name="startX" value="3"/>
+  <property name="startY" value="21"/>
+  <property name="targetX" value="18"/>
   <property name="targetY" value="0"/>
  </properties>
  <tileset firstgid="1" source="tilesetgrassland2.tsx"/>
@@ -13,17 +13,17 @@
    <property name="Type" value="grass"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC6thZGCogeJqJDY1MAggm0spoLe51PA7urmUYFzmUoJxmUtpeNLbXFqFAy3jjZbpbDS/jeY3WplLDYxuLqVxhS/eqIlpZS4MAwCTzBS+kAcAAA==
+   H4sIAAAAAAAAC83UUQrAIAwDUHfuevh9DWQkpTaRrdAPB3sGK85rjGnoAN/UWt1n/UcXnYPLjaVVN5uX6qKc73138mU5O26AZv/uuii3y63UFy6bk8OtzqniOt4o5nYyMrd65zuumjNzHe89c9U67Wb3qts3l/9gapAHAAA=
   </data>
  </layer>
  <layer name="grass" width="22" height="22">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NggIB0IOYD4lQG6gKQuZo0MpeW7m0A4kYycSYOc9WAWB2INaB2kMrH5tdmIPYmE/sw0C4M6W1uBgP58dXEgDt8aRVvML94MZAffy04zB3NbyMvv9ErzsmNI0L5DT3sqRVv5MYVsfmN2gAAwHA/iZAHAAA=
+   H4sIAAAAAAAAC9WUQQqAMAwE+z691ieIfkPx4W6hC6HXjGALQ2/LkGxbSv4cooodyJox9xSXuOFce5ps7ui5iFU8yVzK036G8hz9qHk6136Gmuefex93Rfa+OW4dYk+x8y0z7iqzJ3vWfpNvM3oSXYrzJP8m0nPM/aL7M+S+zKfrv5AHAAA=
   </data>
  </layer>
  <layer name="misc" width="22" height="22">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgGAWjYBSMglEwCgYW6DMOtAsGHgAASwuIU5AHAAA=
+   H4sIAAAAAAAAC2NgGAWjYBSMglEwCoY30GccaBcQBgDPapTekAcAAA==
   </data>
  </layer>
 </map>

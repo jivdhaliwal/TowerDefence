@@ -28,6 +28,12 @@ import towerdefence.engine.component.Component;
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
 public class Tower extends Entity {
+    
+        // Tower types
+    public final static int NORMAL = 0;
+    public final static int FIRE = 1;
+    public final static int ICE = 2;
+    public final static int BOSS = 3;
 
     ArrayList<Critter> critterList = null;
     Critter targetCritter = null;
@@ -52,6 +58,9 @@ public class Tower extends Entity {
     
     String costOverlay;
     String overlay;
+    String iceDetails = "150% damage\nto fire types";
+    String fireDetails = "150% damage\nto ice types";
+    
 
 
     public Tower(String id, boolean isActive) throws SlickException{
@@ -78,8 +87,18 @@ public class Tower extends Entity {
         if(isActive) {
             tempOverlay = "Sale Value : $"+
                     (Player.getInstance().getTowerCost(type))/2+"\n"+overlay;
+            if(type==FIRE) {
+                tempOverlay+=fireDetails;
+            } else if(type==ICE) {
+                tempOverlay+=iceDetails;
+            }
         } else {
             tempOverlay = costOverlay + overlay;
+            if(type==FIRE) {
+                tempOverlay+=fireDetails;
+            } else if(type==ICE) {
+                tempOverlay+=iceDetails;
+            }
         }
         
         if (Player.getInstance().getCash() - Player.getInstance().getTowerCost(type) >= 0) {
@@ -124,7 +143,7 @@ public class Tower extends Entity {
                 // Else shoot the
                 if(this.getPosition().distance(targetCritter.getPosition()) >= range) {
                     targetCritter = null;
-                } else if(targetCritter.isDead()) {
+                } else if(targetCritter.isDead()||targetCritter.isDelete()) {
                     targetCritter=null;
                 } else {
                     shootCritter(targetCritter);
@@ -160,7 +179,14 @@ public class Tower extends Entity {
     }
 
     private void shootCritter(Critter critter) {
-        critter.takeDamage(damagePerSec/10f);
+        if(critter.getType()==Critter.FIRE && type==Tower.ICE) {
+            critter.takeDamage((damagePerSec*1.5f)/10f);   
+        } else if(critter.getType()==Critter.ICE && type==Tower.FIRE) {
+            critter.takeDamage((damagePerSec*1.5f)/10f);   
+        } else {
+            critter.takeDamage(damagePerSec/10f);
+        }
+        
     }
     
     /**
@@ -200,7 +226,7 @@ public class Tower extends Entity {
         mouseYTile = (int) Math.floor((i.getAbsoluteMouseY() / GameplayState.TILESIZE));
         
         if(isActive && isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y){
-            if(i.isKeyPressed(Input.KEY_DELETE)) {
+            if(i.isKeyPressed(Input.KEY_DELETE) || i.isKeyPressed(Input.KEY_NUMPAD0)) {
                 Player.getInstance().sellTower(type);
                 this.killEntity();
             }

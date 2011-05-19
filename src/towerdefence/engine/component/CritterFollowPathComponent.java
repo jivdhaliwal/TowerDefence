@@ -12,6 +12,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import towerdefence.GameplayState;
 import towerdefence.engine.Player;
+import towerdefence.engine.entity.Critter;
 
 /**
  *
@@ -107,7 +108,7 @@ public class CritterFollowPathComponent extends Component {
                 }
             } else if (targetIndex >= path.getLength()) {
                 Player.getInstance().setHealth(Player.getInstance().getHealth() - 1);
-                entity = null;
+                entity.deleteEntity();
             }
         }
     }

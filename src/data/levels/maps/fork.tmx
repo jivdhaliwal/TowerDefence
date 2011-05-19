@@ -14,7 +14,7 @@
    <property name="Type" value="grass"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC72UwQoAIAhD87vr4zsFElHTNgWPPca2bE0zw7i7phtvPZelc+eyvKzmZvNBuJl8UG4mH5SL+Ij24aUX8Srqr+dG8ry9qeilSq/SX2UflP3NcBX/TXEfFPfsZ07cCY7J+S+QBwAA
+   H4sIAAAAAAAAC9WUQQoAIAzD9N36eNlNRFk7V0SheAsjq/ZaSv8gduxuiZm5Wdlxb88LbmQ/KJfdD8Nl9sNyEY9oH7x5EVesX2a3aB88NydfqE/lvEq/yj4o+xvhKt6b4n9ggnAzsjocKsJXnpAHAAA=
   </data>
  </layer>
  <layer name="grass" width="22" height="22">
@@ -24,7 +24,7 @@
  </layer>
  <layer name="misc" width="22" height="22">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgoA2oZWRgqGOkvrn1QDMbaGDuKBgFo2AUjIJRMJAAAONTAVeQBwAA
+   H4sIAAAAAAAAC2NgGAWjYBSMglEwCkYBLqDPSB97AKN4cSWQBwAA
   </data>
  </layer>
 </map>

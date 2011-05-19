@@ -29,12 +29,15 @@ public class Critter extends Entity {
     
     private Rectangle healthBar;
     private ShapeFill healthCol;
+    private boolean isSlowed;
+    private int slowTimer;
 
     public Critter(String id) {
         super(id);
         isDead = false;
         health = 100;
         healthBar = new Rectangle(position.x, position.y, GameplayState.TILESIZE, 3);
+        isSlowed = false;
     }
     
     /**
@@ -49,12 +52,12 @@ public class Critter extends Entity {
     @Override
     public void setType(int type) {
         this.type = type;
-        health = GameplayState.critterHealth[type];
+        setHealth(GameplayState.critterHealth[type]);
     }
 
     public void takeDamage(float damage) {
-        health-=damage;
-        healthBar.setSize((health/GameplayState.critterHealth[type])*GameplayState.TILESIZE, 3);
+        setHealth(getHealth() - damage);
+        healthBar.setSize((getHealth()/GameplayState.critterHealth[type])*GameplayState.TILESIZE, 3);
     }
     
     @Override
@@ -65,12 +68,18 @@ public class Critter extends Entity {
         healthBar.setY(position.y);
         
     }
+    
+    public void slowCritter(int time) {
+        isSlowed = true;
+        slowTimer = time;
+    }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
 
-        if(health<=0) {
+        
+        if(getHealth()<=0) {
             isDead = true;
         }
 

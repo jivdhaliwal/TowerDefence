@@ -123,6 +123,9 @@ public class GameplayState extends BasicGameState {
     private int mouseY;
     private int mouseX;
     public static boolean towerSelected;
+    
+    private Image gameoverImage;
+    private boolean gameOver;
 
     GameplayState(int stateID) {
         this.stateID = stateID;
@@ -139,7 +142,7 @@ public class GameplayState extends BasicGameState {
     }
     
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        
+        gameOver=false;
         //loadLevel("data/levels/snake.xml");
         settings = new Settings();
 //        guiMap = new TiledMap("data/gui/guiMap.tmx");
@@ -229,6 +232,8 @@ public class GameplayState extends BasicGameState {
         validTile = new Image("data/sprites/validTileSelect.png");
         invalidTile = new Image("data/sprites/invalidTileSelect.png");
         tileHighlight = validTile;
+        
+        gameoverImage = new Image("data/gui/gameover.png");
         
         // Load settings
         startingMoney = settings.getStartingMoney();
@@ -410,7 +415,7 @@ public class GameplayState extends BasicGameState {
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-
+        
         mouseCounter -= delta;
         waveCounter -= delta;
         generateCounter -= delta;
@@ -459,42 +464,40 @@ public class GameplayState extends BasicGameState {
                 }
             }
             
-            if (input.isKeyPressed(Input.KEY_1)) {
+            if (input.isKeyPressed(Input.KEY_1) || input.isKeyPressed(Input.KEY_NUMPAD1)) {
                 setSelectedTower(TowerManager.NORMAL);
             }
-            if (input.isKeyPressed(Input.KEY_2)) {
+            if (input.isKeyPressed(Input.KEY_2) || input.isKeyPressed(Input.KEY_NUMPAD2)) {
                 setSelectedTower(TowerManager.FIRE);
             }
-            if (input.isKeyPressed(Input.KEY_3)) {
+            if (input.isKeyPressed(Input.KEY_3) || input.isKeyPressed(Input.KEY_NUMPAD3
+                      )) {
                 setSelectedTower(TowerManager.ICE);;
             }
         }
-        generateWaves();
-
-//        for(CritterManager wave : critterWaveList) {
-//            wave.update(container, game, delta);
-//            // Adds critters from each wave to the temp critter list
-//            tempCritterList.addAll(wave.getCritters());
-//        }
-        critterManager.update(container, game, delta);
-//        tempCritterList=critterManager.getCritters();
-        if(critterManager.getCritters()!=towerFactory.getCritterList()) {
-            towerFactory.updateCritterList(critterManager.getCritters());
-        }
-        
-        towerFactory.update(container, game, delta);
-
         mouseListener(input);
         
-        for(Tower guiTower : guiTowerList) {
-            guiTower.update(container, game, delta);
-        }
-        
-        if(selectedTower!=null) {
-            towerSelected = true;
-            selectedTower.update(container, game, delta);
+        generateWaves();
+        if(Player.getInstance().getHealth()>0) {
+            critterManager.update(container, game, delta);
+//            if(critterManager.getCritters()!=towerFactory.getCritterList()) {
+                towerFactory.updateCritterList(critterManager.getCritters());
+//            }
+
+            towerFactory.update(container, game, delta);
+
+            for(Tower guiTower : guiTowerList) {
+                guiTower.update(container, game, delta);
+            }
+
+            if(selectedTower!=null) {
+                towerSelected = true;
+                selectedTower.update(container, game, delta);
+            } else {
+                towerSelected = false;
+            }
         } else {
-            towerSelected = false;
+            gameOver=true;
         }
 
     }
@@ -520,10 +523,14 @@ public class GameplayState extends BasicGameState {
 //            tempCritterCount+=wave.getCritters().size();
 //        }
 
-        critterManager.render(container, game, g);
-        tempCritterCount=critterManager.getCritters().size();
+        if(!gameOver) {
+            critterManager.render(container, game, g);
+            tempCritterCount=critterManager.getCritters().size();
 
-        towerFactory.render(container, game, g);
+            towerFactory.render(container, game, g);
+        } else {
+            gameoverImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
+        }
         renderGuiText();
 
         wanderingNPCAnim.draw(50f, 32f);
@@ -535,6 +542,7 @@ public class GameplayState extends BasicGameState {
         if(selectedTower!=null) {
             selectedTower.render(container, game, g);
         }
+        
 
     }
 

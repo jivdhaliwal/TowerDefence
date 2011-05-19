@@ -88,10 +88,11 @@ public class CritterManager {
 
         // Remove dead critters
         for (int i = 0; i < critterList.size(); i++) {
-            if (critterList.get(i).isDead()) {
-                Player.getInstance().killCritter(critterList.get(i).getType());
+            if (critterList.get(i).isDelete()) {
+                // -1 = critter reached goal
                 critterList.remove(i);
-            } else if (critterList.get(i)==null) {
+            } else if (critterList.get(i).isDead()) {
+                Player.getInstance().killCritter(critterList.get(i).getType());
                 critterList.remove(i);
             }
         }

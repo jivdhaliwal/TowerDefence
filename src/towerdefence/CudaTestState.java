@@ -84,7 +84,7 @@ public class CudaTestState extends BasicGameState {
 
     private TrueTypeFont trueTypeFont;
     private CudaTowerManager towerFactory;
-    private renderWater waterAnimation;
+    private RenderWater waterAnimation;
     private Animation wanderingNPCAnim;
 
     public static int TILESIZE;
@@ -141,7 +141,7 @@ public class CudaTestState extends BasicGameState {
         waveNumber = 0;
         critterCount = level.getWave(waveNumber).getNumCritters();
         
-        waterAnimation = new renderWater(map.getWidth()+5,map.getHeight());
+        waterAnimation = new RenderWater(map.getWidth()+5,map.getHeight());
 
         Font font = new Font("Verdana", Font.PLAIN, 20);
         trueTypeFont = new TrueTypeFont(font, true);
