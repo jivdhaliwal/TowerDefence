@@ -21,7 +21,7 @@ public class TowerDefence extends StateBasedGame
 
      static int fpslimit = 60;
 
-     
+     public static final int LEVELSELECTSTATE = 0;
      public static final int GAMEPLAYSTATE = 1;
 //     public static final int PATHTESTSTATE = 2;
      public static final int CUDATESTSTATE = 3;
@@ -33,14 +33,15 @@ public class TowerDefence extends StateBasedGame
           super(title);
 
 //          this.addState(new PathTestState(PATHTESTSTATE));
+//          
+//          GameplayState gameplaystate = new GameplayState(GAMEPLAYSTATE);
+//          gameplaystate.loadLevel("data/levels/snake.xml");
+//          this.addState(gameplaystate);
+          this.addState(new LevelSelectState(LEVELSELECTSTATE));
+//          this.addState(new CudaTestState(CUDATESTSTATE));
           
-          GameplayState gameplaystate = new GameplayState(GAMEPLAYSTATE);
-          gameplaystate.loadLevel("data/levels/snake.xml");
-          this.addState(gameplaystate);
-          
-          this.addState(new CudaTestState(CUDATESTSTATE));
-          
-          this.enterState(GAMEPLAYSTATE);
+//          this.enterState(GAMEPLAYSTATE);
+          this.enterState(LEVELSELECTSTATE);
 //          this.enterState(CUDATESTSTATE);
           //this.enterState(PATHTESTSTATE);
      }
@@ -58,8 +59,8 @@ public class TowerDefence extends StateBasedGame
 
     @Override
     public void initStatesList(GameContainer container) throws SlickException {
-        this.getState(GAMEPLAYSTATE).init(container, this);
-        this.getState(CUDATESTSTATE).init(container, this);
-//        this.getState(PATHTESTSTATE).init(container, this);
     }
+
+    
+     
 }

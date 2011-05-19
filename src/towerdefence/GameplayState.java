@@ -62,7 +62,7 @@ public class GameplayState extends BasicGameState {
     Tower selectedTower=null;
     
 
-    LevelLoader level;
+    private LevelLoader level;
     
     int critterCount;
     int tempCritterCount;
@@ -101,7 +101,7 @@ public class GameplayState extends BasicGameState {
 
     private UnicodeFont unicodeFont;
     private TowerManager towerFactory;
-    private renderWater waterAnimation;
+    private RenderWater waterAnimation;
     private Animation wanderingNPCAnim;
 
     public static int TILESIZE;
@@ -133,6 +133,11 @@ public class GameplayState extends BasicGameState {
         return 1;
     }
 
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        init(container,game);
+    }
+    
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         
         //loadLevel("data/levels/snake.xml");
@@ -140,7 +145,7 @@ public class GameplayState extends BasicGameState {
 //        guiMap = new TiledMap("data/gui/guiMap.tmx");
         guiBackground = new Image("data/gui/gui_overlay.png");
 
-        map = new TiledMap(level.getMapPath());
+        map = new TiledMap(getLevel().getMapPath());
 
         // Get Start and Target positions from map
         startX = Integer.parseInt(map.getMapProperty("startX", null));
@@ -162,9 +167,9 @@ public class GameplayState extends BasicGameState {
         critterManager = new CritterManager(startX, startY,
                 targetX, targetY, finder,critterAnimation);
         waveNumber = 0;
-        critterCount = level.getWave(waveNumber).getNumCritters();
+        critterCount = getLevel().getWave(waveNumber).getNumCritters();
         
-        waterAnimation = new renderWater(map.getWidth()+5,map.getHeight());
+        waterAnimation = new RenderWater(map.getWidth()+5,map.getHeight());
         
         unicodeFont = new UnicodeFont("data/fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
 //        unicodeFont = new UnicodeFont("data/fonts/ArchitectsDaughter.ttf", 13, false, false);
@@ -176,26 +181,26 @@ public class GameplayState extends BasicGameState {
 
     public void loadLevel(String levelPath) throws SlickException {
         // Load Level
-        level = new LevelLoader(levelPath);
+        setLevel(new LevelLoader(levelPath));
     }
 
     private void generateWaves() throws SlickException {
         // Reads level and generates the waves
         if(startWaves) {
-            if (waveNumber < level.getNumWaves()) {
-                Wave currentWave = level.getWave(waveNumber);
+            if (waveNumber < getLevel().getNumWaves()) {
+                Wave currentWave = getLevel().getWave(waveNumber);
                 if (waveCounter <= 0) {
                     if (generateCounter <= 0) {
                         if (critterCount > 0) {
                             critterManager.addCritter(String.valueOf((waveNumber * 1000) + critterCount),
-                                    level.getWave(waveNumber).getCritterType());
+                                    getLevel().getWave(waveNumber).getCritterType());
                             critterCount--;
                             generateCounter = 1000;
                         } else if (critterCount <=0 ) {
                             waveCounter = currentWave.getTimeToWait();
                             waveNumber++;
-                            if(waveNumber<level.getNumWaves()){
-                                critterCount = level.getWave(waveNumber).getNumCritters();
+                            if(waveNumber<getLevel().getNumWaves()){
+                                critterCount = getLevel().getWave(waveNumber).getNumCritters();
                             }
                         }
                         
@@ -257,17 +262,15 @@ public class GameplayState extends BasicGameState {
                         if (currentXTile <= 21 && selectedTower != null) {
                             if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
                                     && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
-//                                try {
-//                                    java.util.Random towerType = new Random();
-//                                    towerFactory.addTower(String.valueOf(x),
-//                                            new Vector2f(currentXTile * GameplayState.TILESIZE,
-//                                            currentYTile * GameplayState.TILESIZE),towerType.nextInt(3));
-                                selectedTower.setIsPlaced(true);
-                                selectedTower.setIsActive(true);
-                                selectedTower.setPosition(new Vector2f(currentXTile * TILESIZE, currentYTile * TILESIZE));
-                                towerFactory.addTower(selectedTower);
-                                selectedTower = null;
-                                pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
+                                if(Player.getInstance().getCash()-Player.getInstance().
+                                        getTowerCost(selectedTower.getType()) >=0) {
+                                    selectedTower.setIsPlaced(true);
+                                    selectedTower.setIsActive(true);
+                                    selectedTower.setPosition(new Vector2f(currentXTile * TILESIZE, currentYTile * TILESIZE));
+                                    towerFactory.addTower(selectedTower);
+                                    selectedTower = null;
+                                    pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
+                                }
 
                                 mouseCounter = 100;
                             }
@@ -300,16 +303,17 @@ public class GameplayState extends BasicGameState {
 
             public void mouseMoved(int oldx, int oldy, int newx, int newy) {
                 
-                int currentXTile = (int) Math.floor((newx / GameplayState.TILESIZE));
-                if (selectedTower != null) {
-                        selectedTower.setPosition(new Vector2f(newx-16,newy-16));
-                    }
+                mouseX = newx;
+                mouseY = newy;
                 
-                if (mouseCounter <= 0 && currentXTile <= 21) {
-                    int currentYTile = (int) Math.floor((newy / GameplayState.TILESIZE));
-                    mouseX = newx;
-                    mouseY = newy;
-                    
+                int currentXTile = (int) Math.floor((newx / GameplayState.TILESIZE));
+                int currentYTile = (int) Math.floor((newy / GameplayState.TILESIZE));
+                if (selectedTower != null) {
+                    selectedTower.setPosition(new Vector2f(newx - 16, newy - 16));
+                }
+
+                if (mouseCounter <= 0 && currentXTile <= 21 && currentXTile >= 0 
+                        && currentYTile >= 0 && currentYTile <= 21) {
                     
                     if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
                             && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
@@ -318,7 +322,7 @@ public class GameplayState extends BasicGameState {
                         tileHighlight = invalidTile;
                     }
                     mouseCounter = 32;
-                } else if (currentXTile>21) {
+                } else if (currentXTile > 21) {
                     tileHighlight = null;
                 }
             }
@@ -345,7 +349,7 @@ public class GameplayState extends BasicGameState {
     private void renderGuiText() {
         
         unicodeFont.drawString(guiLeftX+15, guiTopY+5,
-                "Level: "+String.valueOf(level.getLevelName()));
+                "Level: "+String.valueOf(getLevel().getLevelName()));
         
 //        unicodeFont.addGlyphs("~!@!#!#$%___--");
 //        
@@ -418,6 +422,10 @@ public class GameplayState extends BasicGameState {
         Input input = container.getInput();
 
         if (mouseCounter <= 0) {
+            
+            if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+                game.enterState(TowerDefence.LEVELSELECTSTATE);
+            }
             
             if (input.isKeyPressed(Input.KEY_F1)) {
                 loadLevel("data/levels/snake.xml");
@@ -528,6 +536,20 @@ public class GameplayState extends BasicGameState {
             selectedTower.render(container, game, g);
         }
 
+    }
+
+    /**
+     * @return the level
+     */
+    public LevelLoader getLevel() {
+        return level;
+    }
+
+    /**
+     * @param level the level to set
+     */
+    public void setLevel(LevelLoader level) {
+        this.level = level;
     }
 
 }

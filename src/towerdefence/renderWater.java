@@ -12,7 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
-public class renderWater {
+public class RenderWater {
 
     SpriteSheet waterSheet;
     Image[] waterFrames;
@@ -20,7 +20,7 @@ public class renderWater {
 
     int tw, th;
 
-    public renderWater(int tw, int th) throws SlickException {
+    public RenderWater(int tw, int th) throws SlickException {
 
         this.tw = tw;
         this.th = th;
@@ -42,7 +42,7 @@ public class renderWater {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         for(int i=0;i<tw;i++) {
             for(int j=0;j<th;j++) {
-                waterAnimation.draw(i*GameplayState.TILESIZE,j*GameplayState.TILESIZE);
+                waterAnimation.draw(i*32,j*32);
             }
         }
 

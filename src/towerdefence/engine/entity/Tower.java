@@ -72,7 +72,7 @@ public class Tower extends Entity {
         this.critterList = critterList;
     }
 
-    private void renderTextOverlay() {
+    private void renderTextOverlay(Graphics gr) {
         String tempOverlay;
         
         if(isActive) {
@@ -85,7 +85,11 @@ public class Tower extends Entity {
         if (Player.getInstance().getCash() - Player.getInstance().getTowerCost(type) >= 0) {
             unicodeFont.drawString(42 + (21 * 32), 416,tempOverlay);
         } else {
-            unicodeFont.drawString(42 + (21 * 32), 416,tempOverlay, Color.red);
+            if(!isPlaced) {
+                gr.drawString("Not enough cash", position.x+32, position.y+32);
+            }
+            unicodeFont.drawString(42 + (21 * 32), 416,costOverlay, Color.red);
+            unicodeFont.drawString(42 + (21 * 32), 431,overlay);
         }
     }
 
@@ -138,17 +142,17 @@ public class Tower extends Entity {
             if (circle != null) {
                 gr.draw(circle);
             }
-            renderTextOverlay();
+            renderTextOverlay(gr);
         } else if (isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y) {
             if (isActive) {
-                if (circle != null) {
-                    gr.draw(circle);
-                }
                 if(!GameplayState.towerSelected) {
-                    renderTextOverlay();
+                    if (circle != null) {
+                        gr.draw(circle);
+                    }
+                    renderTextOverlay(gr);
                 }
             } else {
-                renderTextOverlay();
+                renderTextOverlay(gr);
             }
             
             
