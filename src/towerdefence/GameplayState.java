@@ -130,9 +130,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     private Image gameoverImage;
     private boolean gameOver;
     
-    private MouseOverArea cudaArea;
-    private Image cudaEnable;
-    private Image cudaDisable;
     private GameContainer container;
 
     GameplayState(int stateID) {
@@ -185,9 +182,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         unicodeFont = new UnicodeFont("data/fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
 //        unicodeFont = new UnicodeFont("data/fonts/ArchitectsDaughter.ttf", 13, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
-
-        cudaArea = new MouseOverArea(container, cudaEnable, guiLeftX, guiTopY+304, 128, 40,this);
-        cudaArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         
         startWaves = false;
         
@@ -247,9 +241,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         tileHighlight = validTile;
         
         gameoverImage = new Image("data/gui/gameover.png");
-        
-        cudaEnable = new Image("data/gui/cudaEnable.png");
-        cudaDisable = new Image("data/gui/cudaDisable.png");
         
         // Load settings
         startingMoney = settings.getStartingMoney();
@@ -560,8 +551,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
             selectedTower.render(container, game, g);
         }
         
-        cudaArea.render(container, g);
-        
 
     }
 
@@ -580,14 +569,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     }
 
     public void componentActivated(AbstractComponent source) {
-        if (source == cudaArea) {
-            if (towerFactory.isCudaTowersEnabled()) {
-                towerFactory.setCudaTowersEnabled(false);
-                cudaArea = new MouseOverArea(container, cudaEnable, guiLeftX, guiTopY+304, 128, 40,this);
-            } else if (!towerFactory.isCudaTowersEnabled()) {
-                towerFactory.setCudaTowersEnabled(true);
-                cudaArea = new MouseOverArea(container, cudaDisable, guiLeftX, guiTopY+304, 128, 40,this);
-            }
-        }
+        
     }
 }

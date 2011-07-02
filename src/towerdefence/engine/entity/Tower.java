@@ -242,21 +242,13 @@ public class Tower extends Entity {
         
         shootingCounter-=delta;
 
-        if(!TowerManager.cudaTowersEnabled) {
-            if(isActive) {
-                if(shootingCounter<=0) {
-                    findClosestCritter();
-                    shootingCounter=100;
-                }
-            }
-        } else {
+        if (isActive) {
             if (shootingCounter <= 0) {
-                if (getTargetCritter() != null) {
-                    shootCritter(getTargetCritter());
-                }
+                findClosestCritter();
                 shootingCounter = 100;
             }
         }
+
 
         for(Component component : components)
         {

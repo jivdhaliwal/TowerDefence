@@ -5,7 +5,6 @@
 
 package towerdefence;
 
-import cuda.CudaCritterSelector;
 import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -33,13 +32,7 @@ public class TowerManager {
     private ArrayList<Critter> critterList;
     private final Image[][] towerSprites;
     private AnimationLoader spriteLoader = new AnimationLoader();
-    
-    // Arrays for CUDA
-    private int[] towerArray= new int[0];
-    private int[] critterArray= new int[0];
-    private int[] targetCritters=null;
-    CudaCritterSelector cudaSelecter;
-    
+
     // Tower types
     public final static int NORMAL = 0;
     public final static int FIRE = 1;
@@ -50,11 +43,6 @@ public class TowerManager {
     public TowerManager(Image[][] towerSprites) throws SlickException {
         
         this.towerSprites = towerSprites;
-        
-        cudaSelecter = new CudaCritterSelector();
-        
-        cudaTowersEnabled=false;
-        
     }
 
     /*
@@ -70,7 +58,6 @@ public class TowerManager {
             tower.setSprites(getTowerSprites()[type]);
             tower.AddComponent(new ImageRenderComponent("TowerRender", getTowerSprites()[type][0]));
             towerList.add(tower);
-            generateTowerArray();
         }
         
     }
@@ -79,7 +66,6 @@ public class TowerManager {
         if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(tower.getType()) >=0) {
             Player.getInstance().addTower(tower.getType());
             towerList.add(tower);
-            generateTowerArray();
         }
     }
 
@@ -89,22 +75,6 @@ public class TowerManager {
 
     public ArrayList<Tower> getTowers() {
         return towerList;
-    }
-
-    private void generateTowerArray() {
-        towerArray = new int[towerList.size() * 2];
-        for (int i = 0; i < towerList.size(); i++) {
-            towerArray[i * 2] = (int) towerList.get(i).getPosition().x;
-            towerArray[(i * 2) + 1] = (int) towerList.get(i).getPosition().y;
-        }
-    }
-    
-    private void generateCritterArray() {
-        critterArray = new int[critterList.size() * 2];
-        for (int i = 0; i < critterList.size(); i++) {
-            critterArray[i * 2] = (int) critterList.get(i).getPosition().x;
-            critterArray[(i * 2) + 1] = (int) critterList.get(i).getPosition().y;
-        }
     }
 
     
@@ -140,38 +110,8 @@ public class TowerManager {
         return false;
     }
     
-    /**
-     * @return the cudaTowersEnabled
-     */
-    public boolean isCudaTowersEnabled() {
-        return cudaTowersEnabled;
-    }
 
-    /**
-     * @param aCudaTowersEnabled the cudaTowersEnabled to set
-     */
-    public void setCudaTowersEnabled(boolean aCudaTowersEnabled) {
-        this.cudaTowersEnabled = aCudaTowersEnabled;
-    }
-    
-    
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
-        
-        if(isCudaTowersEnabled()) {
-            if (critterList.size() > 0) {
-                if (towerList.size() > 0) {
-                    generateCritterArray();
-                    targetCritters = cudaSelecter.selectCritters(critterArray, towerArray, (int) 128 * 128);
-                    for (int j = 0; j < targetCritters.length; j++) {
-                        if (targetCritters[j] != -1) {
-                            towerList.get(j).setTargetCritter(critterList.get(targetCritters[j]));
-                        } else {
-                            towerList.get(j).setTargetCritter(null);
-                        }
-                    }
-                }
-            }
-        }
         
         for (int i = 0; i < towerList.size(); i++) {
             towerList.get(i).updateCritterList(critterList);
