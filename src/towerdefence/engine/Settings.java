@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package towerdefence.engine;
 
 import org.newdawn.slick.SlickException;
@@ -11,7 +7,7 @@ import org.newdawn.slick.util.xml.XMLElementList;
 import org.newdawn.slick.util.xml.XMLParser;
 
 /**
- *
+ * Load game setttings from settings.xml
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
 public class Settings {

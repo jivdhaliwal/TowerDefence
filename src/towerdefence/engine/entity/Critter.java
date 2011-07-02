@@ -69,6 +69,7 @@ public class Critter extends Entity {
         
     }
     
+    // TODO Implement slowed critter
     public void slowCritter(int time) {
         isSlowed = true;
         slowTimer = time;

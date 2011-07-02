@@ -31,7 +31,6 @@ public class TowerManager {
     private ArrayList<Tower> towerList = new ArrayList<Tower>();
     private ArrayList<Critter> critterList;
     private final Image[][] towerSprites;
-    private AnimationLoader spriteLoader = new AnimationLoader();
 
     // Tower types
     public final static int NORMAL = 0;
@@ -50,6 +49,7 @@ public class TowerManager {
      */
     public void addTower(String id, Vector2f position, int type) throws SlickException {
         
+        // Check if player can afford to add the tower
         if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(type) >=0) {
             Player.getInstance().addTower(type);
             Tower tower = new Tower(id, true);
@@ -63,6 +63,7 @@ public class TowerManager {
     }
     
     public void addTower(Tower tower) {
+        // Check if player can afford to add the tower
         if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(tower.getType()) >=0) {
             Player.getInstance().addTower(tower.getType());
             towerList.add(tower);

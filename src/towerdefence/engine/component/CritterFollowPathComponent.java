@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package towerdefence.engine.component;
 
 import org.newdawn.slick.GameContainer;
@@ -12,7 +7,6 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import towerdefence.GameplayState;
 import towerdefence.engine.Player;
-import towerdefence.engine.entity.Critter;
 
 /**
  *

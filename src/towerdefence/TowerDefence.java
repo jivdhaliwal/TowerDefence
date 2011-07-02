@@ -15,7 +15,7 @@ public class TowerDefence extends StateBasedGame
 
      static boolean fullscreen = false;
 
-     static boolean showFPS = true;
+     static boolean showFPS = false;
 
      static String title = "Tower Defence";
 
@@ -23,8 +23,6 @@ public class TowerDefence extends StateBasedGame
 
      public static final int LEVELSELECTSTATE = 0;
      public static final int GAMEPLAYSTATE = 1;
-//     public static final int PATHTESTSTATE = 2;
-     public static final int CUDATESTSTATE = 3;
 
      
 
@@ -32,18 +30,8 @@ public class TowerDefence extends StateBasedGame
      {
           super(title);
 
-//          this.addState(new PathTestState(PATHTESTSTATE));
-//          
-//          GameplayState gameplaystate = new GameplayState(GAMEPLAYSTATE);
-//          gameplaystate.loadLevel("data/levels/snake.xml");
-//          this.addState(gameplaystate);
           this.addState(new LevelSelectState(LEVELSELECTSTATE));
-//          this.addState(new CudaTestState(CUDATESTSTATE));
-          
-//          this.enterState(GAMEPLAYSTATE);
           this.enterState(LEVELSELECTSTATE);
-//          this.enterState(CUDATESTSTATE);
-          //this.enterState(PATHTESTSTATE);
      }
 
      public static void main(String[] args) throws SlickException

@@ -1,7 +1,5 @@
 package towerdefence.engine;
 
-import towerdefence.GameplayState;
-
 /**
  *
  * Handles in-game currency

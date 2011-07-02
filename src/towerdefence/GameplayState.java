@@ -21,7 +21,6 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
-import org.newdawn.slick.gui.MouseOverArea;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -446,10 +445,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
             if (input.isKeyPressed(Input.KEY_F2)) {
                 loadLevel("data/levels/fork.xml");
                 container.reinit();
-                mouseCounter=100;
-            }
-            if (input.isKeyPressed(Input.KEY_0)) {
-                game.enterState(TowerDefence.CUDATESTSTATE);
                 mouseCounter=100;
             }
 

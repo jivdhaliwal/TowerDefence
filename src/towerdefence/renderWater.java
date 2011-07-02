@@ -10,9 +10,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  *
+ * Renders the animated water background
+ * TODO Ability to change water direction
+ * 
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
-public class RenderWater {
+public final class RenderWater {
 
     SpriteSheet waterSheet;
     Image[] waterFrames;

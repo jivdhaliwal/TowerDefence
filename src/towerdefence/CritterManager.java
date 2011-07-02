@@ -41,8 +41,6 @@ public class CritterManager {
 
     private ArrayList<Critter> critterList = new ArrayList<Critter>();
     private Animation[][] critterAnimation;
-
-    private AnimationLoader animationLoader = new AnimationLoader();
     
     public CritterManager(int startX, int startY, int goalX, int goalY,
             PathFinder finder, Animation[][] critterAnimation) throws SlickException {
