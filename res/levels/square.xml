@@ -1,5 +1,5 @@
 <Level name="Square">
-	<Tilemap path="data/levels/maps/square.tmx" />
+	<Tilemap path="levels/maps/square.tmx" />
 	<Waves>
 		<Wave type="0" count="1" waitingTime="1000" />
 		<Wave type="0" count="5" waitingTime="5000" />

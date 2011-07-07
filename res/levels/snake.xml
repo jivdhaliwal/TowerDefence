@@ -1,5 +1,5 @@
 <Level name="Snake">
-	<Tilemap path="data/levels/maps/snake.tmx" />
+	<Tilemap path="levels/maps/snake.tmx" />
 	<Waves>
 		<Wave type="1" count="25" waitingTime="7500" />
 		<Wave type="1" count="1" waitingTime="5000" />

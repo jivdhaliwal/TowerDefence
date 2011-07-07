@@ -28,7 +28,7 @@ public final class RenderWater {
         this.tw = tw;
         this.th = th;
 
-        Image water = new Image("data/tilesets/water.png");
+        Image water = new Image("tilesets/water.png");
         waterSheet = new SpriteSheet(water, 32, 32);
         waterFrames = new Image[8];
         setWaterLeft();

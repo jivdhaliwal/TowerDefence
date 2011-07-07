@@ -1,44 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package towerdefence;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.MouseListener;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.*;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.gui.AbstractComponent;
-import org.newdawn.slick.gui.ComponentListener;
+import org.newdawn.slick.gui.*;
 import org.newdawn.slick.particles.ParticleSystem;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.*;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.*;
-import towerdefence.engine.AnimationLoader;
-import towerdefence.engine.Settings;
-import towerdefence.engine.Player;
-import towerdefence.engine.component.ImageRenderComponent;
-import towerdefence.engine.entity.Critter;
-import towerdefence.engine.entity.Tower;
-import towerdefence.engine.levelLoader.LevelLoader;
-import towerdefence.engine.levelLoader.Wave;
-
+import towerdefence.engine.*;
+import towerdefence.engine.component.*;
+import towerdefence.engine.entity.*;
+import towerdefence.engine.levelLoader.*;
 import towerdefence.engine.pathfinding.PathMap;
 
 /**
- *
+ * TODO Refractor the hell out of this massive class
  * @author Jiv
  */
 public class GameplayState extends BasicGameState implements ComponentListener {
@@ -150,7 +130,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         //loadLevel("data/levels/snake.xml");
         settings = new Settings();
 //        guiMap = new TiledMap("data/gui/guiMap.tmx");
-        guiBackground = new Image("data/gui/gui_overlay.png");
+        guiBackground = new Image("gui/gui_overlay.png");
 
         map = new TiledMap(getLevel().getMapPath());
 
@@ -178,7 +158,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         
         waterAnimation = new RenderWater(map.getWidth()+5,map.getHeight());
         
-        unicodeFont = new UnicodeFont("data/fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
+        unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
 //        unicodeFont = new UnicodeFont("data/fonts/ArchitectsDaughter.ttf", 13, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
         
@@ -229,17 +209,17 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         critterAnimation[ICE] = spriteLoader.getCritterAnimation(ICE);
         
         // Load the wandering NPC - He who's purpose is to question purpose
-        Image normalSheet = new Image("data/sprites/wandering_trader2.png");
+        Image normalSheet = new Image("sprites/wandering_trader2.png");
         SpriteSheet critterSheet = new SpriteSheet(normalSheet, 32, 64);
         Image[] wanderingNPC = {critterSheet.getSprite(0, 0),critterSheet.getSprite(1, 0),
             critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
             critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0)};
         wanderingNPCAnim = new Animation(wanderingNPC, 230,true);
-        validTile = new Image("data/sprites/validTileSelect.png");
-        invalidTile = new Image("data/sprites/invalidTileSelect.png");
+        validTile = new Image("sprites/validTileSelect.png");
+        invalidTile = new Image("sprites/invalidTileSelect.png");
         tileHighlight = validTile;
         
-        gameoverImage = new Image("data/gui/gameover.png");
+        gameoverImage = new Image("gui/gameover.png");
         
         // Load settings
         startingMoney = settings.getStartingMoney();

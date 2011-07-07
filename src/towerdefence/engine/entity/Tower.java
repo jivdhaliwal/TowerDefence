@@ -68,7 +68,7 @@ public class Tower extends Entity {
         this.rotation=0;
         this.isActive = isActive;
         
-        unicodeFont = new UnicodeFont("data/fonts/pf_tempesta_seven.ttf", 8, false, false);
+        unicodeFont = new UnicodeFont("fonts/pf_tempesta_seven.ttf", 8, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
         
     }

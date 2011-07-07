@@ -34,12 +34,12 @@ public class AnimationLoader {
         Image normalSheet = null;
         
         if (critterType == NORMAL) {
-            normalSheet = new Image("data/sprites/critters/antNormal.png");
+            normalSheet = new Image("sprites/critters/antNormal.png");
         } else if (critterType == FIRE) {
-            normalSheet = new Image("data/sprites/critters/antFire.png");
+            normalSheet = new Image("sprites/critters/antFire.png");
             updateRate=70;
         } else if (critterType == ICE) {
-            normalSheet = new Image("data/sprites/critters/antIce.png");
+            normalSheet = new Image("sprites/critters/antIce.png");
             updateRate=130;
         }
         SpriteSheet critterSheet = new SpriteSheet(normalSheet, 64, 64);
@@ -56,17 +56,17 @@ public class AnimationLoader {
     public Image[] getTowerSprites(int towerType) throws SlickException {
         Image[] tower = new Image[3];
         if(towerType==NORMAL) {
-            tower[0] = new Image("data/sprites/towers/greentower.png");
-            tower[1] = new Image("data/sprites/towers/arrow.png");
-            tower[2] = new Image("data/sprites/laser/green.png");
+            tower[0] = new Image("sprites/towers/greentower.png");
+            tower[1] = new Image("sprites/towers/arrow.png");
+            tower[2] = new Image("sprites/laser/green.png");
         } else if(towerType==FIRE) {
-            tower[0] = new Image("data/sprites/towers/redtower.png");
-            tower[1] = new Image("data/sprites/towers/arrow.png");
-            tower[2] = new Image("data/sprites/laser/red.png");
+            tower[0] = new Image("sprites/towers/redtower.png");
+            tower[1] = new Image("sprites/towers/arrow.png");
+            tower[2] = new Image("sprites/laser/red.png");
         } else if(towerType==ICE) {
-            tower[0] = new Image("data/sprites/towers/bluetower.png");
-            tower[1] = new Image("data/sprites/towers/arrow.png");
-            tower[2] = new Image("data/sprites/laser/blue.png");  
+            tower[0] = new Image("sprites/towers/bluetower.png");
+            tower[1] = new Image("sprites/towers/arrow.png");
+            tower[2] = new Image("sprites/laser/blue.png");  
         }
         
         return tower;

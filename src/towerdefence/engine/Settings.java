@@ -32,7 +32,7 @@ public class Settings {
     public Settings() throws SlickException {
         XMLParser parser = new XMLParser();
 
-        root = parser.parse("data/settings.xml");
+        root = parser.parse("settings.xml");
         
         loadPlayerSettings();
         loadCritterSettings();

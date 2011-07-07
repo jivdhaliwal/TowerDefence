@@ -75,17 +75,17 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         
-        guiBackground = new Image("data/gui/level_select_overlay.png");
+        guiBackground = new Image("gui/level_select_overlay.png");
         
         waterAnimation = new RenderWater(container.getWidth()/32,
                 container.getHeight()/32);
         
-        zigzag = new Image("data/gui/levels/zigzag.png");
-        snake = new Image("data/gui/levels/snake.png");
-        fork = new Image("data/gui/levels/fork.png");
-        square = new Image("data/gui/levels/square.png");
-        left = new Image("data/gui/levels/left.png");
-        haich = new Image("data/gui/levels/haich.png");
+        zigzag = new Image("gui/levels/zigzag.png");
+        snake = new Image("gui/levels/snake.png");
+        fork = new Image("gui/levels/fork.png");
+        square = new Image("gui/levels/square.png");
+        left = new Image("gui/levels/left.png");
+        haich = new Image("gui/levels/haich.png");
         
         zigzagArea = new MouseOverArea(container, zigzag, guiLeftX, easyLevelTopY, 140, 40, this);
         squareArea = new MouseOverArea(container, square, guiLeftX, easyLevelTopY+40, 140, 40, this);
@@ -102,7 +102,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         haichArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         squareArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         
-        unicodeFont = new UnicodeFont("data/fonts/Jellyka_Estrya_Handwriting.ttf", 100, false, false);
+        unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 100, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
         
         this.game = game;
@@ -138,37 +138,37 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         try {
         if (source == zigzagArea) {
             
-                level = new LevelLoader("data/levels/zigzag.xml");
+                level = new LevelLoader("levels/zigzag.xml");
                 map = new TiledMap(level.getMapPath());
             
         }
         if (source == forkArea) {
             
-                level = new LevelLoader("data/levels/fork.xml");
+                level = new LevelLoader("levels/fork.xml");
                 map = new TiledMap(level.getMapPath());
             
         }
         if (source == snakeArea) {
             
-                level = new LevelLoader("data/levels/snake.xml");
+                level = new LevelLoader("levels/snake.xml");
                 map = new TiledMap(level.getMapPath());
             
         }
         if (source == leftArea) {
             
-                level = new LevelLoader("data/levels/left.xml");
+                level = new LevelLoader("levels/left.xml");
                 map = new TiledMap(level.getMapPath());
             
         }
         if (source == haichArea) {
             
-                level = new LevelLoader("data/levels/haich.xml");
+                level = new LevelLoader("levels/haich.xml");
                 map = new TiledMap(level.getMapPath());
             
         }
         if (source == squareArea) {
             
-                level = new LevelLoader("data/levels/square.xml");
+                level = new LevelLoader("levels/square.xml");
                 map = new TiledMap(level.getMapPath());
             
         }
