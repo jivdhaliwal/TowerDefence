@@ -35,3 +35,4 @@ lib/*.properties
 res/sprites/*.psd
 
 tools/
+resBackup/

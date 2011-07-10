@@ -23,7 +23,7 @@ import towerdefence.engine.pathfinding.PathMap;
  */
 public class GameplayState extends BasicGameState implements ComponentListener {
 
-    int stateID = -1;
+    int stateID = 0;
 
     // Tower and Critter types
     public final static int NORMAL = 0;
@@ -110,9 +110,10 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     private boolean gameOver;
     
     private GameContainer container;
+    private TextField helpText;
+    private boolean showHelp;
 
-    GameplayState(int stateID) {
-        this.stateID = stateID;
+    GameplayState() {
     }
 
     @Override
@@ -161,6 +162,17 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
 //        unicodeFont = new UnicodeFont("data/fonts/ArchitectsDaughter.ttf", 13, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
+        
+        helpText = new TextField(container, container.getGraphics().getFont(), 
+                (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
+        helpText.setText("Game Help\n\nPress 1, 2 or 3 to select a tower\n"
+                + "Left click to place a selected tower\n"
+                + "Right click to cancel current selection\n"
+                + "Mouse over a tower to see its info\n"
+                + "Mouse over a tower and press delete to sell a tower\n"
+                + "R : Restart\n"
+                + "Esc : Level select screen\n"
+                + "Manage your money and keep the critters at bay!");
         
         startWaves = false;
         
@@ -236,6 +248,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         Player.getInstance().setCritterReward(critterReward);
         Player.getInstance().setTowerCost(towerCost);
         Player.getInstance().setHealth(playerHealth);
+        
         
     }
 
@@ -413,19 +426,10 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 
         if (mouseCounter <= 0) {
             
+            if(input.isKeyPressed(Input.KEY_F1)){showHelp = !showHelp;}
+            
             if (input.isKeyPressed(Input.KEY_ESCAPE)) {
                 game.enterState(TowerDefence.LEVELSELECTSTATE);
-            }
-            
-            if (input.isKeyPressed(Input.KEY_F1)) {
-                loadLevel("data/levels/snake.xml");
-                container.reinit();
-                mouseCounter=100;
-            }
-            if (input.isKeyPressed(Input.KEY_F2)) {
-                loadLevel("data/levels/fork.xml");
-                container.reinit();
-                mouseCounter=100;
             }
 
             if (input.isKeyPressed(Input.KEY_ENTER)) {
@@ -524,6 +528,11 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         
         if(selectedTower!=null) {
             selectedTower.render(container, game, g);
+        }
+        
+        
+        if(showHelp){
+            helpText.render(container, g);
         }
         
 

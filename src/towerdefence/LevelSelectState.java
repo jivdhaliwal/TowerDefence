@@ -18,6 +18,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.MouseOverArea;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
@@ -29,7 +30,7 @@ import towerdefence.engine.levelLoader.LevelLoader;
  */
 public class LevelSelectState extends BasicGameState implements ComponentListener {
     
-    int stateID = -1;
+    int stateID = 0;
     
     private RenderWater waterAnimation;
     
@@ -62,10 +63,10 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     private StateBasedGame game;
     private UnicodeFont unicodeFont;
     
+    TextField helpText;
+    private boolean showHelp;
     
-    
-    LevelSelectState(int stateID) {
-        this.stateID = stateID;
+    LevelSelectState() {
     }
 
     @Override
@@ -105,6 +106,19 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 100, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
         
+        
+        helpText = new TextField(container, container.getGraphics().getFont(), 
+                (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
+        helpText.setText("Game Help\n\nPress 1, 2 or 3 to select a tower\n"
+                + "Left click to place a selected tower\n"
+                + "Right click to cancel current selection\n"
+                + "Mouse over a tower to see its info\n"
+                + "Mouse over a tower and press delete to sell a tower\n"
+                + "R : Restart\n"
+                + "Esc : Level select screen\n"
+                + "Manage your money and keep the critters at bay!");
+        
+        
         this.game = game;
     }
 
@@ -127,11 +141,22 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         leftArea.render(container, g); 
         haichArea.render(container, g);
         
-        unicodeFont.drawString(64, 32, "Select a level and press the spacebar to begin");
+        unicodeFont.drawString(64, 32, "Select a level and press the spacebar to begin\n"
+                + "Press F 1  for help");
+        
+        if(showHelp){
+            helpText.render(container, g);
+        }
+                
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         unicodeFont.loadGlyphs(1);
+        
+        Input input = container.getInput();
+        
+        if(input.isKeyPressed(Input.KEY_F1)){showHelp = !showHelp;}
+        
     }
 
     public void componentActivated(AbstractComponent source)  {
@@ -185,7 +210,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         if (key == Input.KEY_SPACE) {
             
             if(level!=null) {
-                GameplayState gameplaystate = new GameplayState(TowerDefence.GAMEPLAYSTATE);
+                GameplayState gameplaystate = new GameplayState();
                     gameplaystate.setLevel(level);
                     game.addState(gameplaystate);
                     game.enterState(TowerDefence.GAMEPLAYSTATE);

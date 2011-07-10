@@ -26,17 +26,17 @@ public class TowerDefence extends StateBasedGame
 
      
 
-     public TowerDefence(String title) throws SlickException
+     public TowerDefence() throws SlickException
      {
           super(title);
 
-          this.addState(new LevelSelectState(LEVELSELECTSTATE));
+          this.addState(new LevelSelectState());
           this.enterState(LEVELSELECTSTATE);
      }
 
      public static void main(String[] args) throws SlickException
      {
-          AppGameContainer app = new AppGameContainer(new ScalableGame(new TowerDefence(title),width,height));
+          AppGameContainer app = new AppGameContainer(new ScalableGame(new TowerDefence(),width,height));
 
           app.setDisplayMode((int)(width), (int)(height), fullscreen);
           app.setSmoothDeltas(true);
