@@ -40,13 +40,13 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     private int guiBottomY = 656;
     
     private int easyLevelTopY = 140;
-    private int mediumLevelTopY = 320;
-    private int hardLevelTopY = 520;
+    private int mediumLevelTopY = 280;
+    private int hardLevelTopY = 425;
     
     private int TILESIZE = 32;
     
     private MouseOverArea snakeArea,forkArea,zigzagArea,
-            squareArea,leftArea,haichArea;
+            squareArea,leftArea,haichArea,loadArea,quitArea;
     
     private ArrayList<MouseOverArea> areas = new ArrayList<MouseOverArea>();
     
@@ -56,7 +56,8 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     private Image square;
     private Image left;
     private Image haich;
-    
+    private Image load;
+    private Image quit;
     
     private LevelLoader level=null;
     private TiledMap map=null;
@@ -65,6 +66,9 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     
     TextField helpText;
     private boolean showHelp;
+    private GameContainer container;
+    
+    
     
     LevelSelectState() {
     }
@@ -87,6 +91,8 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         square = new Image("gui/levels/square.png");
         left = new Image("gui/levels/left.png");
         haich = new Image("gui/levels/haich.png");
+        load = new Image("gui/levels/load.png");
+        quit = new Image("gui/levels/quit.png");
         
         zigzagArea = new MouseOverArea(container, zigzag, guiLeftX, easyLevelTopY, 140, 40, this);
         squareArea = new MouseOverArea(container, square, guiLeftX, easyLevelTopY+40, 140, 40, this);
@@ -94,6 +100,8 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         forkArea = new MouseOverArea(container, fork, guiLeftX, mediumLevelTopY+40,140, 40, this);
         leftArea = new MouseOverArea(container, left, guiLeftX, hardLevelTopY,140, 40, this);
         haichArea = new MouseOverArea(container, haich, guiLeftX, hardLevelTopY+40,140, 40, this);
+        loadArea = new MouseOverArea(container, load, guiLeftX-5, 540,140, 40, this);
+        quitArea = new MouseOverArea(container, quit, guiLeftX-5, 600,140, 40, this);
         
         
         snakeArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
@@ -102,6 +110,8 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         leftArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         haichArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         squareArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
+        loadArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
+        quitArea.setMouseOverColor(new Color(1, 1f, 0.7f, 0.8f));
         
         unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 100, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
@@ -120,6 +130,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
         
         this.game = game;
+        this.container = container;
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
@@ -140,9 +151,9 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         squareArea.render(container, g);
         leftArea.render(container, g); 
         haichArea.render(container, g);
+        loadArea.render(container, g);
+        quitArea.render(container, g);
         
-        unicodeFont.drawString(64, 32, "Select a level and press the spacebar to begin\n"
-                + "Press F 1  for help");
         
         if(showHelp){
             helpText.render(container, g);
@@ -150,6 +161,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
                 
     }
 
+    @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         unicodeFont.loadGlyphs(1);
         
@@ -159,6 +171,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
     }
 
+    @Override
     public void componentActivated(AbstractComponent source)  {
         try {
         if (source == zigzagArea) {
@@ -197,26 +210,22 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
                 map = new TiledMap(level.getMapPath());
             
         }
-        } catch (SlickException ex) {
-                Logger.getLogger(LevelSelectState.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    }
-
-    /**
-     * @see org.newdawn.slick.BasicGame#keyPressed(int, char)
-     */
-    @Override
-    public void keyPressed(int key, char c) {
-        if (key == Input.KEY_SPACE) {
+        if (source == loadArea) {
             
-            if(level!=null) {
+            if (level != null) {
                 GameplayState gameplaystate = new GameplayState();
-                    gameplaystate.setLevel(level);
-                    game.addState(gameplaystate);
-                    game.enterState(TowerDefence.GAMEPLAYSTATE);
+                gameplaystate.setLevel(level);
+                game.addState(gameplaystate);
+                game.enterState(TowerDefence.GAMEPLAYSTATE);
             }
             
         }
+        if (source == quitArea) {
+            container.exit();
+        }
+        } catch (SlickException ex) {
+                Logger.getLogger(LevelSelectState.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     
 }

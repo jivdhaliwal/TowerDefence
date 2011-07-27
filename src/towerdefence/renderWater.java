@@ -31,13 +31,21 @@ public final class RenderWater {
         Image water = new Image("tilesets/water.png");
         waterSheet = new SpriteSheet(water, 32, 32);
         waterFrames = new Image[8];
-        setWaterLeft();
+        setRandomWater();
 
     }
 
-    public void setWaterLeft() {
+    public void setRandomWater() {
+        
+        java.util.Random random = new java.util.Random();
+        int xWater = random.nextInt(3);
+        int yWater = random.nextInt(3);
+        if(xWater == 1 || yWater == 1) {
+            xWater = 0;
+            yWater = 0;
+        }
         for(int x=0;x<waterFrames.length;x++) {
-            waterFrames[x]=waterSheet.getSprite(x*3, 1);
+            waterFrames[x]=waterSheet.getSprite(x*3+xWater, yWater);
         }
         waterAnimation = new Animation(waterFrames, 100,true);
     }

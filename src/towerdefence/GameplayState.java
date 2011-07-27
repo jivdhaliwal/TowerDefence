@@ -82,9 +82,9 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     ParticleSystem ps;
 
     private UnicodeFont unicodeFont;
+    private UnicodeFont tempestaFont;
     private TowerManager towerFactory;
     private RenderWater waterAnimation;
-    private Animation wanderingNPCAnim;
 
     public static int TILESIZE;
     private int startX;
@@ -112,6 +112,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     private GameContainer container;
     private TextField helpText;
     private boolean showHelp;
+    private Image start;
+    private MouseOverArea startArea;
 
     GameplayState() {
     }
@@ -160,8 +162,10 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         waterAnimation = new RenderWater(map.getWidth()+5,map.getHeight());
         
         unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
-//        unicodeFont = new UnicodeFont("data/fonts/ArchitectsDaughter.ttf", 13, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
+        
+        tempestaFont = new UnicodeFont("fonts/pf_tempesta_seven.ttf", 8, false, false);
+        tempestaFont.getEffects().add(new ColorEffect(java.awt.Color.white));
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
                 (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
@@ -173,6 +177,11 @@ public class GameplayState extends BasicGameState implements ComponentListener {
                 + "R : Restart\n"
                 + "Esc : Level select screen\n"
                 + "Manage your money and keep the critters at bay!");
+        
+        start = new Image("gui/start.png");
+        startArea = new MouseOverArea(container, start, guiLeftX-5, guiBottomY-75, 140, 40, this);
+        startArea.setMouseOverColor(Color.black);
+        startArea.setMouseDownColor(Color.black);
         
         startWaves = false;
         
@@ -219,14 +228,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         critterAnimation[NORMAL] = spriteLoader.getCritterAnimation(NORMAL);
         critterAnimation[FIRE] = spriteLoader.getCritterAnimation(FIRE);
         critterAnimation[ICE] = spriteLoader.getCritterAnimation(ICE);
-        
-        // Load the wandering NPC - He who's purpose is to question purpose
-        Image normalSheet = new Image("sprites/wandering_trader2.png");
-        SpriteSheet critterSheet = new SpriteSheet(normalSheet, 32, 64);
-        Image[] wanderingNPC = {critterSheet.getSprite(0, 0),critterSheet.getSprite(1, 0),
-            critterSheet.getSprite(2, 0), critterSheet.getSprite(3, 0),
-            critterSheet.getSprite(4, 0), critterSheet.getSprite(5, 0)};
-        wanderingNPCAnim = new Animation(wanderingNPC, 230,true);
+
         validTile = new Image("sprites/validTileSelect.png");
         invalidTile = new Image("sprites/invalidTileSelect.png");
         tileHighlight = validTile;
@@ -349,7 +351,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         });
     }
 
-    private void renderGuiText() {
+    private void renderGuiText(Graphics g) {
         
         unicodeFont.drawString(guiLeftX+15, guiTopY+5,
                 "Level: "+String.valueOf(getLevel().getLevelName()));
@@ -367,21 +369,24 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 //        unicodeFont.drawString(50, 160,
 //                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
         
-        unicodeFont.drawString(guiLeftX+25, guiTopY+200, "TOWERS");
+        unicodeFont.drawString(guiLeftX+25, guiTopY+250, "TOWERS");
         
-        if (startWaves) {
-            unicodeFont.drawString(guiLeftX + 15, guiBottomY - 100,
-                    "Next wave in :", Color.white);
+        if (startWaves && !gameOver) {
+            unicodeFont.drawString(guiLeftX + 15, guiBottomY - 95,
+                    " Next wave in:", Color.white);
             if (waveCounter > 0) {
                 unicodeFont.drawString(guiLeftX + 30, guiBottomY - 70,
                         String.valueOf(waveCounter / 1000) + " seconds", Color.white);
             }
-        } else if (!startWaves) {
-            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 95,
-                    "Press Enter", Color.white);
-            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 75,
-                    "   to begin", Color.white);
+        } else {
+//            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 95,
+//                    "Press Enter", Color.white);
+//            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 75,
+//                    "   to begin", Color.white);
+            startArea.render(container, g);
         }
+        
+        tempestaFont.drawString(guiLeftX+25, guiBottomY-115, "Press F1 for help");
     }
     
     private void setSelectedTower(int type) throws SlickException {
@@ -402,7 +407,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         for(int i=0;i<3;i++) {
             guiTowerList.get(i).setPosition(new Vector2f( 
                     (float)(Math.floor((guiLeftX+16+(i*32)) / GameplayState.TILESIZE))*32, 
-                    (float)(Math.floor((guiTopY+272)/GameplayState.TILESIZE))*32));
+                    (float)(Math.floor((guiTopY+304)/GameplayState.TILESIZE))*32));
             guiTowerList.get(i).setType(i);
             guiTowerList.get(i).setSprites(towerSprites[i]);
             guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
@@ -419,6 +424,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         generateCounter -= delta;
         
         unicodeFont.loadGlyphs(1);
+        tempestaFont.loadGlyphs(1);
 
 //        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
 
@@ -518,9 +524,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
             gameoverImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
         }
         
-        renderGuiText();
-
-        wanderingNPCAnim.draw(50f, 32f);
+        renderGuiText(g);
 
         for(Tower guiTower : guiTowerList) {
             guiTower.render(container, game, g);
@@ -552,7 +556,12 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         this.level = level;
     }
 
+    @Override
     public void componentActivated(AbstractComponent source) {
+        
+        if(source==startArea) {
+            startWaves=true;
+        }
         
     }
 }
