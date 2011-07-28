@@ -39,14 +39,16 @@ public class LevelLoader {
     private void loadWaves() throws SlickXMLException {
         int critterType;
         int numCritters;
+        int timeToSpawn;
         int timeToWait;
 
         XMLElementList waves = root.getChildrenByName("Waves").get(0).getChildren();
         for(int i=0;i<waves.size();i++){
             critterType = waves.get(i).getIntAttribute("type");
             numCritters = waves.get(i).getIntAttribute("count");
+            timeToSpawn = waves.get(i).getIntAttribute("spawnTime");
             timeToWait = waves.get(i).getIntAttribute("waitingTime");
-            Wave wave = new Wave(critterType, numCritters, timeToWait);
+            Wave wave = new Wave(critterType, numCritters, timeToSpawn, timeToWait);
             waveList[i] = wave;
         }
         

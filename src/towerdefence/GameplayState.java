@@ -108,12 +108,16 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     
     private Image gameoverImage;
     private boolean gameOver;
+    private Image levelCompleteImage;
+    private boolean levelComplete;
     
     private GameContainer container;
     private TextField helpText;
     private boolean showHelp;
     private Image start;
     private MouseOverArea startArea;
+
+	
 
     GameplayState() {
     }
@@ -169,7 +173,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
                 (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
-        helpText.setText("Game Help\n\nPress 1, 2 or 3 to select a tower\n"
+        helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
                 + "Left click to place a selected tower\n"
                 + "Right click to cancel current selection\n"
                 + "Mouse over a tower to see its info\n"
@@ -205,7 +209,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
                             critterManager.addCritter(String.valueOf((waveNumber * 1000) + critterCount),
                                     getLevel().getWave(waveNumber).getCritterType());
                             critterCount--;
-                            generateCounter = 1000;
+                            generateCounter = currentWave.getTimeToSpawn();
                         } else if (critterCount <=0 ) {
                             waveCounter = currentWave.getTimeToWait();
                             waveNumber++;
@@ -216,6 +220,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
                         
                     }
                 } 
+            } else if(critterManager.getCritters().size()==0){
+            	levelComplete=true;
             }
         }
     }
@@ -234,6 +240,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         tileHighlight = validTile;
         
         gameoverImage = new Image("gui/gameover.png");
+        levelCompleteImage = new Image("gui/levelComplete.png");
         
         // Load settings
         startingMoney = settings.getStartingMoney();
@@ -423,8 +430,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         waveCounter -= delta;
         generateCounter -= delta;
         
-        unicodeFont.loadGlyphs(1);
-        tempestaFont.loadGlyphs(1);
+        unicodeFont.loadGlyphs(100);
+        tempestaFont.loadGlyphs(100);
 
 //        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
 
@@ -535,10 +542,13 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         }
         
         
-        if(showHelp){
+        if(!gameOver && !levelComplete && showHelp){
             helpText.render(container, g);
         }
         
+        if(levelComplete) {
+        	levelCompleteImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
+        }
 
     }
 

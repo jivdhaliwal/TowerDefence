@@ -258,6 +258,21 @@ public class Tower extends Entity {
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {   
+    	switch (this.getType()) {
+			case NORMAL:
+				gr.setColor(Color.green);
+				break;
+			case FIRE:
+				gr.setColor(Color.red);
+				break;
+			case ICE:
+				gr.setColor(Color.blue);
+				break;
+			default:
+				gr.setColor(Color.green);
+				break;
+		}
+    	
         if(renderComponent != null) {
             renderComponent.render(gc, sb, gr);
         }
@@ -265,21 +280,19 @@ public class Tower extends Entity {
         // Check tower has a target
         if (getTargetCritter() != null) {
 
+        	
+            gr.drawLine(this.getPosition().x+16, this.getPosition().y+16,
+            		getTargetCritter().getPosition().x+16,getTargetCritter().getPosition().y+16);
+        	
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
-                    (float) (getTargetCritter().getPosition().sub(this.getPosition())).getTheta()-90);
-            
-            // Draw lazer and extend it using the distance from the tower to the
-            // target critter
-            sprites[2].draw(this.getPosition().x, this.getPosition().y+16, 32,
-                    this.getPosition().distance(getTargetCritter().getPosition()));
-            // Draw tower's turret (which will rotate towards critters
+                    (float) (getTargetCritter().getPosition().sub(this.getPosition())).getTheta()-90);      
+            // Draw tower's turret (which will rotate towards critters)
             sprites[1].draw(this.getPosition().x,this.getPosition().y);
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
-        
         guiOverlay(gr);
-        
+        gr.setColor(Color.white);
     }
 
     /**

@@ -99,6 +99,7 @@ public class Critter extends Entity {
             renderComponent.render(gc, sb, gr);
         }
         
+        gr.setColor(Color.white);
         gr.draw(healthBar);
         gr.setColor(Color.red);
         gr.fill(healthBar);

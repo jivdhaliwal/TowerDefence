@@ -65,7 +65,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     private UnicodeFont unicodeFont;
     
     TextField helpText;
-    private boolean showHelp;
+    private boolean showHelp=true;
     private GameContainer container;
     
     
@@ -119,7 +119,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
                 (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
-        helpText.setText("Game Help\n\nPress 1, 2 or 3 to select a tower\n"
+        helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
                 + "Left click to place a selected tower\n"
                 + "Right click to cancel current selection\n"
                 + "Mouse over a tower to see its info\n"
@@ -131,6 +131,9 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
         this.game = game;
         this.container = container;
+        
+        level = new LevelLoader("levels/square.xml");
+        map = new TiledMap(level.getMapPath());
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
