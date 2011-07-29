@@ -38,7 +38,7 @@ public class TowerDefence extends StateBasedGame
      {
           AppGameContainer app = new AppGameContainer(new ScalableGame(new TowerDefence(),width,height));
 
-          app.setDisplayMode((int)(width), (int)(height), fullscreen);
+          app.setDisplayMode((width), (height), fullscreen);
           app.setSmoothDeltas(true);
           app.setTargetFrameRate(fpslimit);
           app.setShowFPS(showFPS);

@@ -10,7 +10,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
-import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.Player;
 import towerdefence.engine.component.CritterAnimationComponent;
 import towerdefence.engine.component.CritterFollowPathComponent;

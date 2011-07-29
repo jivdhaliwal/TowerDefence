@@ -3,6 +3,7 @@ package towerdefence.engine.entity;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,6 +15,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+
 import towerdefence.GameplayState;
 import towerdefence.engine.Player;
 import towerdefence.engine.component.Component;
@@ -28,37 +30,37 @@ import towerdefence.engine.component.Component;
  */
 public class Tower extends Entity {
     
-        // Tower types
-    public final static int NORMAL = 0;
+        public final static int BOSS = 3;
     public final static int FIRE = 1;
     public final static int ICE = 2;
-    public final static int BOSS = 3;
+    // Tower types
+    public final static int NORMAL = 0;
 
+    private Circle circle=null;
+    String costOverlay;
+    
     ArrayList<Critter> critterList = null;
-    private Critter targetCritter = null;
+
+    private float damagePerSec;
+    String fireDetails = "150% damage\nto ice types";
+    String iceDetails = "150% damage\nto fire types";
+
+    private boolean isActive;
+
+    private boolean isPlaced=true;
+    boolean isShooting;
+    private int mouseXTile;
+    
+    private int mouseYTile;
+    String overlay;
+    private float range;
+    
+    private int shootingCounter;
     
     private Image[] sprites;
-
-    private float range;
-    float damagePerSec;
+    private Critter targetCritter = null;
     private int type;
-
-    private int shootingCounter;
-
-    boolean isShooting;
-    private boolean isPlaced=true;
-    private boolean isActive;
-    
-    private Circle circle=null;
-    private int mouseXTile;
-    private int mouseYTile;
-    
     private final UnicodeFont unicodeFont;
-    
-    String costOverlay;
-    String overlay;
-    String iceDetails = "150% damage\nto fire types";
-    String fireDetails = "150% damage\nto ice types";
     
 
 
@@ -71,44 +73,6 @@ public class Tower extends Entity {
         unicodeFont = new UnicodeFont("fonts/pf_tempesta_seven.ttf", 8, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
         
-    }
-
-    /*
-     * Update the list of critters the tower iterates through to find a target
-     */
-    public void updateCritterList(ArrayList<Critter> critterList) {
-        this.critterList = critterList;
-    }
-
-    private void renderTextOverlay(Graphics gr) {
-        String tempOverlay;
-        
-        if(isActive) {
-            tempOverlay = "Sale Value : $"+
-                    (Player.getInstance().getTowerCost(type))/2+"\n"+overlay;
-            if(type==FIRE) {
-                tempOverlay+=fireDetails;
-            } else if(type==ICE) {
-                tempOverlay+=iceDetails;
-            }
-        } else {
-            tempOverlay = costOverlay + overlay;
-            if(type==FIRE) {
-                tempOverlay+=fireDetails;
-            } else if(type==ICE) {
-                tempOverlay+=iceDetails;
-            }
-        }
-        
-        if (Player.getInstance().getCash() - Player.getInstance().getTowerCost(type) >= 0) {
-            unicodeFont.drawString(42 + (21 * 32), 416,tempOverlay);
-        } else {
-            if(!isPlaced) {
-                gr.drawString("Not enough cash", position.x+32, position.y+32);
-            }
-            unicodeFont.drawString(42 + (21 * 32), 416,costOverlay, Color.red);
-            unicodeFont.drawString(42 + (21 * 32), 431,overlay);
-        }
     }
 
     private void findClosestCritter() {
@@ -134,8 +98,6 @@ public class Tower extends Entity {
                             tempTarget=enemy;
                         }
                     }
-                    // Remnants of the multicolour lazers
-                    // colourCounter++;
                 }
             } else if (getTargetCritter()!=null) {
                 // If the critter is out of range or dead, find a new target
@@ -177,6 +139,37 @@ public class Tower extends Entity {
         }
     }
 
+    private void renderTextOverlay(Graphics gr) {
+        String tempOverlay;
+        
+        if(isActive) {
+            tempOverlay = "Sale Value : $"+
+                    (Player.getInstance().getTowerCost(type))/2+"\n"+overlay;
+            if(type==FIRE) {
+                tempOverlay+=fireDetails;
+            } else if(type==ICE) {
+                tempOverlay+=iceDetails;
+            }
+        } else {
+            tempOverlay = costOverlay + overlay;
+            if(type==FIRE) {
+                tempOverlay+=fireDetails;
+            } else if(type==ICE) {
+                tempOverlay+=iceDetails;
+            }
+        }
+        
+        if (Player.getInstance().getCash() - Player.getInstance().getTowerCost(type) >= 0) {
+            unicodeFont.drawString(42 + (21 * 32), 416,tempOverlay);
+        } else {
+            if(!isPlaced) {
+                gr.drawString("Not enough cash", position.x+32, position.y+32);
+            }
+            unicodeFont.drawString(42 + (21 * 32), 416,costOverlay, Color.red);
+            unicodeFont.drawString(42 + (21 * 32), 431,overlay);
+        }
+    }
+    
     private void shootCritter(Critter critter) {
         if(critter.getType()==Critter.FIRE && type==Tower.ICE) {
             critter.takeDamage((damagePerSec*1.5f)/10f);   
@@ -188,35 +181,6 @@ public class Tower extends Entity {
         
     }
     
-    /**
-     * @param sprites the sprites to set
-     */
-    public void setSprites(Image[] sprites) {
-        this.sprites = sprites;
-    }
-    
-    @Override
-    public void setType(int type) {
-        this.type=type;
-        range = GameplayState.towerRange[type];
-        damagePerSec = GameplayState.baseDPS[type];
-        circle.setRadius(range);
-        circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
-        circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
-    }
-    
-    @Override
-    public void setPosition(Vector2f position)
-    {
-        this.position = position;
-        if(circle==null) {
-            circle = new Circle(position.x+(GameplayState.TILESIZE/2),position.y+(GameplayState.TILESIZE/2),range);
-        } else {
-            circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
-            circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
-        }
-    }
-
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
@@ -254,7 +218,7 @@ public class Tower extends Entity {
         }
 
     }
-
+    
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {   
@@ -295,18 +259,18 @@ public class Tower extends Entity {
         gr.setColor(Color.white);
     }
 
-    /**
-     * @param isActive the isActive to set
+    /*
+     * Update the list of critters the tower iterates through to find a target
      */
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
+    public void updateCritterList(ArrayList<Critter> critterList) {
+        this.critterList = critterList;
     }
-
+    
     /**
-     * @param isPlaced the isPlaced to set
+     * @return the targetCritter
      */
-    public void setIsPlaced(boolean isPlaced) {
-        this.isPlaced = isPlaced;
+    public Critter getTargetCritter() {
+        return targetCritter;
     }
 
     /**
@@ -316,12 +280,38 @@ public class Tower extends Entity {
     public int getType() {
         return type;
     }
+    
+    /**
+     * @param isActive the isActive to set
+     */
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+    
+    /**
+     * @param isPlaced the isPlaced to set
+     */
+    public void setIsPlaced(boolean isPlaced) {
+        this.isPlaced = isPlaced;
+    }
+
+    @Override
+    public void setPosition(Vector2f position)
+    {
+        this.position = position;
+        if(circle==null) {
+            circle = new Circle(position.x+(GameplayState.TILESIZE/2),position.y+(GameplayState.TILESIZE/2),range);
+        } else {
+            circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
+            circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
+        }
+    }
 
     /**
-     * @return the targetCritter
+     * @param sprites the sprites to set
      */
-    public Critter getTargetCritter() {
-        return targetCritter;
+    public void setSprites(Image[] sprites) {
+        this.sprites = sprites;
     }
 
     /**
@@ -330,5 +320,16 @@ public class Tower extends Entity {
     public void setTargetCritter(Critter targetCritter) {
         this.targetCritter = targetCritter;
     }
+
+    @Override
+    public void setType(int type) {
+        this.type=type;
+        range = GameplayState.towerRange[type];
+        damagePerSec = GameplayState.baseDPS[type];
+        circle.setRadius(range);
+        circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
+        circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
+    }
+
     
 }

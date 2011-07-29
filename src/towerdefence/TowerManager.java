@@ -12,7 +12,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.Player;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.*;

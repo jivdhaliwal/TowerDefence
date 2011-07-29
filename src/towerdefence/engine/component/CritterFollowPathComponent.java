@@ -7,6 +7,8 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import towerdefence.GameplayState;
 import towerdefence.engine.Player;
+import towerdefence.engine.entity.Critter;
+import towerdefence.engine.entity.Entity;
 
 /**
  *
@@ -36,8 +38,11 @@ public class CritterFollowPathComponent extends Component {
 
     private Path path;
     
+    Critter critter;
+    
 
     public CritterFollowPathComponent( String id , Path path, int type) {
+
         this.id = id;
 
         targetIndex = 1;
@@ -47,6 +52,13 @@ public class CritterFollowPathComponent extends Component {
         
         
         this.path = path;
+    }
+    
+    @Override
+    public void setOwnerEntity(Entity entity)
+    {
+        this.entity = entity;
+        critter = (Critter) entity;
     }
 
     /**
@@ -66,17 +78,17 @@ public class CritterFollowPathComponent extends Component {
         int targetX = targetTile.getX();
         int targetY = targetTile.getY();
 
-        entity.setPosition(new Vector2f((position.x + (targetX - currentX)*(critterSpeed*delta)),
+        critter.setPosition(new Vector2f((position.x + (targetX - currentX)*(critterSpeed*delta)),
                     (position.y + (targetY - currentY)*(critterSpeed*delta))));
 
         if((targetY - currentY)==1) {
-            entity.setDirection(DOWN);
+            critter.setDirection(DOWN);
         } else if((targetY - currentY)==-1) {
-            entity.setDirection(UP);
+            critter.setDirection(UP);
         } else if((targetX - currentX)==1) {
-            entity.setDirection(RIGHT);
+            critter.setDirection(RIGHT);
         } else if((targetX - currentX)==-1) {
-            entity.setDirection(LEFT);
+            critter.setDirection(LEFT);
         }
 
     }
@@ -84,8 +96,8 @@ public class CritterFollowPathComponent extends Component {
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
 
-        if(entity!=null) {
-            position = entity.getPosition();
+        if(critter!=null) {
+            position = critter.getPosition();
         
 
             if (path != null && targetIndex < path.getLength()) {
@@ -95,14 +107,14 @@ public class CritterFollowPathComponent extends Component {
                     moveToTile(position, currentStep, targetStep, delta);
                     distance -= delta * critterSpeed;
                 } else if (distance <= 0) {
-                    entity.setPosition(new Vector2f(targetStep.getX() * GameplayState.TILESIZE,
+                    critter.setPosition(new Vector2f(targetStep.getX() * GameplayState.TILESIZE,
                             targetStep.getY() * GameplayState.TILESIZE));
                     targetIndex++;
                     distance = (float) GameplayState.TILESIZE;
                 }
             } else if (targetIndex >= path.getLength()) {
                 Player.getInstance().setHealth(Player.getInstance().getHealth() - 1);
-                entity.deleteEntity();
+                critter.deleteEntity();
             }
         }
     }

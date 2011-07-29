@@ -5,23 +5,15 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
+import towerdefence.engine.entity.Critter;
+import towerdefence.engine.entity.Tower;
+
 /**
  * Parses sprite sheets and creates animations
  *
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
 public class AnimationLoader {
-
-    // Critter and tower types
-    public final static int NORMAL = 0;
-    public final static int FIRE = 1;
-    public final static int ICE = 2;
-    public final static int BOSS = 3;
-    // Direction constants
-    public static final int UP = 0;
-    public static final int DOWN = 1;
-    public static final int LEFT = 2;
-    public static final int RIGHT = 3;
     
     private Animation up, down, left, right;
 
@@ -33,12 +25,12 @@ public class AnimationLoader {
         int updateRate=100;
         Image normalSheet = null;
         
-        if (critterType == NORMAL) {
+        if (critterType == Critter.NORMAL) {
             normalSheet = new Image("sprites/critters/antNormal.png");
-        } else if (critterType == FIRE) {
+        } else if (critterType == Critter.FIRE) {
             normalSheet = new Image("sprites/critters/antFire.png");
             updateRate=70;
-        } else if (critterType == ICE) {
+        } else if (critterType == Critter.ICE) {
             normalSheet = new Image("sprites/critters/antIce.png");
             updateRate=130;
         }
@@ -55,15 +47,15 @@ public class AnimationLoader {
     
     public Image[] getTowerSprites(int towerType) throws SlickException {
         Image[] tower = new Image[3];
-        if(towerType==NORMAL) {
+        if(towerType==Tower.NORMAL) {
             tower[0] = new Image("sprites/towers/greentower.png");
             tower[1] = new Image("sprites/towers/arrow.png");
             tower[2] = new Image("sprites/laser/green.png");
-        } else if(towerType==FIRE) {
+        } else if(towerType==Tower.FIRE) {
             tower[0] = new Image("sprites/towers/redtower.png");
             tower[1] = new Image("sprites/towers/arrow.png");
             tower[2] = new Image("sprites/laser/red.png");
-        } else if(towerType==ICE) {
+        } else if(towerType==Tower.ICE) {
             tower[0] = new Image("sprites/towers/bluetower.png");
             tower[1] = new Image("sprites/towers/arrow.png");
             tower[2] = new Image("sprites/laser/blue.png");  

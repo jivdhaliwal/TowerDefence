@@ -3,7 +3,6 @@ package towerdefence.engine.entity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -20,68 +19,38 @@ import towerdefence.engine.component.Component;
  */
 public class Critter extends Entity {
 
-    // Critter types
-    public final static int NORMAL = 0;
+    public final static int BOSS = 3;
+    public static final int DOWN = 1;
     public final static int FIRE = 1;
     public final static int ICE = 2;
-    public final static int BOSS = 3;
-    private int type;
+    public static final int LEFT = 2;
+    
+    // Critter types
+    public final static int NORMAL = 0;
+    public static final int RIGHT = 3;
+    public static final int UP = 0;
+    int direction;
+    private float health;
     
     private Rectangle healthBar;
-    private ShapeFill healthCol;
-    private boolean isSlowed;
-    private int slowTimer;
+
+	private int type;
+	
 
     public Critter(String id) {
         super(id);
-        isDead = false;
+        dead = false;
         health = 100;
         healthBar = new Rectangle(position.x, position.y, GameplayState.TILESIZE, 3);
-        isSlowed = false;
     }
     
-    /**
-     * @return the type
-     */
-    @Override
-    public int getType() {
-        return type;
-    }
-
-    
-    @Override
-    public void setType(int type) {
-        this.type = type;
-        setHealth(GameplayState.critterHealth[type]);
-    }
-
-    public void takeDamage(float damage) {
-        setHealth(getHealth() - damage);
-        healthBar.setSize((getHealth()/GameplayState.critterHealth[type])*GameplayState.TILESIZE, 3);
-    }
-    
-    @Override
-    public void setPosition(Vector2f position)
-    {
-        this.position = position;
-        healthBar.setX(position.x);
-        healthBar.setY(position.y);
-        
-    }
-    
-    // TODO Implement slowed critter
-    public void slowCritter(int time) {
-        isSlowed = true;
-        slowTimer = time;
-    }
-
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
 
         
         if(getHealth()<=0) {
-            isDead = true;
+            dead = true;
         }
 
         for(Component component : components)
@@ -105,6 +74,51 @@ public class Critter extends Entity {
         gr.fill(healthBar);
         gr.setColor(Color.white);
         
+    }
+    
+    public int getDirection() {
+		return direction;
+	}
+
+    
+    public float getHealth() {
+		return health;
+	}
+
+    /**
+     * @return the type
+     */
+    @Override
+    public int getType() {
+        return type;
+    }
+
+    public void setDirection(int direction) {
+		this.direction = direction;
+	}
+    
+    public void setHealth(float health) {
+		this.health = health;
+	}
+
+	@Override
+    public void setPosition(Vector2f position)
+    {
+        this.position = position;
+        healthBar.setX(position.x);
+        healthBar.setY(position.y);
+        
+    }
+
+	@Override
+    public void setType(int type) {
+        this.type = type;
+        setHealth(GameplayState.critterHealth[type]);
+    }
+
+	public void takeDamage(float damage) {
+        setHealth(getHealth() - damage);
+        healthBar.setSize((getHealth()/GameplayState.critterHealth[type])*GameplayState.TILESIZE, 3);
     }
 
 }

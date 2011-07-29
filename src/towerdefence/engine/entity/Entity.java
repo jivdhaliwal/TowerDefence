@@ -7,8 +7,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.PathFinder;
 import towerdefence.GameplayState;
 
 /**
@@ -19,30 +17,20 @@ import towerdefence.GameplayState;
  */
 public abstract class Entity {
 
+    ArrayList<Component> components = null;
+
+    protected boolean dead;
+    private boolean delete;
+    
     String id;
 
     Vector2f position;
-    float scale;
-    float rotation;
-    float health;
-
-    boolean isDead;
-
-    public static final int UP = 0;
-    public static final int DOWN = 1;
-    public static final int LEFT = 2;
-    public static final int RIGHT = 3;
-    int direction;
 
     RenderComponent renderComponent = null;
 
-    ArrayList<Component> components = null;
-
-    Path path=null;
-
-    PathFinder finder=null;
+    protected float rotation;
+    private float scale;
     private int type;
-    private boolean delete;
 
     public Entity(String id)
     {
@@ -65,9 +53,7 @@ public abstract class Entity {
         components.add(component);
     }
 
-    public void RemoveComponent(Component component) {
-        components.remove(component);
-    }
+    
 
     public Component getComponent(String id)
     {
@@ -80,6 +66,34 @@ public abstract class Entity {
 
         return null;
     }
+    
+    public void RemoveComponent(Component component) {
+        components.remove(component);
+    }
+    
+    public void update(GameContainer gc, StateBasedGame sb, int delta)
+    {
+        for(Component component : components)
+        {
+            component.update(gc,sb,delta);
+        }
+    }
+    
+    public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
+    {
+        if(renderComponent != null) {
+            renderComponent.render(gc, sb, gr);
+        }
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+    
+    public void deleteEntity() {
+        delete=true;
+    }
 
     /*
      * Returns the exact pixel position of the sprite (only use for rendering)
@@ -89,6 +103,15 @@ public abstract class Entity {
         return new Vector2f(position.x, position.y);
     }
 
+    public float getRotation()
+    {
+        return rotation;
+    }
+
+    public float getScale()
+    {
+        return scale;
+    }
 
     /* Given tilesize and x,y position, return tile position
      *
@@ -100,43 +123,23 @@ public abstract class Entity {
                 (int) Math.floor((position.y / GameplayState.TILESIZE)));
     }
 
-    public float getScale()
-    {
-        return scale;
-    }
-
-    public float getRotation()
-    {
-        return rotation;
-    }
-
-    public int getDirection(){
-        return direction;
-    }
-
-    public float getHealth() {
-        return health;
-    }
-
-    public Path getPath() {
-        return path;
-    }
-
-    public PathFinder getFinder() {
-        return finder;
-    }
-
-    public void killEntity() {
-        isDead=true;
+    public int getType() {
+        return type;
     }
 
     public boolean isDead() {
-        return isDead;
+        return dead;
     }
 
-    public String getId()
-    {
-        return id;
+    /**
+     * @return the delete
+     */
+    public boolean isDelete() {
+        return delete;
+    }
+
+    public void killEntity() {
+        dead=true;
     }
 
     public void setPosition(Vector2f position)
@@ -154,58 +157,12 @@ public abstract class Entity {
         this.scale = scale;
     }
 
-    public void setDirection(int direction){
-        this.direction = direction;
-    }
-
-    public void setPath(Path path) {
-        this.path = path;
-    }
-
-    public void setFinder(PathFinder finder) {
-        this.finder = finder;
-    }
-
-    public void update(GameContainer gc, StateBasedGame sb, int delta)
-    {
-        for(Component component : components)
-        {
-            component.update(gc,sb,delta);
-        }
-    }
-
-    public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
-    {
-        if(renderComponent != null) {
-            renderComponent.render(gc, sb, gr);
-        }
-    }
-
-    public int getType() {
-        return type;
-    }
-
+    
     public void setType(int type) {
         this.type = type;
     }
 
-    /**
-     * @param health the health to set
-     */
-    public void setHealth(float health) {
-        this.health = health;
-    }
     
-    public void deleteEntity() {
-        delete=true;
-    }
-
-    /**
-     * @return the delete
-     */
-    public boolean isDelete() {
-        return delete;
-    }
 
 
 }

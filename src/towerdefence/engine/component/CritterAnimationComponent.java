@@ -7,6 +7,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import towerdefence.engine.entity.Critter;
+import towerdefence.engine.entity.Entity;
+
 /**
  *
  * Eventually this will manage rendering animations by loading them from sprite sheets
@@ -14,6 +17,8 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
 public class CritterAnimationComponent extends RenderComponent {
+	
+	Critter critter;
 
     public static final int UP = 0;
     public static final int DOWN = 1;
@@ -34,6 +39,13 @@ public class CritterAnimationComponent extends RenderComponent {
         sprite = left;
 
     }
+    
+    @Override
+	public void setOwnerEntity(Entity entity)
+    {
+        this.entity = entity;
+        critter = (Critter) entity;
+    }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr) {
@@ -45,16 +57,16 @@ public class CritterAnimationComponent extends RenderComponent {
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
 
-        if (entity.getDirection() == LEFT) {
+        if (critter.getDirection() == LEFT) {
             sprite = left;
         }
-        if (entity.getDirection() == RIGHT) {
+        if (critter.getDirection() == RIGHT) {
             sprite = right;
         }
-        if (entity.getDirection() == UP) {
+        if (critter.getDirection() == UP) {
             sprite = up;
         }
-        if (entity.getDirection() == DOWN) {
+        if (critter.getDirection() == DOWN) {
             sprite = down;
         }
 

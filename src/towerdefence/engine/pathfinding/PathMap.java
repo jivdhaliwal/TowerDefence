@@ -103,7 +103,8 @@ public class PathMap implements TileBasedMap {
         return terrain[x][y];
     }
 
-    public boolean blocked(PathFindingContext context, int tx, int ty) {
+    @Override
+	public boolean blocked(PathFindingContext context, int tx, int ty) {
         
         int unit = ((UnitMover) context.getMover()).getType();
 
@@ -120,19 +121,23 @@ public class PathMap implements TileBasedMap {
 
     }
 
-    public int getWidthInTiles() {
+    @Override
+	public int getWidthInTiles() {
         return map.getWidth();
     }
 
-    public int getHeightInTiles() {
+    @Override
+	public int getHeightInTiles() {
         return map.getHeight();
     }
 
-    public void pathFinderVisited(int x, int y) {
+    @Override
+	public void pathFinderVisited(int x, int y) {
         visited[x][y] = true;
     }
 
-    public float getCost(PathFindingContext context, int tx, int ty) {
+    @Override
+	public float getCost(PathFindingContext context, int tx, int ty) {
         return 1;
     }
 

@@ -35,7 +35,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     private RenderWater waterAnimation;
     
     private Image guiBackground;
-    private int guiLeftX = (int)((21*32) + 16);
+    private int guiLeftX = ((21*32) + 16);
     private int guiTopY = 48;
     private int guiBottomY = 656;
     
@@ -47,8 +47,6 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     
     private MouseOverArea snakeArea,forkArea,zigzagArea,
             squareArea,leftArea,haichArea,loadArea,quitArea;
-    
-    private ArrayList<MouseOverArea> areas = new ArrayList<MouseOverArea>();
     
     private Image snake;
     private Image fork;
@@ -78,7 +76,8 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         return 0;
     }
 
-    public void init(GameContainer container, StateBasedGame game) throws SlickException {
+    @Override
+	public void init(GameContainer container, StateBasedGame game) throws SlickException {
         
         guiBackground = new Image("gui/level_select_overlay.png");
         
@@ -118,7 +117,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
-                (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
+                (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);
         helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
                 + "Left click to place a selected tower\n"
                 + "Right click to cancel current selection\n"
@@ -136,7 +135,8 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         map = new TiledMap(level.getMapPath());
     }
 
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+    @Override
+	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.setClip(TILESIZE, TILESIZE, TILESIZE * (25), TILESIZE * (20));
 
         waterAnimation.render(container, game, g);
