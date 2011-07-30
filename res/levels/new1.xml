@@ -1,0 +1,60 @@
+<Level name="New1">
+	<Tilemap path="levels/newMaps/new1.tmx" />
+	<!--spawnTime limits : normal=450, fire=225, ice=1000-->
+	<Waves>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="1000"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="4" waitingTime="4000" spawnTime="400"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="1" count="1" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="3" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="1000"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="4" waitingTime="4000" spawnTime="400"/>
+		<Wave type="1" count="2" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="1000"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="4" waitingTime="4000" spawnTime="400"/>
+		<Wave type="1" count="2" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="1" count="2" waitingTime="7500" spawnTime="500"/>
+		<Wave type="2" count="1" waitingTime="3000" spawnTime="1000"/>
+		<Wave type="0" count="3" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="1000"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="4" waitingTime="4000" spawnTime="400"/>
+		<Wave type="1" count="2" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="1" count="4" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="1" count="4" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="3" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="1000"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="600"/>
+		<Wave type="2" count="1" waitingTime="3000" spawnTime="1000"/>
+		<Wave type="2" count="1" waitingTime="3000" spawnTime="1000"/>
+		<Wave type="0" count="4" waitingTime="4000" spawnTime="400"/>
+		<Wave type="1" count="2" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="1" count="4" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="1000"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="4" waitingTime="4000" spawnTime="400"/>
+		<Wave type="1" count="2" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="1" count="4" waitingTime="7500" spawnTime="500"/>
+		<Wave type="2" count="1" waitingTime="3000" spawnTime="1000"/>
+		<Wave type="0" count="3" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="1000"/>
+		<Wave type="0" count="5" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="4" waitingTime="4000" spawnTime="400"/>
+		<Wave type="1" count="2" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="1" count="4" waitingTime="7500" spawnTime="500"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+		<Wave type="0" count="6" waitingTime="4000" spawnTime="600"/>
+	</Waves>
+</Level>

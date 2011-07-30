@@ -136,6 +136,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 	private Image start;
 	private MouseOverArea startArea;
 
+	private Image background;
+
 
 
 	GameplayState() {
@@ -157,8 +159,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 		//loadLevel("data/levels/snake.xml");
 		settings = new Settings();
 		//        guiMap = new TiledMap("data/gui/guiMap.tmx");
-		guiBackground = new Image("gui/gui_overlay.png");
-
+		guiBackground = new Image("gui/grid.png");
 		map = new TiledMap(getLevel().getMapPath());
 
 		// Get Start and Target positions from map
@@ -174,38 +175,35 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 
 		loadResources();
 
-		setGuiTowers();
-
 		towerFactory = new TowerManager(towerSprites);
 
 		critterManager = new CritterManager(startX, startY,
 				targetX, targetY, finder,critterAnimation);
 		waveNumber = 0;
 		critterCount = getLevel().getWave(waveNumber).getNumCritters();
-
-		waterAnimation = new RenderWater(map.getWidth()+5,map.getHeight());
-
-		unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
-		unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
-
-		tempestaFont = new UnicodeFont("fonts/pf_tempesta_seven.ttf", 8, false, false);
-		tempestaFont.getEffects().add(new ColorEffect(java.awt.Color.white));
-
-		helpText = new TextField(container, container.getGraphics().getFont(), 
-				(container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);
-		helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
-				+ "Left click to place a selected tower\n"
-				+ "Right click to cancel current selection\n"
-				+ "Mouse over a tower to see its info\n"
-				+ "Mouse over a tower and press delete to sell a tower\n"
-				+ "R : Restart\n"
-				+ "Esc : Level select screen\n"
-				+ "Manage your money and keep the critters at bay!");
-
-		start = new Image("gui/start.png");
-		startArea = new MouseOverArea(container, start, guiLeftX-5, guiBottomY-75, 140, 40, this);
-		startArea.setMouseOverColor(Color.black);
-		startArea.setMouseDownColor(Color.black);
+		background = new Image("gui/background.jpg");
+//
+//		unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 50, false, false);
+//		unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
+//
+//		tempestaFont = new UnicodeFont("fonts/pf_tempesta_seven.ttf", 8, false, false);
+//		tempestaFont.getEffects().add(new ColorEffect(java.awt.Color.white));
+//
+//		helpText = new TextField(container, container.getGraphics().getFont(), 
+//				(container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);
+//		helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
+//				+ "Left click to place a selected tower\n"
+//				+ "Right click to cancel current selection\n"
+//				+ "Mouse over a tower to see its info\n"
+//				+ "Mouse over a tower and press delete to sell a tower\n"
+//				+ "R : Restart\n"
+//				+ "Esc : Level select screen\n"
+//				+ "Manage your money and keep the critters at bay!");
+//
+//		start = new Image("gui/start.png");
+//		startArea = new MouseOverArea(container, start, guiLeftX-5, guiBottomY-75, 140, 40, this);
+//		startArea.setMouseOverColor(Color.black);
+//		startArea.setMouseDownColor(Color.black);
 
 		startWaves = false;
 
@@ -349,8 +347,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 					selectedTower.setPosition(new Vector2f(newx - 16, newy - 16));
 				}
 
-				if (mouseCounter <= 0 && currentXTile <= 21 && currentXTile >= 0 
-						&& currentYTile >= 0 && currentYTile <= 21) {
+				if (mouseCounter <= 0 && currentXTile < 23 && currentXTile >= 0 
+						&& currentYTile >= 0 && currentYTile < 19) {
 
 					if (pathmap.getTerrain(currentXTile, currentYTile) != PathMap.GRASS
 							&& pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
@@ -359,7 +357,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 						tileHighlight = invalidTile;
 					}
 					mouseCounter = 32;
-				} else if (currentXTile > 21) {
+				} else if (currentXTile >=23) {
 					tileHighlight = null;
 				}
 			}
@@ -388,43 +386,43 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 		});
 	}
 
-	private void renderGuiText(Graphics g) {
-
-		unicodeFont.drawString(guiLeftX+15, guiTopY+5,
-				"Level: "+String.valueOf(getLevel().getLevelName()));
-
-		//        unicodeFont.addGlyphs("~!@!#!#$%___--");
-		//        
-		unicodeFont.drawString(guiLeftX+15, guiTopY+65,
-				"Cash : $"+String.valueOf(Player.getInstance().getCash()));
-
-		unicodeFont.drawString(guiLeftX+15, guiTopY+125,
-				"Health : "+String.valueOf(Player.getInstance().getHealth()));
-
-		//        unicodeFont.drawString(50, 110,
-		//                "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
-		//        unicodeFont.drawString(50, 160,
-		//                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
-
-		unicodeFont.drawString(guiLeftX+25, guiTopY+250, "TOWERS");
-
-		if (startWaves && !gameOver) {
-			unicodeFont.drawString(guiLeftX + 15, guiBottomY - 95,
-					" Next wave in:", Color.white);
-			if (waveCounter > 0) {
-				unicodeFont.drawString(guiLeftX + 30, guiBottomY - 70,
-						String.valueOf(waveCounter / 1000) + " seconds", Color.white);
-			}
-		} else {
-			//            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 95,
-			//                    "Press Enter", Color.white);
-			//            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 75,
-			//                    "   to begin", Color.white);
-			startArea.render(container, g);
-		}
-
-		tempestaFont.drawString(guiLeftX+25, guiBottomY-115, "Press F1 for help");
-	}
+//	private void renderGuiText(Graphics g) {
+//
+//		unicodeFont.drawString(guiLeftX+15, guiTopY+5,
+//				"Level: "+String.valueOf(getLevel().getLevelName()));
+//
+//		//        unicodeFont.addGlyphs("~!@!#!#$%___--");
+//		//        
+//		unicodeFont.drawString(guiLeftX+15, guiTopY+65,
+//				"Cash : $"+String.valueOf(Player.getInstance().getCash()));
+//
+//		unicodeFont.drawString(guiLeftX+15, guiTopY+125,
+//				"Health : "+String.valueOf(Player.getInstance().getHealth()));
+//
+//		//        unicodeFont.drawString(50, 110,
+//		//                "# of Critters : " + String.valueOf(tempCritterCount), Color.white);
+//		//        unicodeFont.drawString(50, 160,
+//		//                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
+//
+//		unicodeFont.drawString(guiLeftX+25, guiTopY+250, "TOWERS");
+//
+//		if (startWaves && !gameOver) {
+//			unicodeFont.drawString(guiLeftX + 15, guiBottomY - 95,
+//					" Next wave in:", Color.white);
+//			if (waveCounter > 0) {
+//				unicodeFont.drawString(guiLeftX + 30, guiBottomY - 70,
+//						String.valueOf(waveCounter / 1000) + " seconds", Color.white);
+//			}
+//		} else {
+//			//            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 95,
+//			//                    "Press Enter", Color.white);
+//			//            unicodeFont.drawString(guiLeftX + 25, guiBottomY - 75,
+//			//                    "   to begin", Color.white);
+//			startArea.render(container, g);
+//		}
+//
+//		tempestaFont.drawString(guiLeftX+25, guiBottomY-115, "Press F1 for help");
+//	}
 
 	private void setSelectedTower(int type) throws SlickException {
 		selectedTower = new Tower("selected", false);
@@ -436,38 +434,45 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 		selectedTower.setIsPlaced(false);
 	}
 
-	private void setGuiTowers() throws SlickException {
-		guiTowerList.add(new Tower("normal", false));
-		guiTowerList.add(new Tower("fire", false));
-		guiTowerList.add(new Tower("ice", false));
-
-		for(int i=0;i<3;i++) {
-			guiTowerList.get(i).setPosition(new Vector2f( 
-					(float)(Math.floor((guiLeftX+16+(i*32)) / GameplayState.TILESIZE))*32, 
-					(float)(Math.floor((guiTopY+304)/GameplayState.TILESIZE))*32));
-			guiTowerList.get(i).setType(i);
-			guiTowerList.get(i).setSprites(towerSprites[i]);
-			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
-					towerSprites[i][0]));
-			guiTowerList.get(i).setIsPlaced(true);
-		}
-
-	}
+//	private void setGuiTowers() throws SlickException {
+//		guiTowerList.add(new Tower("normal", false));
+//		guiTowerList.add(new Tower("fire", false));
+//		guiTowerList.add(new Tower("ice", false));
+//
+//		for(int i=0;i<3;i++) {
+//			guiTowerList.get(i).setPosition(new Vector2f( 
+//					(float)(Math.floor((guiLeftX+16+(i*32)) / GameplayState.TILESIZE))*32, 
+//					(float)(Math.floor((guiTopY+304)/GameplayState.TILESIZE))*32));
+//			guiTowerList.get(i).setType(i);
+//			guiTowerList.get(i).setSprites(towerSprites[i]);
+//			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+//					towerSprites[i][0]));
+//			guiTowerList.get(i).setIsPlaced(true);
+//		}
+//
+//	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		
+		Input input = container.getInput();
 
+		if(input.isKeyDown(Input.KEY_F)) {
+			delta*=2;
+		} else if(input.isKeyDown(Input.KEY_S)) {
+			delta/=2;
+		}
+		
 		mouseCounter -= delta;
 		waveCounter -= delta;
 		generateCounter -= delta;
 
-		unicodeFont.loadGlyphs(100);
-		tempestaFont.loadGlyphs(100);
+//		unicodeFont.loadGlyphs(100);
+//		tempestaFont.loadGlyphs(100);
 
 		//        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
 
-		Input input = container.getInput();
-
+		
 		if (mouseCounter <= 0) {
 
 			if(input.isKeyPressed(Input.KEY_F1)){showHelp = !showHelp;}
@@ -504,6 +509,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 				setSelectedTower(TowerManager.ICE);;
 			}
 		}
+		
 		mouseListener(input);
 
 		generateWaves();
@@ -534,19 +540,22 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()+3) , TILESIZE*(map.getHeight()-2));
-
-		waterAnimation.render(container, game, g);
-
-		map.render(0, 0,1);
-		map.render(0, 0,2);
+		
+		background.draw();
+		
+		g.setClip(TILESIZE, TILESIZE, TILESIZE*(map.getWidth()-2) , TILESIZE*(map.getHeight()-2));
+		
+//		waterAnimation.render(container, game, g);
+		guiBackground.draw(TILESIZE,TILESIZE);
+		map.render(0, 0,map.getLayerIndex("path"));
+		
 
 		if (tileHighlight != null) {
 			tileHighlight.draw(((int) Math.floor((mouseX / GameplayState.TILESIZE))) * GameplayState.TILESIZE,
 					((int) Math.floor((mouseY / GameplayState.TILESIZE))) * GameplayState.TILESIZE);
 		}
 
-		guiBackground.draw(21*32, 0);
+//		guiBackground.draw(21*32, 0);
 
 
 		//        for(CritterManager wave : critterWaveList) {
@@ -556,14 +565,16 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 
 		if(!gameOver) {
 			critterManager.render(container, game, g);
+			g.clearClip();
 			tempCritterCount=critterManager.getCritters().size();
 
 			towerFactory.render(container, game, g);
 		} else {
-			gameoverImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
+//			gameoverImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
 		}
+		g.clearClip();
 
-		renderGuiText(g);
+//		renderGuiText(g);
 
 		for(Tower guiTower : guiTowerList) {
 			guiTower.render(container, game, g);
@@ -574,13 +585,13 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 		}
 
 
-		if(!gameOver && !levelComplete && showHelp){
-			helpText.render(container, g);
-		}
+//		if(!gameOver && !levelComplete && showHelp){
+//			helpText.render(container, g);
+//		}
 
-		if(levelComplete) {
-			levelCompleteImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
-		}
+//		if(levelComplete) {
+//			levelCompleteImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
+//		}
 
 	}
 

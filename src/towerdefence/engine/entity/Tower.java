@@ -245,14 +245,18 @@ public class Tower extends Entity {
         if (getTargetCritter() != null) {
 
         	
-            gr.drawLine(this.getPosition().x+16, this.getPosition().y+16,
-            		getTargetCritter().getPosition().x+16,getTargetCritter().getPosition().y+16);
+            gr.drawLine(this.getPosition().x+(GameplayState.TILESIZE/2), 
+            		this.getPosition().y+(GameplayState.TILESIZE/2),
+            		getTargetCritter().getPosition().x+(GameplayState.TILESIZE/2),
+            		getTargetCritter().getPosition().y+(GameplayState.TILESIZE/2));
         	
-            gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
+            gr.rotate(this.getPosition().x + (GameplayState.TILESIZE/2), 
+            		this.getPosition().y + (GameplayState.TILESIZE/2),
                     (float) (getTargetCritter().getPosition().sub(this.getPosition())).getTheta()-90);      
             // Draw tower's turret (which will rotate towards critters)
             sprites[1].draw(this.getPosition().x,this.getPosition().y);
-            gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
+            gr.rotate(this.getPosition().x + (GameplayState.TILESIZE/2), 
+            		this.getPosition().y + (GameplayState.TILESIZE/2),
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
         guiOverlay(gr);

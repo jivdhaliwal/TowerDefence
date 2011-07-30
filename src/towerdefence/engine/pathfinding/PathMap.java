@@ -56,7 +56,7 @@ public class PathMap implements TileBasedMap {
                 int tileID = map.getTileId(x, y, 0);
 
                 String value = map.getTileProperty(tileID, "Type", "false");
-                if ("grass".equals(value)) {
+                if ("blocked".equals(value)) {
                     terrain[x][y] = GRASS;
                 } else if ("noPlace".equals(value)) {
                     terrain[x][y] = NOPLACE;

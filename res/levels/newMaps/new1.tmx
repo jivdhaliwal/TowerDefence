@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="24" height="20" tilewidth="24" tileheight="24">
+ <properties>
+  <property name="startX" value="2"/>
+  <property name="startY" value="0"/>
+  <property name="targetX" value="20"/>
+  <property name="targetY" value="19"/>
+ </properties>
+ <tileset firstgid="1" name="tileset" tilewidth="24" tileheight="24">
+  <image source="tileset.png" width="168" height="48"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="blocked"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Type" value="noPlace"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="Type" value="blocked"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="collision" width="24" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NnYGBgB2I+KE0LzAA1n9pg1PzBZT6pmBTzSQW0NJ/W7ic2rgaT+aTGLTnmkwoGs/nE5AtKwh+Xf8g1n1gwHM2nJkavZwEEzhfEgAcAAA==
+  </data>
+ </layer>
+ <layer name="path" width="24" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NggABGBtoCLhqbT2v3j5pP2HxSMa3dQ0uzaW0+LQEtzKd13A7FMMFnPrXzBbHmDLdwpDbgprH56O4HAGWx+LmABwAA
+  </data>
+ </layer>
+ <layer name="misc" width="24" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWjYBSMglEwCkYBvQEAKzS3KoAHAAA=
+  </data>
+ </layer>
+</map>

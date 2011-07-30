@@ -7,11 +7,14 @@ package towerdefence;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.TiledMap;
+
+import towerdefence.engine.levelLoader.LevelLoader;
 
 public class TowerDefence extends StateBasedGame
 {
-     static int height = 22*32;
-     static int width = 27*32;
+     static int height = 22*24;
+     static int width = 29*24;
 
      static boolean fullscreen = false;
 
@@ -30,8 +33,13 @@ public class TowerDefence extends StateBasedGame
      {
           super(title);
 
-          this.addState(new LevelSelectState());
-          this.enterState(LEVELSELECTSTATE);
+//          this.addState(new LevelSelectState());
+//          this.enterState(LEVELSELECTSTATE);
+          LevelLoader level = new LevelLoader("levels/new1.xml");
+          GameplayState gameplaystate = new GameplayState();
+          gameplaystate.setLevel(level);
+          this.addState(gameplaystate);
+          this.enterState(TowerDefence.GAMEPLAYSTATE);
      }
 
      public static void main(String[] args) throws SlickException

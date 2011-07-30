@@ -47,8 +47,6 @@ public class Critter extends Entity {
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
-
-        
         if(getHealth()<=0) {
             dead = true;
         }
@@ -67,12 +65,13 @@ public class Critter extends Entity {
         if(renderComponent != null) {
             renderComponent.render(gc, sb, gr);
         }
-        
-        gr.setColor(Color.white);
-        gr.draw(healthBar);
-        gr.setColor(Color.red);
-        gr.fill(healthBar);
-        gr.setColor(Color.white);
+        if(health/GameplayState.critterHealth[type]!=1.0) {
+	        gr.setColor(Color.white);
+	        gr.draw(healthBar);
+	        gr.setColor(Color.red);
+	        gr.fill(healthBar);
+	        gr.setColor(Color.white);
+        }
         
     }
     

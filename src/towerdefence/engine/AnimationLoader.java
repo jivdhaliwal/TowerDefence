@@ -34,7 +34,7 @@ public class AnimationLoader {
             normalSheet = new Image("sprites/critters/antIce.png");
             updateRate=130;
         }
-        SpriteSheet critterSheet = new SpriteSheet(normalSheet, 64, 64);
+        SpriteSheet critterSheet = new SpriteSheet(normalSheet, 48, 48);
         left = new Animation(critterSheet,0,0,7,0,true, updateRate, true);
         up = new Animation(critterSheet,0,2,7,2,true, updateRate, true);
         right = new Animation(critterSheet,0,4,7,4,true, updateRate, true);
