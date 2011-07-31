@@ -127,6 +127,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         levelCompleteImage = ResourceManager.getInstance().getImage("LEVEL_COMPLETE");
     	
         gameOver=false;
+        levelComplete=false;
         //loadLevel("data/levels/snake.xml");
 //        guiMap = new TiledMap("data/gui/guiMap.tmx");
         guiBackground = ResourceManager.getInstance().getImage("GAME_GUI");
@@ -404,6 +405,12 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         
+    	Input input = container.getInput();
+    	
+    	if(input.isKeyDown(Input.KEY_F)) {
+    		delta*=2;
+    	}
+    	
         mouseCounter -= delta;
         waveCounter -= delta;
         generateCounter -= delta;
@@ -413,7 +420,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 
 //        ArrayList<Critter> tempCritterList = new ArrayList<Critter>();
 
-        Input input = container.getInput();
+        
 
         if (mouseCounter <= 0) {
             
