@@ -11,6 +11,8 @@ import org.newdawn.slick.util.xml.XMLParser;
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
 public class Settings {
+	
+	private static Settings settings = null;
     
     private final XMLElement root;
     
@@ -38,6 +40,18 @@ public class Settings {
         loadCritterSettings();
         loadTowerSettings();
         
+    }
+    
+    public static Settings getInstance() {
+        if(settings==null) { 
+            try {
+				settings = new Settings();
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        return settings;
     }
     
     private void loadPlayerSettings() throws SlickXMLException {

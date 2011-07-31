@@ -3,7 +3,7 @@
  <image source="collision.png" width="64" height="32"/>
  <tile id="0">
   <properties>
-   <property name="Type" value="grass"/>
+   <property name="Type" value="path"/>
    <property name="blocked" value="true"/>
   </properties>
  </tile>

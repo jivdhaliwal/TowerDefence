@@ -7,6 +7,7 @@ package towerdefence;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,6 +23,9 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.util.ResourceLoader;
+
+import towerdefence.engine.ResourceManager;
 import towerdefence.engine.levelLoader.LevelLoader;
 
 /**
@@ -35,7 +39,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     private RenderWater waterAnimation;
     
     private Image guiBackground;
-    private int guiLeftX = (int)((21*32) + 16);
+    private int guiLeftX = ((21*32) + 16);
     private int guiTopY = 48;
     private int guiBottomY = 656;
     
@@ -79,20 +83,21 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        
-        guiBackground = new Image("gui/level_select_overlay.png");
+        ResourceManager.getInstance().loadResources(ResourceLoader.getResourceAsStream("resources.xml"));
+//        guiBackground = new Image("gui/level_select_overlay.png");
+        guiBackground = ResourceManager.getInstance().getImage("LEVELSELECT_GUI");
         
         waterAnimation = new RenderWater(container.getWidth()/32,
                 container.getHeight()/32);
         
-        zigzag = new Image("gui/levels/zigzag.png");
-        snake = new Image("gui/levels/snake.png");
-        fork = new Image("gui/levels/fork.png");
-        square = new Image("gui/levels/square.png");
-        left = new Image("gui/levels/left.png");
-        haich = new Image("gui/levels/haich.png");
-        load = new Image("gui/levels/load.png");
-        quit = new Image("gui/levels/quit.png");
+        zigzag = ResourceManager.getInstance().getImage("ZIGZAG_BUTTON");
+        snake = ResourceManager.getInstance().getImage("SNAKE_BUTTON");
+        fork = ResourceManager.getInstance().getImage("FORK_BUTTON");
+        square = ResourceManager.getInstance().getImage("SQUARE_BUTTON");
+        left = ResourceManager.getInstance().getImage("LEFT_BUTTON");
+        haich = ResourceManager.getInstance().getImage("HAICH_BUTTON");
+        load = ResourceManager.getInstance().getImage("LOAD_BUTTON");
+        quit = ResourceManager.getInstance().getImage("QUIT_BUTTON");
         
         zigzagArea = new MouseOverArea(container, zigzag, guiLeftX, easyLevelTopY, 140, 40, this);
         squareArea = new MouseOverArea(container, square, guiLeftX, easyLevelTopY+40, 140, 40, this);
@@ -118,7 +123,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
-                (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
+                (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);
         helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
                 + "Left click to place a selected tower\n"
                 + "Right click to cancel current selection\n"

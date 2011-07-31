@@ -8,6 +8,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
+import towerdefence.engine.ResourceManager;
+
 /**
  *
  * Renders the animated water background
@@ -28,7 +30,7 @@ public final class RenderWater {
         this.tw = tw;
         this.th = th;
 
-        Image water = new Image("tilesets/water.png");
+        Image water = ResourceManager.getInstance().getImage("WATER");
         waterSheet = new SpriteSheet(water, 32, 32);
         waterFrames = new Image[8];
         setRandomWater();

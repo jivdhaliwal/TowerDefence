@@ -7,6 +7,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 import towerdefence.GameplayState;
 import towerdefence.engine.Player;
+import towerdefence.engine.Settings;
 
 /**
  *
@@ -43,7 +44,7 @@ public class CritterFollowPathComponent extends Component {
         targetIndex = 1;
         distance = GameplayState.TILESIZE;
 
-        critterSpeed= (float)GameplayState.critterSpeed[type] * 0.08f;
+        critterSpeed= (float)Settings.getInstance().getCritterSpeed()[type] * 0.08f;
         
         
         this.path = path;

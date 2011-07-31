@@ -17,7 +17,10 @@ public class Player {
     private int[] towerCost;
 
     private Player() {
-        cash = 0;
+    	cash = Settings.getInstance().getStartingMoney();
+    	health = Settings.getInstance().getPlayerHealth();
+    	critterReward = Settings.getInstance().getReward();
+    	towerCost = Settings.getInstance().getCost();
     }
     
     public static Player getInstance() {
@@ -25,6 +28,10 @@ public class Player {
             player = new Player();
         }
         return player;
+    }
+    
+    public void resetParams() {
+    	player = new Player();
     }
 
     /**

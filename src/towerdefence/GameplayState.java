@@ -31,12 +31,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     public final static int ICE = 2;
     // Critter type
     public final static int BOSS = 3;
-    
-    public Settings settings;
-    
-    private AnimationLoader spriteLoader = new AnimationLoader();
-    private Image[][] towerSprites  = new Image[3][];
-    private Animation[][] critterAnimation = new Animation[3][];
     private Image tileHighlight;
     private Image validTile;
     private Image invalidTile;
@@ -66,7 +60,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     
     // Map for gui underlay
     private Image guiBackground;
-    private int guiLeftX = (int)((21*32) + 16);
+    private int guiLeftX = ((21*32) + 16);
     private int guiTopY = 48;
     private int guiBottomY = 656;
 
@@ -91,16 +85,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     private int startY;
     private int targetX;
     private int targetY;
-    
-    public static int startingMoney;
-    public static int playerHealth;
-    public static int[] critterHealth;
-    public static double[] critterSpeed;
-    public static int[] baseDPS;
-    public static int[] towerRange;
-    public static boolean[] lockOn;
-    public int[] critterReward;
-    public int[] towerCost;
     
     private int mouseY;
     private int mouseX;
@@ -133,11 +117,19 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     }
     
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
+    	Player.getInstance().resetParams();
+    	
+    	validTile = ResourceManager.getInstance().getImage("VALID_TILE");
+        invalidTile = ResourceManager.getInstance().getImage("INVALID_TILE");
+        tileHighlight = validTile;
+        
+        gameoverImage = ResourceManager.getInstance().getImage("GAMEOVER");
+        levelCompleteImage = ResourceManager.getInstance().getImage("LEVEL_COMPLETE");
+    	
         gameOver=false;
         //loadLevel("data/levels/snake.xml");
-        settings = new Settings();
 //        guiMap = new TiledMap("data/gui/guiMap.tmx");
-        guiBackground = new Image("gui/gui_overlay.png");
+        guiBackground = ResourceManager.getInstance().getImage("GAME_GUI");
 
         map = new TiledMap(getLevel().getMapPath());
 
@@ -152,14 +144,12 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         pathmap = new PathMap(map);
         finder = new AStarPathFinder(pathmap, 500, false);
         
-        loadResources();
-        
         setGuiTowers();
         
-        towerFactory = new TowerManager(towerSprites);
+        towerFactory = new TowerManager();
         
         critterManager = new CritterManager(startX, startY,
-                targetX, targetY, finder,critterAnimation);
+                targetX, targetY, finder);
         waveNumber = 0;
         critterCount = getLevel().getWave(waveNumber).getNumCritters();
         
@@ -172,7 +162,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         tempestaFont.getEffects().add(new ColorEffect(java.awt.Color.white));
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
-                (int)(container.getWidth()/2-300), (int)(container.getHeight()/2-80), 475, 200);
+                (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);
         helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
                 + "Left click to place a selected tower\n"
                 + "Right click to cancel current selection\n"
@@ -182,7 +172,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
                 + "Esc : Level select screen\n"
                 + "Manage your money and keep the critters at bay!");
         
-        start = new Image("gui/start.png");
+        start = ResourceManager.getInstance().getImage("START_BUTTON");
         startArea = new MouseOverArea(container, start, guiLeftX-5, guiBottomY-75, 140, 40, this);
         startArea.setMouseOverColor(Color.black);
         startArea.setMouseDownColor(Color.black);
@@ -224,41 +214,6 @@ public class GameplayState extends BasicGameState implements ComponentListener {
             	levelComplete=true;
             }
         }
-    }
-
-    private void loadResources() throws SlickException {
-        // Load tower sprites
-        towerSprites[NORMAL] = spriteLoader.getTowerSprites(NORMAL);
-        towerSprites[FIRE] = spriteLoader.getTowerSprites(FIRE);
-        towerSprites[ICE] = spriteLoader.getTowerSprites(ICE);
-        critterAnimation[NORMAL] = spriteLoader.getCritterAnimation(NORMAL);
-        critterAnimation[FIRE] = spriteLoader.getCritterAnimation(FIRE);
-        critterAnimation[ICE] = spriteLoader.getCritterAnimation(ICE);
-
-        validTile = new Image("sprites/validTileSelect.png");
-        invalidTile = new Image("sprites/invalidTileSelect.png");
-        tileHighlight = validTile;
-        
-        gameoverImage = new Image("gui/gameover.png");
-        levelCompleteImage = new Image("gui/levelComplete.png");
-        
-        // Load settings
-        startingMoney = settings.getStartingMoney();
-        playerHealth = settings.getPlayerHealth();
-        critterHealth = settings.getCritterHealth();
-        critterSpeed = settings.getCritterSpeed();
-        baseDPS = settings.getBaseDPS();
-        towerRange = settings.getRange();
-        critterReward = settings.getReward();
-        towerCost = settings.getCost();
-        
-        // Initialise wallet singleton
-        Player.getInstance().setCash(startingMoney);
-        Player.getInstance().setCritterReward(critterReward);
-        Player.getInstance().setTowerCost(towerCost);
-        Player.getInstance().setHealth(playerHealth);
-        
-        
     }
 
     private void mouseListener(Input input) {
@@ -400,9 +355,20 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         selectedTower = new Tower("selected", false);
         selectedTower.setPosition(new Vector2f(mouseX-16,mouseY-16));
         selectedTower.setType(type);
-        selectedTower.setSprites(towerSprites[type]);
-        selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
-                towerSprites[type][0]));
+        switch (type) {
+			case Tower.NORMAL:
+				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("NORMAL_TOWER")));
+				break;
+			case Tower.FIRE:
+				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("FIRE_TOWER")));
+				break;
+			case Tower.ICE:
+				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("ICE_TOWER")));
+				break;
+		}
         selectedTower.setIsPlaced(false);
     }
     
@@ -416,9 +382,21 @@ public class GameplayState extends BasicGameState implements ComponentListener {
                     (float)(Math.floor((guiLeftX+16+(i*32)) / GameplayState.TILESIZE))*32, 
                     (float)(Math.floor((guiTopY+304)/GameplayState.TILESIZE))*32));
             guiTowerList.get(i).setType(i);
-            guiTowerList.get(i).setSprites(towerSprites[i]);
-            guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
-                towerSprites[i][0]));
+            switch (i) {
+	    		case Tower.NORMAL:
+	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+	    					ResourceManager.getInstance().getImage("NORMAL_TOWER")));
+	    			break;
+	    		case Tower.FIRE:
+	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+	    					ResourceManager.getInstance().getImage("FIRE_TOWER")));
+	    			break;
+	    		case Tower.ICE:
+	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+	    					ResourceManager.getInstance().getImage("ICE_TOWER")));
+	    			break;
+    		}
+            
             guiTowerList.get(i).setIsPlaced(true);
         }
         

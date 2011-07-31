@@ -8,6 +8,7 @@
  </properties>
  <tileset firstgid="1" source="tilesetgrassland2.tsx"/>
  <tileset firstgid="379" source="collision.tsx"/>
+ <tileset firstgid="381" source="startend.tsx"/>
  <layer name="collision" width="22" height="22">
   <properties>
    <property name="Type" value="grass"/>
@@ -23,7 +24,7 @@
  </layer>
  <layer name="misc" width="22" height="22">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgGAWjYBSMglEwCoY30GccaBcQBgDPapTekAcAAA==
+   H4sIAAAAAAAAC2NgGLxgEiMDw2QgnsI40C4ZBaNgFIyCUTBUQQuwDmkF4rZBXpcAAC7qwj2QBwAA
   </data>
  </layer>
 </map>

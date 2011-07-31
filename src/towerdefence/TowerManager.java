@@ -8,12 +8,11 @@ package towerdefence;
 import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.Player;
+import towerdefence.engine.ResourceManager;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.entity.*;
 
@@ -30,33 +29,37 @@ public class TowerManager {
     
     private ArrayList<Tower> towerList = new ArrayList<Tower>();
     private ArrayList<Critter> critterList;
-    private final Image[][] towerSprites;
 
     // Tower types
     public final static int NORMAL = 0;
     public final static int FIRE = 1;
     public final static int ICE = 2;
-    public static boolean cudaTowersEnabled;
-
-
-    public TowerManager(Image[][] towerSprites) throws SlickException {
-        
-        this.towerSprites = towerSprites;
-    }
 
     /*
      * Default Tower when no type is defined
      */
     public void addTower(String id, Vector2f position, int type) throws SlickException {
-        
+    	
         // Check if player can afford to add the tower
         if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(type) >=0) {
             Player.getInstance().addTower(type);
             Tower tower = new Tower(id, true);
             tower.setPosition(position);
             tower.setType(type);
-            tower.setSprites(getTowerSprites()[type]);
-            tower.AddComponent(new ImageRenderComponent("TowerRender", getTowerSprites()[type][0]));
+            switch (type) {
+    		case NORMAL:
+    			tower.AddComponent(new ImageRenderComponent("TowerRender",
+    					ResourceManager.getInstance().getImage("NORMAL_TOWER")));
+    			break;
+    		case FIRE:
+    			tower.AddComponent(new ImageRenderComponent("TowerRender",
+    					ResourceManager.getInstance().getImage("FIRE_TOWER")));
+    			break;
+    		case ICE:
+    			tower.AddComponent(new ImageRenderComponent("TowerRender",
+    					ResourceManager.getInstance().getImage("ICE_TOWER")));
+    			break;
+    		}
             towerList.add(tower);
         }
         
@@ -129,13 +132,6 @@ public class TowerManager {
         for(Tower tower : towerList) {
             tower.render(gc, sb, gr);
         }
-    }
-
-    /**
-     * @return the towerSprites
-     */
-    public Image[][] getTowerSprites() {
-        return towerSprites;
     }
 
 

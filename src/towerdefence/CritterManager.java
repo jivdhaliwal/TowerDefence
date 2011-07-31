@@ -10,8 +10,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
-import towerdefence.engine.AnimationLoader;
 import towerdefence.engine.Player;
+import towerdefence.engine.ResourceManager;
 import towerdefence.engine.component.CritterAnimationComponent;
 import towerdefence.engine.component.CritterFollowPathComponent;
 import towerdefence.engine.entity.Critter;
@@ -40,14 +40,15 @@ public class CritterManager {
     Path path;
 
     private ArrayList<Critter> critterList = new ArrayList<Critter>();
-    private Animation[][] critterAnimation;
+    private Animation[][] critterAnimation = new Animation[3][];
     
     public CritterManager(int startX, int startY, int goalX, int goalY,
-            PathFinder finder, Animation[][] critterAnimation) throws SlickException {
+            PathFinder finder) throws SlickException {
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), startX, startY, goalX, goalY);
         this.initialPos = new Vector2f(startX * GameplayState.TILESIZE, startY * GameplayState.TILESIZE);
-        this.critterAnimation = critterAnimation;
+        
+        loadAnimations();
 
     }
 
@@ -60,8 +61,7 @@ public class CritterManager {
         critter.setPosition(initialPos);
         critter.setType(critterType);
 
-        critter.AddComponent(new CritterAnimationComponent(id, 
-                critterAnimation[critterType]));
+        critter.AddComponent(new CritterAnimationComponent(id,critterAnimation[critterType]));
         critter.AddComponent(new CritterFollowPathComponent("CritterPath", path, critterType));
         critterList.add(critter);
     }
@@ -102,6 +102,27 @@ public class CritterManager {
             enemy.render(container, game, g);
         }
 
+    }
+    
+    public void loadAnimations() {
+
+    	Animation[] normalAnimation = {ResourceManager.getInstance().getAnimationFromPack("NORMAL_CRITTER_UP"),
+    			ResourceManager.getInstance().getAnimationFromPack("NORMAL_CRITTER_DOWN"),
+    			ResourceManager.getInstance().getAnimationFromPack("NORMAL_CRITTER_LEFT"),
+    			ResourceManager.getInstance().getAnimationFromPack("NORMAL_CRITTER_RIGHT")};
+    		critterAnimation[Critter.NORMAL] = normalAnimation;
+    		
+		Animation[] fireAnimation = {ResourceManager.getInstance().getAnimationFromPack("FIRE_CRITTER_UP"),
+				ResourceManager.getInstance().getAnimationFromPack("FIRE_CRITTER_DOWN"),
+				ResourceManager.getInstance().getAnimationFromPack("FIRE_CRITTER_LEFT"),
+				ResourceManager.getInstance().getAnimationFromPack("FIRE_CRITTER_RIGHT")};
+			critterAnimation[Critter.FIRE] = fireAnimation;
+			
+		Animation[] iceAnimation = {ResourceManager.getInstance().getAnimationFromPack("ICE_CRITTER_UP"),
+				ResourceManager.getInstance().getAnimationFromPack("ICE_CRITTER_DOWN"),
+				ResourceManager.getInstance().getAnimationFromPack("ICE_CRITTER_LEFT"),
+				ResourceManager.getInstance().getAnimationFromPack("ICE_CRITTER_RIGHT")};
+			critterAnimation[Critter.ICE] = iceAnimation;
     }
 
 }

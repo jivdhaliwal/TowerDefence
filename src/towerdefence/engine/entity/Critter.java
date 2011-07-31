@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.GameplayState;
+import towerdefence.engine.Settings;
 import towerdefence.engine.component.Component;
 
 
@@ -52,12 +53,12 @@ public class Critter extends Entity {
     @Override
     public void setType(int type) {
         this.type = type;
-        setHealth(GameplayState.critterHealth[type]);
+        setHealth(Settings.getInstance().getCritterHealth()[type]);
     }
 
     public void takeDamage(float damage) {
         setHealth(getHealth() - damage);
-        healthBar.setSize((getHealth()/GameplayState.critterHealth[type])*GameplayState.TILESIZE, 3);
+        healthBar.setSize((getHealth()/Settings.getInstance().getCritterHealth()[type])*GameplayState.TILESIZE, 3);
     }
     
     @Override

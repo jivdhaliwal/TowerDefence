@@ -16,6 +16,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.GameplayState;
 import towerdefence.engine.Player;
+import towerdefence.engine.ResourceManager;
+import towerdefence.engine.Settings;
 import towerdefence.engine.component.Component;
 
 /**
@@ -188,18 +190,11 @@ public class Tower extends Entity {
         
     }
     
-    /**
-     * @param sprites the sprites to set
-     */
-    public void setSprites(Image[] sprites) {
-        this.sprites = sprites;
-    }
-    
     @Override
     public void setType(int type) {
         this.type=type;
-        range = GameplayState.towerRange[type];
-        damagePerSec = GameplayState.baseDPS[type];
+        range = Settings.getInstance().getRange()[type];
+        damagePerSec = Settings.getInstance().getBaseDPS()[type];
         circle.setRadius(range);
         circle.setCenterX(position.x+(GameplayState.TILESIZE/2));
         circle.setCenterY(position.y+(GameplayState.TILESIZE/2));
@@ -287,7 +282,7 @@ public class Tower extends Entity {
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) (getTargetCritter().getPosition().sub(this.getPosition())).getTheta()-90);      
             // Draw tower's turret (which will rotate towards critters)
-            sprites[1].draw(this.getPosition().x,this.getPosition().y);
+            ResourceManager.getInstance().getImage("TOWER_ARROW").draw(this.getPosition().x,this.getPosition().y);
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
