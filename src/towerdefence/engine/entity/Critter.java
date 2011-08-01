@@ -9,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.GameplayState;
 import towerdefence.engine.Settings;
 import towerdefence.engine.component.Component;
+import towerdefence.engine.component.RenderComponent;
 
 
 /**
@@ -32,6 +33,8 @@ public class Critter extends Entity {
     public static final int LEFT = 2;
     public static final int RIGHT = 3;
     int direction;
+    
+    private float health;
     
     private Rectangle healthBar;
 
@@ -91,8 +94,10 @@ public class Critter extends Entity {
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {
-        if(renderComponent != null) {
-            renderComponent.render(gc, sb, gr);
+    	if(renderComponents != null) {
+            for(RenderComponent sRenderComponent : renderComponents) {
+            	sRenderComponent.render(gc, sb, gr);
+            }
         }
         
         gr.setColor(Color.white);
@@ -109,6 +114,14 @@ public class Critter extends Entity {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+
+	public float getHealth() {
+		return health;
+	}
+
+	public void setHealth(float health) {
+		this.health = health;
 	}
 
 }

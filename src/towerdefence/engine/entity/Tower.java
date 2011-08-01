@@ -18,6 +18,7 @@ import towerdefence.engine.Player;
 import towerdefence.engine.ResourceManager;
 import towerdefence.engine.Settings;
 import towerdefence.engine.component.Component;
+import towerdefence.engine.component.RenderComponent;
 
 /**
  *
@@ -44,9 +45,8 @@ public class Tower extends Entity {
 
     private int shootingCounter;
 
-    boolean isShooting;
     private boolean isPlaced=true;
-    private boolean isActive;
+    private boolean active;
     
     private Circle circle=null;
     private int mouseXTile;
@@ -66,7 +66,7 @@ public class Tower extends Entity {
         super(id);
 
         this.rotation=0;
-        this.isActive = isActive;
+        this.active = isActive;
         
         unicodeFont = new UnicodeFont("fonts/pf_tempesta_seven.ttf", 8, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.white));
@@ -92,7 +92,7 @@ public class Tower extends Entity {
         	towerDetail=normalDetails;
         }
         
-        if(isActive) {
+        if(active) {
             tempOverlay = "Sale Value : $"+
                     (Player.getInstance().getTowerCost(type))/2+"\n"+overlay+towerDetail;
         } else {
@@ -110,7 +110,7 @@ public class Tower extends Entity {
         }
     }
 
-    private void findClosestCritter() {
+    public void findClosestCritter() {
 
         // If critters on the map
         if(critterList!=null) {
@@ -143,8 +143,6 @@ public class Tower extends Entity {
                     setTargetCritter(null);
                 } else if(getTargetCritter().isDead()||getTargetCritter().isDelete()) {
                     setTargetCritter(null);
-                } else {
-                    shootCritter(getTargetCritter());
                 }
             }
         }
@@ -161,7 +159,7 @@ public class Tower extends Entity {
             }
             renderTextOverlay(gr);
         } else if (isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y) {
-            if (isActive) {
+            if (active) {
                 if(!GameplayState.towerSelected) {
                     if (circle != null) {
                         gr.draw(circle);
@@ -174,19 +172,6 @@ public class Tower extends Entity {
             
             
         }
-    }
-
-    private void shootCritter(Critter critter) {
-        if(critter.getType()==Critter.FIRE && type==Tower.ICE) {
-            critter.takeDamage((damagePerSec*2.0f)/10f);   
-        } else if(critter.getType()==Critter.ICE && type==Tower.FIRE) {
-            critter.takeDamage((damagePerSec*1.5f)/10f);   
-        } else if(type==Tower.NORMAL && (critter.getType()!=Critter.NORMAL)){
-        	critter.takeDamage(((damagePerSec*0.85f)/10f));
-        } else {
-            critter.takeDamage(damagePerSec/10f);
-        }
-        
     }
     
     @Override
@@ -215,11 +200,14 @@ public class Tower extends Entity {
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
         Input i = gc.getInput();
+        
+        findClosestCritter();
+        
         mouseXTile = (int) Math.floor((i.getAbsoluteMouseX() / GameplayState.TILESIZE));
         mouseYTile = (int) Math.floor((i.getAbsoluteMouseY() / GameplayState.TILESIZE));
         
         
-        if(isActive && isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y){
+        if(active && isPlaced && mouseXTile == getTilePosition().x && mouseYTile == getTilePosition().y){
             if(i.isKeyPressed(Input.KEY_DELETE) || i.isKeyPressed(Input.KEY_NUMPAD0)) {
                 Player.getInstance().sellTower(type);
                 this.killEntity();
@@ -231,16 +219,6 @@ public class Tower extends Entity {
         } catch (SlickException ex) {
             Logger.getLogger(Tower.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        shootingCounter-=delta;
-
-        if (isActive) {
-            if (shootingCounter <= 0) {
-                findClosestCritter();
-                shootingCounter = 100;
-            }
-        }
-
 
         for(Component component : components)
         {
@@ -267,16 +245,16 @@ public class Tower extends Entity {
 				break;
 		}
     	
-        if(renderComponent != null) {
-            renderComponent.render(gc, sb, gr);
+    	if(renderComponents != null) {
+            for(RenderComponent sRenderComponent : renderComponents) {
+            	sRenderComponent.render(gc, sb, gr);
+            }
         }
         // Laser shooting
         // Check tower has a target
         if (getTargetCritter() != null) {
-
-        	
-            gr.drawLine(this.getPosition().x+16, this.getPosition().y+16,
-            		getTargetCritter().getPosition().x+16,getTargetCritter().getPosition().y+16);
+//            gr.drawLine(this.getPosition().x+16, this.getPosition().y+16,
+//            		getTargetCritter().getPosition().x+16,getTargetCritter().getPosition().y+16);
         	
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) (getTargetCritter().getPosition().sub(this.getPosition())).getTheta()-90);      
@@ -285,15 +263,9 @@ public class Tower extends Entity {
             gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
                     (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
         }
-        guiOverlay(gr);
         gr.setColor(Color.white);
-    }
-
-    /**
-     * @param isActive the isActive to set
-     */
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
+        guiOverlay(gr);
+        
     }
 
     /**
@@ -324,5 +296,17 @@ public class Tower extends Entity {
     public void setTargetCritter(Critter targetCritter) {
         this.targetCritter = targetCritter;
     }
+
+	public float getDamagePerSec() {
+		return damagePerSec;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
     
 }

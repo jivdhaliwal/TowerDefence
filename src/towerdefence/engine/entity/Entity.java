@@ -22,11 +22,11 @@ public abstract class Entity {
     Vector2f position;
     float scale;
     float rotation;
-    float health;
 
     boolean isDead;
 
-    RenderComponent renderComponent = null;
+    ArrayList<RenderComponent> renderComponents = new ArrayList<RenderComponent>();
+    RenderComponent singleRenderComponent;
 
     ArrayList<Component> components = null;
     
@@ -47,7 +47,8 @@ public abstract class Entity {
     public void AddComponent(Component component)
     {
         if(RenderComponent.class.isInstance(component)) {
-            renderComponent = (RenderComponent)component;
+            singleRenderComponent = (RenderComponent)component;
+            renderComponents.add(singleRenderComponent);
         }
 
         component.setOwnerEntity(this);
@@ -99,10 +100,6 @@ public abstract class Entity {
         return rotation;
     }
 
-    public float getHealth() {
-        return health;
-    }
-
     public void killEntity() {
         isDead=true;
     }
@@ -141,8 +138,10 @@ public abstract class Entity {
 
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
     {
-        if(renderComponent != null) {
-            renderComponent.render(gc, sb, gr);
+        if(renderComponents != null) {
+            for(RenderComponent sRenderComponent : renderComponents) {
+            	sRenderComponent.render(gc, sb, gr);
+            }
         }
     }
 
@@ -152,13 +151,6 @@ public abstract class Entity {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    /**
-     * @param health the health to set
-     */
-    public void setHealth(float health) {
-        this.health = health;
     }
     
     public void deleteEntity() {

@@ -14,6 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.engine.Player;
 import towerdefence.engine.ResourceManager;
 import towerdefence.engine.component.ImageRenderComponent;
+import towerdefence.engine.component.LaserTowerComponent;
 import towerdefence.engine.entity.*;
 
 /**
@@ -33,7 +34,7 @@ public class TowerManager {
     /*
      * Default Tower when no type is defined
      */
-    public void addTower(String id, Vector2f position, int type) throws SlickException {
+    public void addTower(String id, Vector2f position, int type, boolean placed, boolean active) throws SlickException {
     	
         // Check if player can afford to add the tower
         if(Player.getInstance().getCash()-Player.getInstance().getTowerCost(type) >=0) {
@@ -41,6 +42,8 @@ public class TowerManager {
             Tower tower = new Tower(id, true);
             tower.setPosition(position);
             tower.setType(type);
+            tower.setIsPlaced(placed);
+            tower.setActive(active);
             switch (type) {
     		case Tower.NORMAL:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
@@ -55,6 +58,7 @@ public class TowerManager {
     					ResourceManager.getInstance().getImage("ICE_TOWER")));
     			break;
     		}
+            tower.AddComponent(new LaserTowerComponent("LaserTower"));
             towerList.add(tower);
         }
         

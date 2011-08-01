@@ -233,10 +233,18 @@ public class GameplayState extends BasicGameState implements ComponentListener {
                                     && pathmap.getTerrain(currentXTile, currentYTile) != PathMap.NOPLACE) {
                                 if(Player.getInstance().getCash()-Player.getInstance().
                                         getTowerCost(selectedTower.getType()) >=0) {
-                                    selectedTower.setIsPlaced(true);
-                                    selectedTower.setIsActive(true);
-                                    selectedTower.setPosition(new Vector2f(currentXTile * TILESIZE, currentYTile * TILESIZE));
-                                    towerFactory.addTower(selectedTower);
+//                                    selectedTower.setIsPlaced(true);
+//                                    selectedTower.setActive(true);
+//                                    selectedTower.setPosition(new Vector2f(currentXTile * TILESIZE, currentYTile * TILESIZE));
+//                                    selectedTower.AddComponent(new LaserTowerComponent("LaserTower"));
+//                                    towerFactory.addTower(selectedTower);
+                                	try {
+										towerFactory.addTower("selected", new Vector2f(currentXTile * TILESIZE, currentYTile * TILESIZE), 
+												selectedTower.getType(), true, true);
+									} catch (SlickException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
                                     selectedTower = null;
                                     pathmap.setTowerTerrain(new Vector2f(currentXTile, currentYTile));
                                 }
