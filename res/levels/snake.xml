@@ -2,10 +2,12 @@
 	<Tilemap path="levels/maps/snake.tmx" />
 	<!--spawnTime limits : normal=450, fire=225, ice=1000-->
 	<Waves>
-		<Wave type="0" count="7" waitingTime="4000" spawnTime="700"/>
-		<Wave type="0" count="7" waitingTime="4000" spawnTime="400"/>
-		<Wave type="0" count="7" waitingTime="4000" spawnTime="300"/>
-		<Wave type="2" count="1" waitingTime="3000" spawnTime="700"/>
+		<Wave type="0" count="1" waitingTime="5000" spawnTime="700"/>
+		<Wave type="0" count="2" waitingTime="4000" spawnTime="700"/>
+		<Wave type="0" count="1" waitingTime="5000" spawnTime="700"/>
+		<Wave type="0" count="2" waitingTime="4000" spawnTime="700"/>
+		<Wave type="0" count="3" waitingTime="7000" spawnTime="700"/>
+		<Wave type="0" count="3" waitingTime="7000" spawnTime="700"/>
 		<Wave type="1" count="4" waitingTime="7500" spawnTime="500"/>
 		<Wave type="0" count="6" waitingTime="4000" spawnTime="400"/>
 		<Wave type="1" count="4" waitingTime="7500" spawnTime="400"/>

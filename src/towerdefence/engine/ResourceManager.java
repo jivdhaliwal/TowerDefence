@@ -280,87 +280,9 @@ public class ResourceManager {
 			this.autoUpdate = autoUpdate;
 		}
 
-		public final int getDuration() {
-			return duration;
-		}
-
-		public final void setDuration(int duration) {
-			this.duration = duration;
-		}
-
-		public final int getTw() {
-			return tw;
-		}
-
-		public final void setTw(int tw) {
-			this.tw = tw;
-		}
-
-		public final int getTh() {
-			return th;
-		}
-
-		public final void setTh(int th) {
-			this.th = th;
-		}
-
 		public final String getImageId() {
 			return imageId;
 		}
 
-		public final void setImageId(String imageId) {
-			this.imageId = imageId;
-		}
-
 	}
 }
-//jellykaFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 100, false, false);
-//    	tempestaFont = new UnicodeFont("fonts/pf_tempesta_seven.ttf", 8, false, false);
-//    	
-//    	// Level select res
-//    	levelSelectOverlay = new Image("gui/level_select_overlay.png");
-//        
-//        zigzag = new Image("gui/levels/zigzag.png");
-//        snake = new Image("gui/levels/snake.png");
-//        fork = new Image("gui/levels/fork.png");
-//        square = new Image("gui/levels/square.png");
-//        left = new Image("gui/levels/left.png");
-//        haich = new Image("gui/levels/haich.png");
-//        load = new Image("gui/levels/load.png");
-//        quit = new Image("gui/levels/quit.png");
-//        
-//        
-//        // Game res
-//        gameOverlay = new Image("gui/gui_overlay.png");
-//        start = new Image("gui/start.png");
-//        
-//     // Load tower sprites
-//        towerSprites[NORMAL] = spriteLoader.getTowerSprites(NORMAL);
-//        towerSprites[FIRE] = spriteLoader.getTowerSprites(FIRE);
-//        towerSprites[ICE] = spriteLoader.getTowerSprites(ICE);
-//        critterAnimation[NORMAL] = spriteLoader.getCritterAnimation(NORMAL);
-//        critterAnimation[FIRE] = spriteLoader.getCritterAnimation(FIRE);
-//        critterAnimation[ICE] = spriteLoader.getCritterAnimation(ICE);
-//
-//        validTile = new Image("sprites/validTileSelect.png");
-//        invalidTile = new Image("sprites/invalidTileSelect.png");
-//        tileHighlight = validTile;
-//        
-//        gameoverImage = new Image("gui/gameover.png");
-//        levelCompleteImage = new Image("gui/levelComplete.png");
-//        
-//        // Load settings
-//        startingMoney = settings.getStartingMoney();
-//        playerHealth = settings.getPlayerHealth();
-//        critterHealth = settings.getCritterHealth();
-//        critterSpeed = settings.getCritterSpeed();
-//        baseDPS = settings.getBaseDPS();
-//        towerRange = settings.getRange();
-//        critterReward = settings.getReward();
-//        towerCost = settings.getCost();
-//        
-//        // Initialise wallet singleton
-//        Player.getInstance().setCash(startingMoney);
-//        Player.getInstance().setCritterReward(critterReward);
-//        Player.getInstance().setTowerCost(towerCost);
-//        Player.getInstance().setHealth(playerHealth);

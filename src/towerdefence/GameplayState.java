@@ -408,7 +408,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
     	Input input = container.getInput();
     	
     	if(input.isKeyDown(Input.KEY_F)) {
-    		delta*=2;
+    		delta*=4;
     	}
     	
         mouseCounter -= delta;
@@ -448,14 +448,14 @@ public class GameplayState extends BasicGameState implements ComponentListener {
             }
             
             if (input.isKeyPressed(Input.KEY_1) || input.isKeyPressed(Input.KEY_NUMPAD1)) {
-                setSelectedTower(TowerManager.NORMAL);
+                setSelectedTower(Tower.NORMAL);
             }
             if (input.isKeyPressed(Input.KEY_2) || input.isKeyPressed(Input.KEY_NUMPAD2)) {
-                setSelectedTower(TowerManager.FIRE);
+                setSelectedTower(Tower.FIRE);
             }
             if (input.isKeyPressed(Input.KEY_3) || input.isKeyPressed(Input.KEY_NUMPAD3
                       )) {
-                setSelectedTower(TowerManager.ICE);;
+                setSelectedTower(Tower.ICE);;
             }
         }
         mouseListener(input);

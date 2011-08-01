@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -38,8 +37,6 @@ public class Tower extends Entity {
 
     ArrayList<Critter> critterList = null;
     private Critter targetCritter = null;
-    
-    private Image[] sprites;
 
     private float range;
     float damagePerSec;
@@ -60,7 +57,8 @@ public class Tower extends Entity {
     String costOverlay;
     String overlay;
     String iceDetails = "150% damage\nto fire types";
-    String fireDetails = "150% damage\nto ice types";
+    String fireDetails = "200% damage\nto ice types";
+    String normalDetails = "85% damage\nto fire \nand ice types";
     
 
 
@@ -83,23 +81,22 @@ public class Tower extends Entity {
     }
 
     private void renderTextOverlay(Graphics gr) {
-        String tempOverlay;
+        String tempOverlay="";
+        String towerDetail="";
+        
+        if(type==FIRE) {
+            towerDetail=fireDetails;
+        } else if(type==ICE) {
+            towerDetail=iceDetails;
+        } else if(type==NORMAL) {
+        	towerDetail=normalDetails;
+        }
         
         if(isActive) {
             tempOverlay = "Sale Value : $"+
-                    (Player.getInstance().getTowerCost(type))/2+"\n"+overlay;
-            if(type==FIRE) {
-                tempOverlay+=fireDetails;
-            } else if(type==ICE) {
-                tempOverlay+=iceDetails;
-            }
+                    (Player.getInstance().getTowerCost(type))/2+"\n"+overlay+towerDetail;
         } else {
-            tempOverlay = costOverlay + overlay;
-            if(type==FIRE) {
-                tempOverlay+=fireDetails;
-            } else if(type==ICE) {
-                tempOverlay+=iceDetails;
-            }
+            tempOverlay = costOverlay + overlay + towerDetail;
         }
         
         if (Player.getInstance().getCash() - Player.getInstance().getTowerCost(type) >= 0) {
@@ -109,7 +106,7 @@ public class Tower extends Entity {
                 gr.drawString("Not enough cash", position.x+32, position.y+32);
             }
             unicodeFont.drawString(42 + (21 * 32), 416,costOverlay, Color.red);
-            unicodeFont.drawString(42 + (21 * 32), 431,overlay);
+            unicodeFont.drawString(42 + (21 * 32), 431,overlay+towerDetail);
         }
     }
 
@@ -181,9 +178,11 @@ public class Tower extends Entity {
 
     private void shootCritter(Critter critter) {
         if(critter.getType()==Critter.FIRE && type==Tower.ICE) {
-            critter.takeDamage((damagePerSec*1.5f)/10f);   
+            critter.takeDamage((damagePerSec*2.0f)/10f);   
         } else if(critter.getType()==Critter.ICE && type==Tower.FIRE) {
             critter.takeDamage((damagePerSec*1.5f)/10f);   
+        } else if(type==Tower.NORMAL && (critter.getType()!=Critter.NORMAL)){
+        	critter.takeDamage(((damagePerSec*0.85f)/10f));
         } else {
             critter.takeDamage(damagePerSec/10f);
         }

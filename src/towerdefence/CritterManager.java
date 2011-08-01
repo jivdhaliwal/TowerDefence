@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -28,14 +27,7 @@ public class CritterManager {
 
     int generateCounter;
 
-    // Critter types
-    public final static int NORMAL = 0;
-    public final static int FIRE = 1;
-    public final static int ICE = 2;
-    public final static int BOSS = 3;
-
     Vector2f initialPos;
-    Image testerSprite;
     PathFinder finder;
     Path path;
 

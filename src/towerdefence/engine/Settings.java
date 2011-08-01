@@ -47,7 +47,6 @@ public class Settings {
             try {
 				settings = new Settings();
 			} catch (SlickException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }

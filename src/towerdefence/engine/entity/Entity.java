@@ -7,8 +7,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.PathFinder;
 import towerdefence.GameplayState;
 
 /**
@@ -28,19 +26,10 @@ public abstract class Entity {
 
     boolean isDead;
 
-    public static final int UP = 0;
-    public static final int DOWN = 1;
-    public static final int LEFT = 2;
-    public static final int RIGHT = 3;
-    int direction;
-
     RenderComponent renderComponent = null;
 
     ArrayList<Component> components = null;
-
-    Path path=null;
-
-    PathFinder finder=null;
+    
     private int type;
     private boolean delete;
 
@@ -110,20 +99,8 @@ public abstract class Entity {
         return rotation;
     }
 
-    public int getDirection(){
-        return direction;
-    }
-
     public float getHealth() {
         return health;
-    }
-
-    public Path getPath() {
-        return path;
-    }
-
-    public PathFinder getFinder() {
-        return finder;
     }
 
     public void killEntity() {
@@ -152,18 +129,6 @@ public abstract class Entity {
     public void setScale(float scale)
     {
         this.scale = scale;
-    }
-
-    public void setDirection(int direction){
-        this.direction = direction;
-    }
-
-    public void setPath(Path path) {
-        this.path = path;
-    }
-
-    public void setFinder(PathFinder finder) {
-        this.finder = finder;
     }
 
     public void update(GameContainer gc, StateBasedGame sb, int delta)

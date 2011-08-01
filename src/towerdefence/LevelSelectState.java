@@ -4,7 +4,6 @@
  */
 package towerdefence;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,8 +51,6 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     private MouseOverArea snakeArea,forkArea,zigzagArea,
             squareArea,leftArea,haichArea,loadArea,quitArea;
     
-    private ArrayList<MouseOverArea> areas = new ArrayList<MouseOverArea>();
-    
     private Image snake;
     private Image fork;
     private Image zigzag;
@@ -83,7 +80,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        ResourceManager.getInstance().loadResources(ResourceLoader.getResourceAsStream("resources.xml"));
+    	ResourceManager.getInstance().loadResources(ResourceLoader.getResourceAsStream("resources.xml"));
 //        guiBackground = new Image("gui/level_select_overlay.png");
         guiBackground = ResourceManager.getInstance().getImage("LEVELSELECT_GUI");
         
@@ -120,7 +117,6 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         
         unicodeFont = new UnicodeFont("fonts/Jellyka_Estrya_Handwriting.ttf", 100, false, false);
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
-        
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
                 (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);

@@ -3,7 +3,6 @@ package towerdefence.engine.entity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -28,17 +27,19 @@ public class Critter extends Entity {
     public final static int BOSS = 3;
     private int type;
     
+    public static final int UP = 0;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int RIGHT = 3;
+    int direction;
+    
     private Rectangle healthBar;
-    private ShapeFill healthCol;
-    private boolean isSlowed;
-    private int slowTimer;
 
     public Critter(String id) {
         super(id);
         isDead = false;
         health = 100;
         healthBar = new Rectangle(position.x, position.y, GameplayState.TILESIZE, 3);
-        isSlowed = false;
     }
     
     /**
@@ -70,12 +71,6 @@ public class Critter extends Entity {
         
     }
     
-    // TODO Implement slowed critter
-    public void slowCritter(int time) {
-        isSlowed = true;
-        slowTimer = time;
-    }
-
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta)
     {
@@ -107,5 +102,13 @@ public class Critter extends Entity {
         gr.setColor(Color.white);
         
     }
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
 
 }

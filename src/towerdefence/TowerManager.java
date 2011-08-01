@@ -30,11 +30,6 @@ public class TowerManager {
     private ArrayList<Tower> towerList = new ArrayList<Tower>();
     private ArrayList<Critter> critterList;
 
-    // Tower types
-    public final static int NORMAL = 0;
-    public final static int FIRE = 1;
-    public final static int ICE = 2;
-
     /*
      * Default Tower when no type is defined
      */
@@ -47,15 +42,15 @@ public class TowerManager {
             tower.setPosition(position);
             tower.setType(type);
             switch (type) {
-    		case NORMAL:
+    		case Tower.NORMAL:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
     					ResourceManager.getInstance().getImage("NORMAL_TOWER")));
     			break;
-    		case FIRE:
+    		case Tower.FIRE:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
     					ResourceManager.getInstance().getImage("FIRE_TOWER")));
     			break;
-    		case ICE:
+    		case Tower.ICE:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
     					ResourceManager.getInstance().getImage("ICE_TOWER")));
     			break;

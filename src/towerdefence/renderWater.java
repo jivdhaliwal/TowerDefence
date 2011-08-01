@@ -13,7 +13,6 @@ import towerdefence.engine.ResourceManager;
 /**
  *
  * Renders the animated water background
- * TODO Ability to change water direction
  * 
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */

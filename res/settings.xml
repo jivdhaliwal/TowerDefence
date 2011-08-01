@@ -2,13 +2,13 @@
 	<Player startingMoney="250" health="20"/>
 	<Critter>
 <!--                For smooth movement don't increase the speed past 2.5-->
-		<NORMALCritter health="50" speed="1" reward="5" />
-		<FIRECritter health="60" speed="2" reward="15"/>
-		<ICECritter health="500" speed="0.35" reward="25"/>
+		<NORMALCritter health="100" speed="1" reward="8" />
+		<FIRECritter health="65" speed="2" reward="16"/>
+		<ICECritter health="750" speed="0.35" reward="40"/>
 	</Critter>
 	<Tower>
 		<NORMALTower baseDPS="30" range="128" lockOn="true" cost="100"/>
 		<FIRETower baseDPS="20" range="160" lockOn="true" cost="200"/>
-		<ICETower baseDPS="50" range="96" lockOn="true" cost="300"/>
+		<ICETower baseDPS="40" range="96" lockOn="true" cost="300"/>
 	</Tower>
 </Settings>
