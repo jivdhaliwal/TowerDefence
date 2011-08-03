@@ -34,7 +34,8 @@ public class Tower extends Entity {
     public final static int NORMAL = 0;
     public final static int FIRE = 1;
     public final static int ICE = 2;
-    public final static int BOSS = 3;
+    public final static int BULLET = 3;
+    public final static int ROCKET = 4;
 
     ArrayList<Critter> critterList = null;
     private Critter targetCritter = null;
@@ -229,41 +230,14 @@ public class Tower extends Entity {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics gr)
-    {   
-    	switch (this.getType()) {
-			case NORMAL:
-				gr.setColor(Color.green);
-				break;
-			case FIRE:
-				gr.setColor(Color.red);
-				break;
-			case ICE:
-				gr.setColor(Color.blue);
-				break;
-			default:
-				gr.setColor(Color.green);
-				break;
-		}
+    {
     	
     	if(renderComponents != null) {
             for(RenderComponent sRenderComponent : renderComponents) {
             	sRenderComponent.render(gc, sb, gr);
             }
         }
-        // Laser shooting
-        // Check tower has a target
-        if (getTargetCritter() != null) {
-//            gr.drawLine(this.getPosition().x+16, this.getPosition().y+16,
-//            		getTargetCritter().getPosition().x+16,getTargetCritter().getPosition().y+16);
-        	
-            gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
-                    (float) (getTargetCritter().getPosition().sub(this.getPosition())).getTheta()-90);      
-            // Draw tower's turret (which will rotate towards critters)
-            ResourceManager.getInstance().getImage("TOWER_ARROW").draw(this.getPosition().x,this.getPosition().y);
-            gr.rotate(this.getPosition().x + 16, this.getPosition().y + 16,
-                    (float) -(targetCritter.getPosition().sub(this.getPosition())).getTheta()+90);
-        }
-        gr.setColor(Color.white);
+        
         guiOverlay(gr);
         
     }

@@ -16,20 +16,23 @@ public class Settings {
     
     private final XMLElement root;
     
+    private static final int numTowers=5;
+    private static final int numCritters=3;
+    
     // Player settings
     private int startingMoney;
     private int playerHealth;
     
     // Critter settings
-    private int[] critterHealth = new int[3];
-    private double[] critterSpeed = new double[3];
-    private int[] reward = new int[3];
+    private int[] critterHealth = new int[numCritters];
+    private double[] critterSpeed = new double[numCritters];
+    private int[] reward = new int[numCritters];
     
     // Tower settings
-    private int[] baseDPS = new int[3];
-    private int[] range = new int[3];
-    private boolean[] lockOn = new boolean[3];
-    private int[] cost = new int[3];
+    private int[] baseDPS = new int[numTowers];
+    private int[] range = new int[numTowers];
+    private boolean[] lockOn = new boolean[numTowers];
+    private int[] cost = new int[numTowers];
     
     public Settings() throws SlickException {
         XMLParser parser = new XMLParser();

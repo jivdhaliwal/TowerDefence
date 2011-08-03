@@ -29,11 +29,11 @@ public class ImageRenderComponent extends RenderComponent {
     {
         Vector2f pos = entity.getPosition();
         float scale = entity.getScale();
-        try {
-            image.setFilter(Image.FILTER_NEAREST);
-        } catch (SlickException ex) {
-            Logger.getLogger(ImageRenderComponent.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            image.setFilter(Image.FILTER_NEAREST);
+//        } catch (SlickException ex) {
+//            Logger.getLogger(ImageRenderComponent.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         image.draw(pos.x, pos.y, scale);
     }
 

@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import towerdefence.engine.Player;
 import towerdefence.engine.ResourceManager;
+import towerdefence.engine.component.BulletTowerComponent;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.component.LaserTowerComponent;
 import towerdefence.engine.entity.*;
@@ -48,17 +49,30 @@ public class TowerManager {
     		case Tower.NORMAL:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
     					ResourceManager.getInstance().getImage("NORMAL_TOWER")));
+    			tower.AddComponent(new LaserTowerComponent("LaserTower"));
     			break;
     		case Tower.FIRE:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
     					ResourceManager.getInstance().getImage("FIRE_TOWER")));
+    			tower.AddComponent(new LaserTowerComponent("LaserTower"));
     			break;
     		case Tower.ICE:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
     					ResourceManager.getInstance().getImage("ICE_TOWER")));
+    			tower.AddComponent(new LaserTowerComponent("LaserTower"));
     			break;
-    		}
-            tower.AddComponent(new LaserTowerComponent("LaserTower"));
+    		case Tower.BULLET:
+    			tower.AddComponent(new ImageRenderComponent("TowerRender",
+    					ResourceManager.getInstance().getImage("BULLET_TOWER")));
+    			tower.AddComponent(new BulletTowerComponent("BulletTower",100,5));
+    			break;
+	        case Tower.ROCKET:
+				tower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("ROCKET_TOWER")));
+				tower.AddComponent(new BulletTowerComponent("BulletTower",1500,3,true));
+				break;
+            }
+            
             towerList.add(tower);
         }
         

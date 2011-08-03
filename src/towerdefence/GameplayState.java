@@ -340,7 +340,7 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 //        unicodeFont.drawString(50, 160,
 //                "# of Towers : " + String.valueOf(towerFactory.getTowers().size()), Color.white);
         
-        unicodeFont.drawString(guiLeftX+25, guiTopY+250, "TOWERS");
+        unicodeFont.drawString(guiLeftX+25, guiTopY+218, "TOWERS");
         
         if (startWaves && !gameOver) {
             unicodeFont.drawString(guiLeftX + 15, guiBottomY - 95,
@@ -377,6 +377,18 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
 						ResourceManager.getInstance().getImage("ICE_TOWER")));
 				break;
+			case Tower.BULLET:
+				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("BULLET_TOWER")));
+				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("BULLET_TURRET")));
+				break;
+			case Tower.ROCKET:
+				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("ROCKET_TOWER")));
+				selectedTower.AddComponent(new ImageRenderComponent("TowerRender",
+						ResourceManager.getInstance().getImage("ROCKET_TURRET")));
+				break;
 		}
         selectedTower.setIsPlaced(false);
     }
@@ -385,6 +397,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         guiTowerList.add(new Tower("normal", false));
         guiTowerList.add(new Tower("fire", false));
         guiTowerList.add(new Tower("ice", false));
+        guiTowerList.add(new Tower("bullet",false));
+        guiTowerList.add(new Tower("rocket",false));
         
         for(int i=0;i<3;i++) {
             guiTowerList.get(i).setPosition(new Vector2f( 
@@ -403,6 +417,29 @@ public class GameplayState extends BasicGameState implements ComponentListener {
 	    		case Tower.ICE:
 	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
 	    					ResourceManager.getInstance().getImage("ICE_TOWER")));
+	    			break;
+    		}
+            
+            guiTowerList.get(i).setIsPlaced(true);
+        }
+        
+        for(int i=3;i<5;i++) {
+            guiTowerList.get(i).setPosition(new Vector2f( 
+                    (float)(Math.floor((guiLeftX+16+((i-3)*32)) / GameplayState.TILESIZE))*32, 
+                    (float)(Math.floor((guiTopY+272)/GameplayState.TILESIZE))*32));
+            guiTowerList.get(i).setType(i);
+            switch (i) {
+	    		case Tower.BULLET:
+	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+	    					ResourceManager.getInstance().getImage("BULLET_TOWER")));
+	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+	    					ResourceManager.getInstance().getImage("BULLET_TURRET")));
+	    			break;
+	    		case Tower.ROCKET:
+	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+	    					ResourceManager.getInstance().getImage("ROCKET_TOWER")));
+	    			guiTowerList.get(i).AddComponent(new ImageRenderComponent("TowerRender",
+	    					ResourceManager.getInstance().getImage("ROCKET_TURRET")));
 	    			break;
     		}
             
@@ -461,9 +498,14 @@ public class GameplayState extends BasicGameState implements ComponentListener {
             if (input.isKeyPressed(Input.KEY_2) || input.isKeyPressed(Input.KEY_NUMPAD2)) {
                 setSelectedTower(Tower.FIRE);
             }
-            if (input.isKeyPressed(Input.KEY_3) || input.isKeyPressed(Input.KEY_NUMPAD3
-                      )) {
-                setSelectedTower(Tower.ICE);;
+            if (input.isKeyPressed(Input.KEY_3) || input.isKeyPressed(Input.KEY_NUMPAD3)) {
+                setSelectedTower(Tower.ICE);
+            }
+            if (input.isKeyPressed(Input.KEY_4) || input.isKeyPressed(Input.KEY_NUMPAD4)) {
+              setSelectedTower(Tower.BULLET);
+            }
+            if (input.isKeyPressed(Input.KEY_5) || input.isKeyPressed(Input.KEY_NUMPAD5)) {
+                setSelectedTower(Tower.ROCKET);
             }
         }
         mouseListener(input);

@@ -37,6 +37,8 @@ public class Critter extends Entity {
     private float health;
     
     private Rectangle healthBar;
+    
+    private Rectangle collisionBlock;
 
     public Critter(String id) {
         super(id);
@@ -71,7 +73,9 @@ public class Critter extends Entity {
         this.position = position;
         healthBar.setX(position.x);
         healthBar.setY(position.y);
-        
+        if(collisionBlock!=null){
+        	collisionBlock.setLocation(position);
+        }
     }
     
     @Override
@@ -106,6 +110,8 @@ public class Critter extends Entity {
         gr.fill(healthBar);
         gr.setColor(Color.white);
         
+//        gr.draw(collisionBlock);
+        
     }
 
 	public int getDirection() {
@@ -122,6 +128,14 @@ public class Critter extends Entity {
 
 	public void setHealth(float health) {
 		this.health = health;
+	}
+
+	public Rectangle getCollisionBlock() {
+		return collisionBlock;
+	}
+
+	public void setCollisionBlock(Rectangle collisionBlock) {
+		this.collisionBlock = collisionBlock;
 	}
 
 }

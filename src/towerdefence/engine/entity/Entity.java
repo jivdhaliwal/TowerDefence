@@ -15,7 +15,7 @@ import towerdefence.GameplayState;
  *
  * @author Jiv Dhaliwal <jivdhaliwal@gmail.com>
  */
-public abstract class Entity {
+public class Entity {
 
     String id;
 

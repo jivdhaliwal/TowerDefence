@@ -23,9 +23,19 @@
   <resource type="image" id="NORMAL_TOWER">sprites/towers/normalTower.png</resource>
   <resource type="image" id="FIRE_TOWER">sprites/towers/fireTower.png</resource>
   <resource type="image" id="ICE_TOWER">sprites/towers/iceTower.png</resource>
-  <resource type="image" id="NORMAL_LASER">sprites/laser/normal.png</resource>
-  <resource type="image" id="FIRE_LASER">sprites/laser/fire.png</resource>
-  <resource type="image" id="ICE_LASER">sprites/laser/ice.png</resource>
+  <resource type="image" id="BULLET_TOWER">sprites/towers/baseTower.png</resource>
+  <resource type="image" id="ROCKET_TOWER">sprites/towers/baseTower.png</resource>
+  
+  <!-- Tower turrets -->
+  <resource type="image" id="BULLET_TURRET">sprites/towers/bulletTurret.png</resource>
+  <resource type="image" id="ROCKET_TURRET">sprites/towers/rocketTurret.png</resource>
+  
+  <!-- Tower weapons -->
+  <resource type="image" id="NORMAL_LASER">sprites/weapons/laser/normal.png</resource>
+  <resource type="image" id="FIRE_LASER">sprites/weapons/laser/fire.png</resource>
+  <resource type="image" id="ICE_LASER">sprites/weapons/laser/ice.png</resource>
+  
+  <resource type="image" id="BULLET">sprites/tester.png</resource>
   <resource type="image" id="TOWER_ARROW">sprites/towers/arrow.png</resource>
   <!-- Critter Animations -->
   <!-- Normal Critter Animations -->

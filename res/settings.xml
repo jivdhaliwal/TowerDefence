@@ -10,5 +10,7 @@
 		<NORMALTower baseDPS="30" range="128" lockOn="true" cost="100"/>
 		<FIRETower baseDPS="20" range="160" lockOn="true" cost="200"/>
 		<ICETower baseDPS="40" range="96" lockOn="true" cost="300"/>
+		<BULLETTower baseDPS="7" range="120" lockOn="true" cost="50"/>
+		<ROCKETTower baseDPS="30" range="200" lockOn="true" cost="10"/>
 	</Tower>
 </Settings>

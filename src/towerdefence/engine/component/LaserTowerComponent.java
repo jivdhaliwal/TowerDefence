@@ -31,6 +31,7 @@ public class LaserTowerComponent extends RenderComponent{
 
 		shootingCounter-=delta;
 		
+		
 		if (tower.isActive() && shootingCounter <= 0 && 
 		tower.getTargetCritter()!=null) {
             shootCritter(tower.getTargetCritter());
@@ -58,10 +59,21 @@ public class LaserTowerComponent extends RenderComponent{
 		}
 		
 		if (tower.getTargetCritter() != null) {
-
+			
 			gr.drawLine(tower.getPosition().x + 16, tower.getPosition().y + 16,
-					tower.getTargetCritter().getPosition().x + 16, tower.getTargetCritter()
-							.getPosition().y + 16);
+					tower.getTargetCritter().getPosition().x + 16, tower
+							.getTargetCritter().getPosition().y + 16);
+			
+//			// Draw tower's turret (which will rotate towards critters)
+//			gr.rotate(tower.getPosition().x + 16, tower.getPosition().y + 16,
+//					(float) (tower.getTargetCritter().getPosition().sub(tower
+//							.getPosition())).getTheta() + 90);
+//			ResourceManager.getInstance().getImage("TOWER_ARROW")
+//					.draw(tower.getPosition().x, tower.getPosition().y);
+//			gr.rotate(tower.getPosition().x + 16, tower.getPosition().y + 16,
+//					(float) -(tower.getTargetCritter().getPosition().sub(tower
+//							.getPosition())).getTheta() - 90);
+			
 		}
 		
 		gr.setColor(Color.white);

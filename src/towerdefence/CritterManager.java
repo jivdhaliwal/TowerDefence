@@ -5,6 +5,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
@@ -39,7 +40,6 @@ public class CritterManager {
         this.finder = finder;
         this.path = finder.findPath(new UnitMover(3), startX, startY, goalX, goalY);
         this.initialPos = new Vector2f(startX * GameplayState.TILESIZE, startY * GameplayState.TILESIZE);
-        
         loadAnimations();
 
     }
@@ -50,6 +50,7 @@ public class CritterManager {
      */
     public void addCritter(String id, int critterType) throws SlickException {
         Critter critter = new Critter(id);
+        critter.setCollisionBlock(new Rectangle(initialPos.x, initialPos.y, 32, 25));
         critter.setPosition(initialPos);
         critter.setType(critterType);
 
