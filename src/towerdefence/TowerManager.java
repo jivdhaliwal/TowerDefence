@@ -16,6 +16,7 @@ import towerdefence.engine.ResourceManager;
 import towerdefence.engine.component.BulletTowerComponent;
 import towerdefence.engine.component.ImageRenderComponent;
 import towerdefence.engine.component.LaserTowerComponent;
+import towerdefence.engine.component.RocketTowerComponent;
 import towerdefence.engine.entity.*;
 
 /**
@@ -64,12 +65,12 @@ public class TowerManager {
     		case Tower.BULLET:
     			tower.AddComponent(new ImageRenderComponent("TowerRender",
     					ResourceManager.getInstance().getImage("BULLET_TOWER")));
-    			tower.AddComponent(new BulletTowerComponent("BulletTower",100,5));
+    			tower.AddComponent(new BulletTowerComponent("BulletTower",0.3f));
     			break;
 	        case Tower.ROCKET:
 				tower.AddComponent(new ImageRenderComponent("TowerRender",
 						ResourceManager.getInstance().getImage("ROCKET_TOWER")));
-				tower.AddComponent(new BulletTowerComponent("BulletTower",1500,3,true));
+				tower.AddComponent(new RocketTowerComponent("RocketTower",0.3f));
 				break;
             }
             

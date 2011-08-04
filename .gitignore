@@ -36,3 +36,6 @@ res/sprites/*.psd
 
 tools/
 resBackup/
+
+BuildJAR.jardesc
+.settings/org.eclipse.ltk.core.refactoring.prefs

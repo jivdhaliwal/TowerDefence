@@ -163,12 +163,13 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         tempestaFont.getEffects().add(new ColorEffect(java.awt.Color.white));
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
-                (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);
-        helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
+                (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 220);
+        helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2, 3, 4 or 5 to select a tower\n"
                 + "Left click to place a selected tower\n"
                 + "Right click to cancel current selection\n"
                 + "Mouse over a tower to see its info\n"
                 + "Mouse over a tower and press delete to sell a tower\n"
+                + "F : Fast-Forward\n"
                 + "R : Restart\n"
                 + "Esc : Level select screen\n"
                 + "Manage your money and keep the critters at bay!");
@@ -510,6 +511,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         }
         mouseListener(input);
         
+        Settings.getInstance().updateDamageScaling(towerFactory.getTowers());
+        
         generateWaves();
          
         if(Player.getInstance().getHealth()>0) {
@@ -584,6 +587,8 @@ public class GameplayState extends BasicGameState implements ComponentListener {
         if(levelComplete) {
         	levelCompleteImage.drawCentered(container.getWidth()/2,container.getHeight()/2);
         }
+        
+//        unicodeFont.drawString(50, 20, Float.toString(Settings.getInstance().getCritterHealth()[0]));
 
     }
 

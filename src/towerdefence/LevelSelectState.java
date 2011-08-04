@@ -96,12 +96,13 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         load = ResourceManager.getInstance().getImage("LOAD_BUTTON");
         quit = ResourceManager.getInstance().getImage("QUIT_BUTTON");
         
-        zigzagArea = new MouseOverArea(container, zigzag, guiLeftX, easyLevelTopY, 140, 40, this);
-        squareArea = new MouseOverArea(container, square, guiLeftX, easyLevelTopY+40, 140, 40, this);
-        snakeArea = new MouseOverArea(container, snake, guiLeftX, mediumLevelTopY, 140, 40, this);
-        forkArea = new MouseOverArea(container, fork, guiLeftX, mediumLevelTopY+40,140, 40, this);
-        leftArea = new MouseOverArea(container, left, guiLeftX, hardLevelTopY,140, 40, this);
-        haichArea = new MouseOverArea(container, haich, guiLeftX, hardLevelTopY+40,140, 40, this);
+        forkArea = new MouseOverArea(container, fork, guiLeftX, easyLevelTopY, 140, 40, this);
+        haichArea = new MouseOverArea(container, haich, guiLeftX, easyLevelTopY+50,140, 40, this);
+        snakeArea = new MouseOverArea(container, snake, guiLeftX, easyLevelTopY+100, 140, 40, this);
+        zigzagArea = new MouseOverArea(container, zigzag, guiLeftX, easyLevelTopY+150, 140, 40, this);
+        squareArea = new MouseOverArea(container, square, guiLeftX, easyLevelTopY+200, 140, 40, this);
+        leftArea = new MouseOverArea(container, left, guiLeftX, easyLevelTopY+250,140, 40, this);
+        
         loadArea = new MouseOverArea(container, load, guiLeftX-5, 540,140, 40, this);
         quitArea = new MouseOverArea(container, quit, guiLeftX-5, 600,140, 40, this);
         
@@ -119,12 +120,14 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
         
         helpText = new TextField(container, container.getGraphics().getFont(), 
-                (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 200);
-        helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2 or 3 to select a tower\n"
+                (container.getWidth()/2-300), (container.getHeight()/2-80), 475, 220);
+        helpText.setAcceptingInput(false);
+        helpText.setText("Game Help - F1 to toggle\n\nPress 1, 2, 3, 4 or 5 to select a tower\n"
                 + "Left click to place a selected tower\n"
                 + "Right click to cancel current selection\n"
                 + "Mouse over a tower to see its info\n"
                 + "Mouse over a tower and press delete to sell a tower\n"
+                + "F : Fast-Forward\n"
                 + "R : Restart\n"
                 + "Esc : Level select screen\n"
                 + "Manage your money and keep the critters at bay!");
@@ -133,7 +136,7 @@ public class LevelSelectState extends BasicGameState implements ComponentListene
         this.game = game;
         this.container = container;
         
-        level = new LevelLoader("levels/square.xml");
+        level = new LevelLoader("levels/fork.xml");
         map = new TiledMap(level.getMapPath());
     }
 

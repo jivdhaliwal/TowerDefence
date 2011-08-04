@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import towerdefence.engine.ResourceManager;
+import towerdefence.engine.Settings;
 import towerdefence.engine.entity.Critter;
 import towerdefence.engine.entity.Entity;
 import towerdefence.engine.entity.Tower;
@@ -35,7 +36,7 @@ public class LaserTowerComponent extends RenderComponent{
 		if (tower.isActive() && shootingCounter <= 0 && 
 		tower.getTargetCritter()!=null) {
             shootCritter(tower.getTargetCritter());
-            shootingCounter = 100; 
+            shootingCounter = Settings.getInstance().getShootingCounter()[tower.getType()]; 
         }
 		
 	}

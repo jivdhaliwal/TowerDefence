@@ -6,20 +6,14 @@ import org.newdawn.slick.geom.Vector2f;
 import towerdefence.engine.ResourceManager;
 import towerdefence.engine.entity.Bullet;
 
+public class RocketTowerComponent extends ShootingTowerComponent {
 
-
-public class BulletTowerComponent extends ShootingTowerComponent{
-	
-	public BulletTowerComponent(String id, float bulletSpeed) {
+	public RocketTowerComponent(String id, float bulletSpeed) {
 		super(id);
 		this.bulletSpeed = bulletSpeed;
-		turretString="BULLET_TURRET";
+		turretString="ROCKET_TURRET";
 	}
 	
-	/*
-	 * TODO Create new bullet image for bullet Tower
-	 * @see towerdefence.engine.component.ShootingTowerComponent#createBullet()
-	 */
 	@Override
 	public void createBullet() {
 		bullet = new Bullet("Bullet");
